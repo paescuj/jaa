@@ -1,0 +1,68 @@
+import { Avatar, Box, SimpleGrid, UnorderedList, ListItem, Link } from '@chakra-ui/react';
+import { Iconoir } from 'iconoir-react';
+import { motion } from 'framer-motion';
+
+export const MotionBox = motion(Box);
+
+<motion.div
+  variants={{
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        delay: 0.5,
+        staggerChildren: 0.7,
+        when: 'beforeChildren',
+      },
+    },
+  }}
+  initial="hidden"
+  animate="show"
+  exit={{ opacity: 0 }}
+>
+  <MotionBox
+    variants={{
+      hidden: { opacity: 0, translateY: '-20px' },
+      show: { opacity: 1, translateY: 0 },
+    }}
+    transition={{ duration: 1 }}
+    mb="4"
+  >
+    <h1>Entstehung</h1>
+    «Wie kann ich meine Bewerbung einzigartig machen?» - Mit dieser Frage war der Grundstein für den «Job Application Assistant» gelegt.<br />
+    «Ich bin doch schliesslich ein Informatiker», dachte ich. «Das muss sich doch irgendwie einbauen lassen».<br />
+    So entstand die Idee, die Bewerbungsunterlagen interaktiv auf einer Webseite zu präsentieren und mit hilfreichen Features zu garnieren.<br />
+    Rasch wurde mir klar, dass ein Admin-Bereich - für die Verwaltung der Bewerbungen - eine sinnvolle Ergänzung ist.
+  </MotionBox>
+  <MotionBox
+    mt="6"
+    variants={{
+      hidden: { opacity: 0, translateY: '-20px' },
+      show: { opacity: 1, translateY: 0 },
+    }}
+    transition={{ duration: 1 }}
+  >
+    <h1>Open Source</h1>
+    Open Source ist mir ein besonderes Anliegen. Deshalb ist der Quellcode dieses Projektes vollständig auf <Link href="https://github.com/paescuj/jaa" isExternal color="blue.500">GitHub</Link> einsehbar.
+  </MotionBox>
+  <MotionBox
+    mt="6"
+    variants={{
+      hidden: { opacity: 0, translateY: '-20px' },
+      show: { opacity: 1, translateY: 0 },
+    }}
+    transition={{ duration: 1 }}
+  >
+    <h1>Technologien</h1>
+    Die Applikation wurde auf Basis der folgenden Technologien umgesetzt:
+    <UnorderedList mt="2" spacing="2">
+      <ListItem><Link href="https://nextjs.org" isExternal color="blue.500">Next.js</Link> / <Link href="https://reactjs.org" isExternal color="blue.500">React</Link> - Frontend</ListItem>
+      <ListItem><Link href="https://chakra-ui.com" isExternal color="blue.500">Chakra UI</Link> - UI Komponenten</ListItem>
+      <ListItem><Link href="https://iconoir.com" isExternal color="blue.500">Iconoir</Link> - Icons</ListItem>
+      <ListItem><Link href="https://directus.io" isExternal color="blue.500">Directus</Link> - Backend</ListItem>
+      <ListItem><Link href="https://papercups.io" isExternal color="blue.500">Papercups</Link> - Chat-Funktionalität</ListItem>
+      <ListItem><Link href="https://www.docker.com" isExternal color="blue.500">Docker</Link> - Deployment</ListItem>
+    </UnorderedList>
+
+  </MotionBox>
+</motion.div>

@@ -1,0 +1,9 @@
+import { Button, Link } from '@chakra-ui/react';
+import { Papercups } from '@paescuj/chat-widget';
+import NextLink from 'next/link';
+
+import JobPopup from '../components/JobPopup';
+
+Es freut mich, Ihnen meine Bewerbungsunterlagen für die Stelle als <JobPopup link={props.job.link} previewUrl={props.job.preview[0]}>**<span children={props.job.position} />**</JobPopup> auf diesem Wege präsentieren zu dürfen.
+
+Sie haben hier die Möglichkeit, die Unterlagen interaktiv zu begutachten, <span style={{ display: props.chat ? 'inline' : 'none' }}>mit mir in <Button variant="link" colorScheme="black" onClick={Papercups.toggle}>Kontakt</Button> zu treten</span> oder auch mehr <NextLink href="/about" passHref><Link fontWeight="bold">über diese Applikation</Link></NextLink> zu erfahren.

@@ -1,0 +1,7 @@
+.git/
+.gitignore
+**/.DS_Store
+.next/
+.dockerignore
+Dockerfile
+node_modules/

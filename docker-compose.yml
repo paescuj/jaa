@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  directus-db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: directus
+  directus-cache:
+    image: redis:6-alpine
+  directus:
+    # Switch back once has https://github.com/directus/directus/pull/6713 been released
+    # image: directus/directus:v9.0.0-rc.83
+    image: paescuj/directus:v9.0.0-rc.83
+    environment:
+      DB_CLIENT: pg
+      DB_HOST: directus-db
+      DB_PORT: 5432
+      DB_DATABASE: directus
+      DB_USER: directus
+      CACHE_ENABLED: 'true'
+      CACHE_STORE: redis
+      CACHE_REDIS: redis://directus-cache:6379
+      CACHE_AUTO_PURGE: 'true'
+      ADMIN_EMAIL: admin@${PUBLIC_DOMAIN}
+  papercups-chat-window:
+    build: ./chat-window
+  papercups-db:
+    image: postgres:13-alpine
+  papercups:
+    # Switch back once https://github.com/papercups-io/papercups/pull/905 has been merged/released
+    # image: papercups/papercups:latest
+    image: paescuj/papercups:latest
+    command: sh -c "sleep 10 && /entrypoint.sh db createdb && /entrypoint.sh db migrate && echo 'running' && /entrypoint.sh run"
+    environment:
+      BACKEND_URL: localhost
+      MIX_ENV: prod
+      REQUIRE_DB_SSL: 'false'
+      REACT_APP_FILE_UPLOADS_ENABLED: 'false'
+      PAPERCUPS_REGISTRATION_DISABLED: "$PAPERCUPS_REGISTRATION_DISABLED"
+      DATABASE_HOST: papercups-db
+      DATABASE_USER: postgres
+      DATABASE: postgres

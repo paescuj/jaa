@@ -1,0 +1,31 @@
+services:
+  directus-db:
+    environment:
+      POSTGRES_PASSWORD: $DIRECTUS_DB_PASSWORD
+  directus:
+    depends_on:
+      - directus-db
+      - directus-cache
+    ports:
+      - 8055:8055
+    environment:
+      KEY: $DIRECTUS_KEY
+      SECRET: $DIRECTUS_SECRET
+      DB_PASSWORD: $DIRECTUS_DB_PASSWORD
+      ADMIN_PASSWORD: $DIRECTUS_ADMIN_PASSWORD
+  papercups-chat-window:
+    ports:
+      - 4001:8080
+  papercups-db:
+    environment:
+      POSTGRES_PASSWORD: $PAPERCUPS_DB_PASSWORD
+  papercups:
+    depends_on:
+      - papercups-db
+    ports:
+      - 3001:3000
+      - 4000:4000
+    environment:
+      REACT_APP_URL: localhost:3001
+      SECRET_KEY_BASE: $PAPERCUPS_KEY
+      DATABASE_PASSWORD: $PAPERCUPS_DB_PASSWORD

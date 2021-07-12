@@ -1,0 +1,129 @@
+x-logging:
+  &default-logging
+  driver: json-file
+  options:
+    max-size: 200k
+    max-file: 10
+
+services:
+  web:
+    build:
+      context: web
+      args:
+        PUBLIC_DOMAIN: $PUBLIC_DOMAIN
+    image: ${REGISTRY_PREFIX:-}jaa-web
+    secrets:
+      - jaa_directus_secret
+    environment:
+      JWT_SECRET_FILE: /run/secrets/jaa_directus_secret
+    networks:
+      - web
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.jaa-web.rule: Host(`${PUBLIC_DOMAIN}`)
+      traefik.http.routers.jaa-web.entrypoints: $TRAEFIK_ENTRYPOINTS
+      traefik.http.routers.jaa-web.tls.certresolver: $TRAEFIK_CERTRESOLVER
+    logging: *default-logging
+  directus-db:
+    volumes:
+      - directus-db-data:/var/lib/postgresql/data
+    secrets:
+      - jaa_directus_db_password
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/jaa_directus_db_password
+    networks:
+      - jaa-directus
+    logging: *default-logging
+  directus-cache:
+    networks:
+      - jaa-directus
+    logging: *default-logging
+  directus:
+    volumes:
+      - directus-uploads:/directus/uploads
+    secrets:
+      - jaa_directus_key
+      - jaa_directus_secret
+      - jaa_directus_db_password
+      - jaa_directus_admin_password
+    environment:
+      REFRESH_TOKEN_COOKIE_SECURE: 'true'
+      KEY_FILE: /run/secrets/jaa_directus_key
+      SECRET_FILE: /run/secrets/jaa_directus_secret
+      DB_PASSWORD_FILE: /run/secrets/jaa_directus_db_password
+      ADMIN_PASSWORD_FILE: /run/secrets/jaa_directus_admin_password
+    networks:
+      - jaa-directus
+      - web
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.jaa-directus.rule: Host(`directus.${PUBLIC_DOMAIN}`)
+      traefik.http.routers.jaa-directus.entrypoints: $TRAEFIK_ENTRYPOINTS
+      traefik.http.routers.jaa-directus.tls.certresolver: $TRAEFIK_CERTRESOLVER
+    logging: *default-logging
+  papercups-chat-window:
+    image: ${REGISTRY_PREFIX:-}papercups-chat-window
+    networks:
+      - web
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.jaa-chat-window.rule: Host(`chat-window.${PUBLIC_DOMAIN}`)
+      traefik.http.routers.jaa-chat-window.entrypoints: $TRAEFIK_ENTRYPOINTS
+      traefik.http.routers.jaa-chat-window.tls.certresolver: $TRAEFIK_CERTRESOLVER
+      traefik.http.services.jaa-chat-window.loadbalancer.server.port: 8080
+    logging: *default-logging
+  papercups-db:
+    volumes:
+      - papercups-db-data:/var/lib/postgresql/data
+    secrets:
+      - jaa_papercups_db_password
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/jaa_papercups_db_password
+    networks:
+      - jaa-papercups
+    logging: *default-logging
+  papercups:
+    secrets:
+      - jaa_papercups_key
+      - jaa_papercups_db_password
+    environment:
+      REACT_APP_URL: https://papercups.${PUBLIC_DOMAIN}
+      SECRET_KEY_BASE_FILE: /run/secrets/jaa_papercups_key
+      DATABASE_PASSWORD_FILE: /run/secrets/jaa_papercups_db_password
+    networks:
+      - jaa-papercups
+      - web
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.jaa-papercups.rule: Host(`papercups.${PUBLIC_DOMAIN}`)
+      traefik.http.routers.jaa-papercups.entrypoints: $TRAEFIK_ENTRYPOINTS
+      traefik.http.routers.jaa-papercups.tls.certresolver: $TRAEFIK_CERTRESOLVER
+    logging: *default-logging
+
+networks:
+  web:
+    name: $TRAEFIK_NETWORK
+    external: true
+  jaa-directus:
+    internal: true
+  jaa-papercups:
+    internal: true
+
+volumes:
+  directus-db-data:
+  directus-uploads:
+  papercups-db-data:
+
+secrets:
+  jaa_directus_key:
+    external: true
+  jaa_directus_secret:
+    external: true
+  jaa_directus_db_password:
+    external: true
+  jaa_directus_admin_password:
+    external: true
+  jaa_papercups_key:
+    external: true
+  jaa_papercups_db_password:
+    external: true

@@ -1,0 +1,27 @@
+import { extendTheme } from '@chakra-ui/react';
+
+import CloseButton from './components/close-button';
+import Drawer from './components/drawer';
+import Heading from './components/heading';
+import Modal from './components/modal';
+import typography from './foundations/typography';
+import styles from './styles';
+
+const config = {
+  initialColorMode: 'light',
+  useSystemColorMode: true,
+};
+
+const theme = {
+  ...typography,
+  components: {
+    CloseButton,
+    Drawer,
+    Heading,
+    Modal,
+  },
+  styles,
+  config,
+};
+
+export default extendTheme(theme);

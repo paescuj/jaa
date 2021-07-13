@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-  <strong>A different way to manage and present your job applications.</strong>
+  <strong>A different way to manage and present your job applications</strong>
 </p>
 
 <p align="center">

@@ -1,6 +1,6 @@
 # Jaa (Job Application Assistant)
 
-A different way to manage and present your job application
+A different way to manage and present your job applications.
 
 ## Development
 

@@ -1,13 +1,33 @@
-# Jaa (Job Application Assistant)
+<h1 align="center">
+  <img src="https://raw.githubusercontent.com/paescuj/jaa/main/assets/logo.png" alt="Job Application Assistant" width="600">
+</h1>
 
-***A different way to manage and present your job applications.***
+<p align="center">
+  <strong>A different way to manage and present your job applications</strong>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/github/license/paescuj/jaa?style=flat-square" alt="License">
+</p>
+
+<p align="center">
+  <a href="#key-features">Key Features</a> •
+  <a href="#usage">Usage</a> •
+  <a href="#credits">Credits</a> •
+  <a href="#license">License</a>
+</p>
+
+![Demo](https://raw.githubusercontent.com/paescuj/jaa/main/assets/demo.gif)
+ 
+ ## Key Features
 
 * Admin area where you can add and manage all your job applications:
-  * Upload of generic and job-specific application documents
-  * Automatically generates and stores screenshots of job ads
-* Dedicated access for each target company:
+  * Upload of generic and job-specific application documents (PDFs)
+  * Automatically generates and stores screenshots of job ads and preview of documents
+* Dedicated access for each company:
   * Web page with introduction text, application documents and chat widget
   * Companies will be able to filter, search, drag'n'drop and download application documents and chat with you
+* About page
 * Dark & light mode
 * Responsive and accessible
 
@@ -106,6 +126,16 @@ Undeploy and delete everything (⚠️):
 ```bash
 DOCKER_HOST='ssh://user@remotehost' JAA_ENV='prod' ./run.sh destroy
 ```
+
+## Credits
+
+Jaa is powered by the following great open source components:
+* [Next.js](https://nextjs.org) - The React Framework for Production
+* [Chakra UI](https://chakra-ui.com) - A simple, modular and accessible component library
+* [Iconoir](https://iconoir.com) - The Definitive Open Source Icons Library
+* [Directus](https://directus.io) - Open-Source Data Platform
+* [Papercups](https://papercups.io) - Open-source live customer chat 
+* [Docker](https://www.docker.com/community/open-source) - Containerization technology
 
 ## License
 

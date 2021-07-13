@@ -65,7 +65,7 @@ export default function About() {
           </Tooltip>
         </Flex>
 
-        <Box as="main" mt={6} maxW="750" fontSize={{ md: 18 }}>
+        <Box as="main" mt={6} maxW="800" fontSize={{ md: 18 }}>
           <MDXProvider components={mdxComponents}>
             <AboutMdx />
           </MDXProvider>

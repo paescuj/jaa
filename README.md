@@ -1,10 +1,21 @@
 # Jaa (Job Application Assistant)
 
-A different way to manage and present your job applications.
+***A different way to manage and present your job applications.***
 
-## Development
+* Admin area where you can add and manage all your job applications:
+  * Upload of generic and job-specific application documents
+  * Automatically generates and stores screenshots of job ads
+* Dedicated access for each target company:
+  * Web page with introduction text, application documents and chat widget
+  * Companies will be able to filter, search, drag'n'drop and download application documents and chat with you
+* Dark & light mode
+* Responsive and accessible
 
-### Initialization
+## Usage
+
+### Development
+
+#### Initialization
 
 Initialize and start the dev environment:
 ```bash
@@ -12,7 +23,7 @@ Initialize and start the dev environment:
 ./run.sh init
 ```
 
-### Commands
+#### Commands
 
 Start dev environment when already initialized:
 ```bash
@@ -29,11 +40,11 @@ Destroy the dev environment:
 ./run.sh destroy
 ```
 
-## Production
+### Production
 
 Currently intended for a single [Docker swarm](https://docs.docker.com/engine/swarm/) host with [Traefik](https://traefik.io/traefik/) configured.
 
-### Initialization
+#### Initialization
 
 Initialize the app:
 ```bash
@@ -45,7 +56,7 @@ export PUBLIC_DOMAIN='jaa.example.org'
 ./run.sh init
 ```
 
-#### Papercups
+##### Papercups
 * Create a Papercups account (Hint: Use your name as company name):
   ```bash
   echo "https://papercups.${PUBLIC_DOMAIN}/register"
@@ -67,7 +78,7 @@ export PUBLIC_DOMAIN='jaa.example.org'
   echo "https://${PUBLIC_DOMAIN}/admin"
   ```
 
-##### Recommended chat widget settings
+###### Recommended chat widget settings
 | Setting | Value |
 |---|---|
 | Title | Chatten Sie mit mir 😃 |
@@ -79,7 +90,7 @@ export PUBLIC_DOMAIN='jaa.example.org'
 | Text when agents are available | Ich bin online |
 | Text when agents are unavailable | Ich bin gerade offline |
 
-### Commands
+#### Commands
 
 Update / redeploy the app:
 ```bash
@@ -96,3 +107,6 @@ Undeploy and delete everything (⚠️):
 DOCKER_HOST='ssh://user@remotehost' JAA_ENV='prod' ./run.sh destroy
 ```
 
+## License
+
+MIT

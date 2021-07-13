@@ -343,11 +343,7 @@ export default function Admin() {
           Die Zugangsdaten lauten wie folgt:
           <br />
           <span style={{ fontWeight: 'bold' }}>Link:</span>{' '}
-          <Link
-            color="blue.500"
-            href={getAccessLink(company, job.id)}
-            isExternal
-          >
+          <Link href={getAccessLink(company, job.id)} isExternal>
             {getAccessLink(company, job.id)}
           </Link>
           <br />
@@ -505,10 +501,8 @@ export default function Admin() {
                                   previewUrl={job.preview[0]}
                                   type="avatar"
                                 />
-                                <Box ml="3">
-                                  <Text fontWeight="bold" textAlign="left">
-                                    {job.company}
-                                  </Text>
+                                <Box ml="3" textAlign="left">
+                                  <Text fontWeight="bold">{job.company}</Text>
                                   <Text fontSize="sm">{job.position}</Text>
                                 </Box>
                               </Flex>

@@ -43,6 +43,7 @@ import {
   Text,
   Textarea,
   UnorderedList,
+  useColorMode,
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
@@ -92,6 +93,48 @@ function Preview({ name, previewUrl, type }) {
       return (
         <Image boxSize="100px" objectFit="cover" src={previewImg} alt={name} />
       );
+  }
+}
+
+function CopyCodeButton({ code }) {
+  const { colorMode } = useColorMode();
+  const toast = useToast();
+
+  const copyToast = () => {
+    toast({
+      id: 'copy-code',
+      description: 'Code kopiert',
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
+  if (window.isSecureContext) {
+    return (
+      <Button
+        ml="2"
+        size="sm"
+        variant="outline"
+        colorScheme={colorMode === 'dark' && 'black'}
+        onClick={() => {
+          navigator.clipboard.writeText(code).then(() => {
+            // If toast already exists, close it and create a new one
+            if (toast.isActive('copy-code')) {
+              toast.close('copy-code');
+              // Timeout required, otherwise new toast gets closed as well
+              setTimeout(() => copyToast(), 100);
+            } else {
+              copyToast();
+            }
+          });
+        }}
+      >
+        Kopieren
+      </Button>
+    );
+  } else {
+    return null;
   }
 }
 
@@ -230,24 +273,13 @@ export default function Admin() {
         id: 'new-code',
         title: 'Neuer Zugangscode',
         description: (
-          <>
+          <Flex align="center">
             {code}
-            {window.isSecureContext && (
-              <Button
-                ml="2"
-                size="sm"
-                variant="outline"
-                onClick={() => {
-                  navigator.clipboard.writeText(code);
-                }}
-              >
-                Kopieren
-              </Button>
-            )}
-          </>
+            <CopyCodeButton code={code} />
+          </Flex>
         ),
         status: 'success',
-        duration: 30000,
+        duration: 15000,
         isClosable: true,
       });
     };
@@ -347,23 +379,16 @@ export default function Admin() {
             {getAccessLink(company, job.id)}
           </Link>
           <br />
-          <span style={{ fontWeight: 'bold' }}>Code:</span> {code}
-          {window.isSecureContext && (
-            <Button
-              ml="2"
-              size="sm"
-              variant="outline"
-              onClick={() => {
-                navigator.clipboard.writeText(code);
-              }}
-            >
-              Kopieren
-            </Button>
-          )}
+          <Flex align="center">
+            <span>
+              <span style={{ fontWeight: 'bold' }}>Code:</span> {code}
+            </span>
+            <CopyCodeButton code={code} />
+          </Flex>
         </>
       ),
       status: 'success',
-      duration: 30000,
+      duration: 20000,
       isClosable: true,
     });
   }

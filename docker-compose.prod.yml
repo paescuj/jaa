@@ -48,6 +48,7 @@ services:
       - jaa_directus_db_password
       - jaa_directus_admin_password
     environment:
+      PUBLIC_URL: https://directus.${PUBLIC_DOMAIN}
       REFRESH_TOKEN_COOKIE_SECURE: 'true'
       KEY_FILE: /run/secrets/jaa_directus_key
       SECRET_FILE: /run/secrets/jaa_directus_secret

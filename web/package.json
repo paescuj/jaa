@@ -29,7 +29,7 @@
     "jsonwebtoken": "8.5.1",
     "next": "11.0.1",
     "omgopass": "3.2.1",
-    "pdfjs-dist": "2.8.335",
+    "pdfjs-dist": "2.9.359",
     "pullstate": "1.22.1",
     "puppeteer": "10.1.0",
     "quick-score": "0.0.12",

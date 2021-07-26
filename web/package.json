@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@chakra-ui/react": "1.6.5",
-    "@directus/sdk": "9.0.0-rc.85",
+    "@directus/sdk": "9.0.0-rc.86",
     "@dnd-kit/core": "3.1.1",
     "@dnd-kit/sortable": "4.0.0",
     "@dnd-kit/utilities": "2.0.0",

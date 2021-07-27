@@ -1,4 +1,4 @@
-FROM node:alpine AS build
+FROM node:16-alpine AS build
 RUN apk upgrade --no-cache \
   && apk --no-cache add \
   python3 \
@@ -21,7 +21,7 @@ ARG PUBLIC_DOMAIN
 RUN npm run build \
  && npm prune
 
-FROM node:alpine AS production
+FROM node:16-alpine AS production
 RUN apk upgrade --no-cache \
  && apk --no-cache add \
  cairo \

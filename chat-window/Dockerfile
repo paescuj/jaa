@@ -1,4 +1,4 @@
-FROM node:alpine AS build
+FROM node:16-alpine AS build
 RUN apk add --no-cache git
 RUN addgroup -g 1001 app \
   && adduser -u 1001 -G app -s /bin/sh -D app
@@ -10,7 +10,7 @@ RUN git clone --branch temp --depth 1 https://github.com/paescuj/chat-window.git
   && npm install \
   && npm run deploy
 
-FROM caddy AS production
+FROM caddy:2 AS production
 RUN addgroup -g 1001 app \
   && adduser -u 1001 -G app -s /bin/sh -D app
 USER app

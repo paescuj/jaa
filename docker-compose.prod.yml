@@ -11,7 +11,7 @@ services:
       context: web
       args:
         PUBLIC_DOMAIN: $PUBLIC_DOMAIN
-    image: ${REGISTRY_PREFIX:-}jaa-web
+    image: ${REGISTRY_PREFIX:-}jaa-web:latest
     init: true
     secrets:
       - jaa_directus_secret
@@ -64,7 +64,7 @@ services:
       traefik.http.routers.jaa-directus.tls.certresolver: $TRAEFIK_CERTRESOLVER
     logging: *default-logging
   papercups-chat-window:
-    image: ${REGISTRY_PREFIX:-}papercups-chat-window
+    image: ${REGISTRY_PREFIX:-}papercups-chat-window:latest
     networks:
       - web
     labels:

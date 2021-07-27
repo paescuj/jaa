@@ -13,13 +13,13 @@
 <p align="center">
   <a href="#key-features">Key Features</a> •
   <a href="#usage">Usage</a> •
-  <a href="#credits">Credits</a> •
+  <a href="#built-with">Built With</a> •
   <a href="#license">License</a>
 </p>
 
 ![Demo](https://raw.githubusercontent.com/paescuj/jaa/main/assets/demo.gif)
  
- ## Key Features
+## Key Features
 
 * Admin area where you can add and manage all your job applications:
   * Upload of generic and job-specific application documents (PDFs)
@@ -127,16 +127,17 @@ Undeploy and delete everything (⚠️):
 DOCKER_HOST='ssh://user@remotehost' JAA_ENV='prod' ./run.sh destroy
 ```
 
-## Credits
+## Built With
 
-Jaa is powered by the following great open source components:
+Jaa is built with the following great open source components:
 * [Next.js](https://nextjs.org) - The React Framework for Production
 * [Chakra UI](https://chakra-ui.com) - A simple, modular and accessible component library
 * [Iconoir](https://iconoir.com) - The Definitive Open Source Icons Library
 * [Directus](https://directus.io) - Open-Source Data Platform
+* [PostgreSQL](https://www.postgresql.org) - The World's Most Advanced Open Source Relational Database
 * [Papercups](https://papercups.io) - Open-source live customer chat 
 * [Docker](https://www.docker.com/community/open-source) - Containerization technology
 
 ## License
 
-MIT
+[MIT](./LICENSE)

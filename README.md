@@ -18,7 +18,7 @@
 </p>
 
 ![Demo](https://raw.githubusercontent.com/paescuj/jaa/main/assets/demo.gif)
- 
+
 ## Key Features
 
 * Admin area where you can add and manage all your job applications:
@@ -35,7 +35,7 @@
 
 ### Development
 
-#### Initialization
+#### Development - Initialization
 
 Initialize and start the dev environment:
 ```bash
@@ -43,7 +43,7 @@ Initialize and start the dev environment:
 ./run.sh init
 ```
 
-#### Commands
+#### Development - Commands
 
 Start dev environment when already initialized:
 ```bash
@@ -64,7 +64,7 @@ Destroy the dev environment:
 
 Currently intended for a single [Docker swarm](https://docs.docker.com/engine/swarm/) host with [Traefik](https://traefik.io/traefik/) configured.
 
-#### Initialization
+#### Production - Initialization
 
 Initialize the app:
 ```bash
@@ -110,7 +110,7 @@ export PUBLIC_DOMAIN='jaa.example.org'
 | Text when agents are available | Ich bin online |
 | Text when agents are unavailable | Ich bin gerade offline |
 
-#### Commands
+#### Production - Commands
 
 Update / redeploy the app:
 ```bash
@@ -135,7 +135,7 @@ Jaa is built with the following great open source components:
 * [Iconoir](https://iconoir.com) - The Definitive Open Source Icons Library
 * [Directus](https://directus.io) - Open-Source Data Platform
 * [PostgreSQL](https://www.postgresql.org) - The World's Most Advanced Open Source Relational Database
-* [Papercups](https://papercups.io) - Open-source live customer chat 
+* [Papercups](https://papercups.io) - Open-source live customer chat
 * [Docker](https://www.docker.com/community/open-source) - Containerization technology
 
 ## License

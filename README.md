@@ -28,7 +28,7 @@
   * Web page with introduction text, application documents and chat widget
   * Companies will be able to filter, search, drag'n'drop and download application documents and chat with you
 * About page
-* Dark & light mode
+* Light & dark mode
 * Responsive and accessible
 
 ## Usage

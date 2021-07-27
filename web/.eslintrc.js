@@ -13,6 +13,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:import/recommended',
+    'plugin:mdx/recommended',
     'plugin:prettier/recommended',
     'next',
     'next/core-web-vitals',
@@ -31,13 +32,12 @@ module.exports = {
     ],
     'prettier/prettier': ['error'],
   },
+  settings: {
+    'mdx/code-blocks': true,
+  },
   overrides: [
     {
       files: ['*.mdx'],
-      extends: 'plugin:mdx/recommended',
-      settings: {
-        'mdx/code-blocks': true,
-      },
       rules: {
         'no-undef': 'off',
         'react/no-children-prop': 'off',

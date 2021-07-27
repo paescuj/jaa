@@ -1,4 +1,6 @@
 FROM node:16-alpine AS build
+RUN addgroup -g 1001 app \
+  && adduser -u 1001 -G app -s /bin/sh -D app
 RUN apk upgrade --no-cache \
   && apk --no-cache add \
   python3 \
@@ -7,8 +9,6 @@ RUN apk upgrade --no-cache \
   cairo-dev \
   pango-dev \
   build-base
-RUN addgroup -g 1001 app \
-  && adduser -u 1001 -G app -s /bin/sh -D app
 USER app
 WORKDIR /home/app
 COPY --chown=app:app package*.json .
@@ -19,21 +19,21 @@ ENV NODE_ENV=production \
   NEXT_TELEMETRY_DISABLED=1
 ARG PUBLIC_DOMAIN
 RUN npm run build \
- && npm prune
+  && npm prune
 
 FROM node:16-alpine AS production
-RUN apk upgrade --no-cache \
- && apk --no-cache add \
- cairo \
- pango \
- chromium \
- nss \
- freetype \
- harfbuzz \
- ca-certificates \
- ttf-freefont
 RUN addgroup -g 1001 app \
   && adduser -u 1001 -G app -s /bin/sh -D app
+RUN apk upgrade --no-cache \
+  && apk --no-cache add \
+  cairo \
+  pango \
+  chromium \
+  nss \
+  freetype \
+  harfbuzz \
+  ca-certificates \
+  ttf-freefont
 USER app
 WORKDIR /home/app
 COPY --chown=app:app --from=build /home/app/package*.json .
@@ -45,4 +45,4 @@ ENV NODE_ENV=production \
   NEXT_TELEMETRY_DISABLED=1 \
   PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 EXPOSE 3000
-CMD [ "npm", "start" ]
+CMD ["npm", "start"]

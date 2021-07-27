@@ -24,4 +24,3 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # VALIDATE_ALL_CODEBASE: false
-          JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.js

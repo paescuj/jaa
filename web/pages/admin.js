@@ -559,7 +559,10 @@ export default function Admin() {
                                           <ListItem key={doc.id}>
                                             <Popover>
                                               <PopoverTrigger>
-                                                <Button variant="link">
+                                                <Button
+                                                  variant="link"
+                                                  minWidth="0"
+                                                >
                                                   {doc.title}
                                                 </Button>
                                               </PopoverTrigger>

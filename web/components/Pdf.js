@@ -1,3 +1,5 @@
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+
 import {
   Box,
   Center,
@@ -29,17 +31,6 @@ pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
 
 // Initialize swiper plugins
 SwiperCore.use([A11y, Controller, Keyboard, Navigation, Pagination]);
-
-// See https://github.com/wojtekmaj/react-pdf/issues/332#issuecomment-611252171
-function removeTextLayerOffset() {
-  const textLayers = document.querySelectorAll('react-pdf__Page__textContent');
-  textLayers.forEach((layer) => {
-    const { style } = layer;
-    style.top = '0';
-    style.left = '0';
-    style.transform = '';
-  });
-}
 
 const MotionFlex = motion(Flex);
 
@@ -119,7 +110,6 @@ export default function Pdf({
   // Initialize page
   const onPageLoadSuccess = async (page) => {
     // Remove text layer offset
-    removeTextLayerOffset();
     // Get text content of the page and add it to the search index
     const textContent = await page.getTextContent();
     DocumentStore.update((s) => {

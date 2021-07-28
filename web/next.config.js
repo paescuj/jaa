@@ -2,19 +2,13 @@ const withMDX = require('@next/mdx')();
 
 module.exports = withMDX({
   webpack: (config) => {
-    // Load pdf-worker with 'file-loader'
+    // Load pdf worker files as URLs by using asset modules
     config.module.rules.unshift({
       test: /pdf\.worker\.(min\.)?js/,
-      use: [
-        {
-          loader: 'file-loader',
-          options: {
-            name: '[contenthash].[ext]',
-            publicPath: '_next/static/pdf-worker',
-            outputPath: 'static/pdf-worker',
-          },
-        },
-      ],
+      type: 'asset/resource',
+      generator: {
+        filename: 'static/worker/[hash][ext][query]',
+      },
     });
     return config;
   },

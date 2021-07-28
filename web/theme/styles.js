@@ -14,13 +14,14 @@ const tippy = (props) => ({
 // Fixes for PDFs
 const pdf = (props) => ({
   '.react-pdf__Page__textContent span': {
-    opacity: '0.1',
+    opacity: '0.15',
   },
   '.react-pdf__Page__textContent span::selection': {
     backgroundColor: 'blue',
   },
+  // See https://github.com/wojtekmaj/react-pdf/issues/332#issuecomment-585180825
   '.react-pdf__Document': {
-    lineHeight: 'initial',
+    lineHeight: '1',
   },
   '.react-pdf__Page': {
     filter: mode('', 'invert(90%)')(props),

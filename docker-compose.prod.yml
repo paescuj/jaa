@@ -89,10 +89,17 @@ services:
     secrets:
       - jaa_papercups_key
       - jaa_papercups_db_password
+      - jaa_papercups_smtp_password
     environment:
       REACT_APP_URL: https://papercups.${PUBLIC_DOMAIN}
       SECRET_KEY_BASE_FILE: /run/secrets/jaa_papercups_key
       DATABASE_PASSWORD_FILE: /run/secrets/jaa_papercups_db_password
+      MAILER_ADAPTER: Swoosh.Adapters.SMTP
+      SMTP_HOST_ADDR: $PAPERCUPS_SMTP_HOST
+      SMTP_HOST_PORT: $PAPERCUPS_SMTP_PORT
+      SMTP_HOST_SSL_ENABLED: $PAPERCUPS_SMTP_SSL
+      SMTP_USER_NAME: $PAPERCUPS_SMTP_USER
+      SMTP_USER_PWD_FILE: /run/secrets/jaa_papercups_smtp_password
     networks:
       - jaa-papercups
       - web
@@ -129,4 +136,6 @@ secrets:
   jaa_papercups_key:
     external: true
   jaa_papercups_db_password:
+    external: true
+  jaa_papercups_smtp_password:
     external: true

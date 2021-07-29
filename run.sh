@@ -4,9 +4,9 @@ set -o pipefail
 
 _dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)
 _jaa_env=${JAA_ENV:-dev}
-_docker_compose_cmd="docker-compose --env-file "${_dir}/.env.${_jaa_env}" --file "${_dir}/docker-compose.yml" --file "${_dir}/docker-compose.${_jaa_env}.yml""
 _stack_name='jaa'
-readonly _dir _jaa_env _docker_compose_cmd _stack_name
+_docker_compose_cmd=('docker-compose' '--env-file' "${_dir}/.env.${_jaa_env}" '--file' "${_dir}/docker-compose.yml" '--file' "${_dir}/docker-compose.${_jaa_env}.yml")
+readonly _dir _jaa_env _stack_name _docker_compose_cmd
 
 if [[ $_jaa_env != 'dev' && $_jaa_env != 'prod' ]]; then
   echo "JAA_ENV must either be 'dev' or 'prod'"
@@ -75,20 +75,30 @@ init() {
     traefik_network=${TRAEFIK_NETWORK:-web}
     traefik_entrypoints=${TRAEFIK_ENTRYPOINTS:-websecure}
     traefik_certresolver=${TRAEFIK_CERTRESOLVER:-le}
+    papercups_smtp_host=${PAPERCUPS_SMTP_HOST:-mail.${public_domain}}
+    papercups_smtp_port=${PAPERCUPS_SMTP_PORT:-465}
+    papercups_smtp_ssl=${PAPERCUPS_SMTP_SSL:-true}
+    papercups_smtp_user=${PAPERCUPS_SMTP_USER:-papercups@${public_domain}}
+    papercups_smtp_password=${PAPERCUPS_SMTP_PASSWORD:-$(getPassword 12)}
 
     envs+=("REGISTRY_PREFIX=${registry_prefix}")
     envs+=("TRAEFIK_NETWORK=${traefik_network}")
     envs+=("TRAEFIK_ENTRYPOINTS=${traefik_entrypoints}")
     envs+=("TRAEFIK_CERTRESOLVER=${traefik_certresolver}")
+    envs+=("PAPERCUPS_SMTP_HOST=${papercups_smtp_host}")
+    envs+=("PAPERCUPS_SMTP_PORT=${papercups_smtp_port}")
+    envs+=("PAPERCUPS_SMTP_SSL=${papercups_smtp_ssl}")
+    envs+=("PAPERCUPS_SMTP_USER=${papercups_smtp_user}")
 
     echo 'Creating required Docker secrets...'
     {
-      printf '%s' "$papercups_key" | docker secret create jaa_papercups_key -
-      printf '%s' "$papercups_db_password" | docker secret create jaa_papercups_db_password -
       printf '%s' "$directus_key" | docker secret create jaa_directus_key -
       printf '%s' "$directus_secret" | docker secret create jaa_directus_secret -
       printf '%s' "$directus_db_password" | docker secret create jaa_directus_db_password -
       printf '%s' "$directus_admin_password" | docker secret create jaa_directus_admin_password -
+      printf '%s' "$papercups_key" | docker secret create jaa_papercups_key -
+      printf '%s' "$papercups_db_password" | docker secret create jaa_papercups_db_password -
+      printf '%s' "$papercups_smtp_password" | docker secret create jaa_papercups_smtp_password -
     } >/dev/null
   fi
 
@@ -113,6 +123,9 @@ init() {
 
   Papercups:
     URL: ${papercups_url}"
+    if [[ -z $PAPERCUPS_SMTP_PASSWORD ]]; then
+      echo "    SMTP Password: ${papercups_smtp_password}"
+    fi
 }
 
 destroy() {
@@ -121,23 +134,24 @@ destroy() {
     set +e
     if [[ $_jaa_env == 'dev' ]]; then
       echo 'Removing containers...'
-      $_docker_compose_cmd down --volumes
+      "${_docker_compose_cmd[@]}" down --volumes
     else
       echo 'Removing stack...'
       docker stack rm jaa
       sleep 10
       echo 'Removing secrets...'
       docker secret rm \
-        jaa_papercups_key \
-        jaa_papercups_db_password \
         jaa_directus_key \
         jaa_directus_secret \
         jaa_directus_db_password \
         jaa_directus_admin_password \
+        jaa_papercups_key \
+        jaa_papercups_db_password \
+        jaa_papercups_smtp_password \
         >/dev/null
       echo 'Removing volumes...'
       touch "${_dir}/.env.${_jaa_env}"
-      for volume in $($_docker_compose_cmd config --volumes 2>/dev/null); do
+      for volume in $("${_docker_compose_cmd[@]}" config --volumes 2>/dev/null); do
         docker volume rm "${_stack_name}_${volume}" >/dev/null
       done
     fi
@@ -149,19 +163,23 @@ destroy() {
 }
 
 do_images() {
+  local build_args=('build' '--pull' '--parallel')
+  if [[ -n $1 ]]; then
+    build_args+=("$1")
+  fi
   if [[ $_jaa_env == 'dev' ]]; then
     echo 'Building images...'
-    $_docker_compose_cmd build --pull
+    "${_docker_compose_cmd[@]}" "${build_args[@]}"
   else
     echo 'Building images...'
-    DOCKER_HOST="$DOCKER_BUILD_HOST" $_docker_compose_cmd build --pull --parallel
+    DOCKER_HOST="$DOCKER_BUILD_HOST" "${_docker_compose_cmd[@]}" "${build_args[@]}"
 
     echo 'Uploading images...'
     set -a
     source <(sed -e '/^#/d;/^\s*$/d' -e "s/'/'\\\''/g" -e "s/=\(.*\)/='\1'/g" "${_dir}/.env.${_jaa_env}")
     set +a
     if [[ -n $REGISTRY_PREFIX ]]; then
-      DOCKER_HOST="$DOCKER_BUILD_HOST" $_docker_compose_cmd push
+      DOCKER_HOST="$DOCKER_BUILD_HOST" "${_docker_compose_cmd[@]}" push
     else
       echo 'Uploading images...'
       DOCKER_HOST="$DOCKER_BUILD_HOST" docker save jaa-web papercups-chat-window | gzip | docker load
@@ -172,22 +190,23 @@ do_images() {
 start() {
   if [[ $_jaa_env == 'dev' ]]; then
     echo 'Starting containers...'
-    $_docker_compose_cmd up -d
+    "${_docker_compose_cmd[@]}" up -d
 
     set -a
     source <(sed -e '/^#/d;/^\s*$/d' -e "s/'/'\\\''/g" -e "s/=\(.*\)/='\1'/g" "${_dir}/.env.${_jaa_env}")
     set +a
     echo "Starting web app..."
+    npm install --prefix "${_dir}/web"
     exec npm run --prefix "${_dir}/web" dev
   else
     echo 'Deploying stack...'
-    exec docker stack deploy --compose-file <($_docker_compose_cmd config) "$_stack_name"
+    exec docker stack deploy --compose-file <("${_docker_compose_cmd[@]}" config) "$_stack_name"
   fi
 }
 
 cmd() {
   if [[ $_jaa_env == 'dev' ]]; then
-    exec $_docker_compose_cmd "$@"
+    exec "${_docker_compose_cmd[@]}" "$@"
   else
     exec docker "$@"
   fi
@@ -196,11 +215,13 @@ cmd() {
 case "$1" in
 'init')
   init
-  do_images
-  start
+  if [[ $2 != '--no-start' ]]; then
+    do_images
+    start
+  fi
   ;;
 'do-images')
-  do_images
+  do_images "$2"
   ;;
 'destroy')
   destroy

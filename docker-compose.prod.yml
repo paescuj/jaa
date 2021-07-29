@@ -50,6 +50,7 @@ services:
     environment:
       PUBLIC_URL: https://directus.${PUBLIC_DOMAIN}
       REFRESH_TOKEN_COOKIE_SECURE: 'true'
+      DB_POOL_MIN: number:0
       KEY_FILE: /run/secrets/jaa_directus_key
       SECRET_FILE: /run/secrets/jaa_directus_secret
       DB_PASSWORD_FILE: /run/secrets/jaa_directus_db_password

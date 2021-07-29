@@ -123,7 +123,7 @@ init() {
 
   Papercups:
     URL: ${papercups_url}"
-    if [[ -z $PAPERCUPS_SMTP_PASSWORD ]]; then
+    if [[ $_jaa_env == 'prod' ]] && [[ -z $PAPERCUPS_SMTP_PASSWORD ]]; then
       echo "    SMTP Password: ${papercups_smtp_password}"
     fi
 }

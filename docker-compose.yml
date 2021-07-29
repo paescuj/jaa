@@ -8,7 +8,7 @@ services:
   directus-cache:
     image: redis:6-alpine
   directus:
-    image: directus/directus:9.0.0-rc.86
+    image: directus/directus:9.0.0-rc.87
     environment:
       DB_CLIENT: pg
       DB_HOST: directus-db

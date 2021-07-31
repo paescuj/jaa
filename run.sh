@@ -13,6 +13,12 @@ if [[ $_jaa_env != 'dev' && $_jaa_env != 'prod' ]]; then
   exit 1
 fi
 
+if [[ -z $DOCKER_HOST ]] && [[ -f "${_dir}/.env.${_jaa_env}" ]]; then
+  set -a
+  source <(sed -e '/^#/d;/^\s*$/d' -e "s/'/'\\\''/g" -e "s/=\(.*\)/='\1'/g" "${_dir}/.env.${_jaa_env}" | grep '^DOCKER_HOST=')
+  set +a
+fi
+
 init() {
   getUuid() {
     {
@@ -89,6 +95,9 @@ init() {
     envs+=("PAPERCUPS_SMTP_PORT=${papercups_smtp_port}")
     envs+=("PAPERCUPS_SMTP_SSL=${papercups_smtp_ssl}")
     envs+=("PAPERCUPS_SMTP_USER=${papercups_smtp_user}")
+    if [[ -n $DOCKER_HOST ]]; then
+      envs+=("DOCKER_HOST=${DOCKER_HOST}")
+    fi
 
     echo 'Creating required Docker secrets...'
     {
@@ -132,6 +141,7 @@ destroy() {
   read -r -p "All data will be deleted! Do you want to continue? [y/N] " response
   if [[ ${response,,} =~ ^y(es)?$ ]]; then
     set +e
+    touch "${_dir}/.env.${_jaa_env}"
     if [[ $_jaa_env == 'dev' ]]; then
       echo 'Removing containers...'
       "${_docker_compose_cmd[@]}" down --volumes
@@ -150,7 +160,6 @@ destroy() {
         jaa_papercups_smtp_password \
         >/dev/null
       echo 'Removing volumes...'
-      touch "${_dir}/.env.${_jaa_env}"
       for volume in $("${_docker_compose_cmd[@]}" config --volumes 2>/dev/null); do
         docker volume rm "${_stack_name}_${volume}" >/dev/null
       done
@@ -175,9 +184,7 @@ do_images() {
     DOCKER_HOST="$DOCKER_BUILD_HOST" "${_docker_compose_cmd[@]}" "${build_args[@]}"
 
     echo 'Uploading images...'
-    set -a
-    source <(sed -e '/^#/d;/^\s*$/d' -e "s/'/'\\\''/g" -e "s/=\(.*\)/='\1'/g" "${_dir}/.env.${_jaa_env}")
-    set +a
+    source <(sed -e '/^#/d;/^\s*$/d' -e "s/'/'\\\''/g" -e "s/=\(.*\)/='\1'/g" "${_dir}/.env.${_jaa_env}" | grep '^REGISTRY_PREFIX=')
     if [[ -n $REGISTRY_PREFIX ]]; then
       DOCKER_HOST="$DOCKER_BUILD_HOST" "${_docker_compose_cmd[@]}" push
     else

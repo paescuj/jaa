@@ -114,17 +114,17 @@ export PUBLIC_DOMAIN='jaa.example.org'
 
 Update / redeploy the app:
 ```bash
-DOCKER_HOST='ssh://user@remotehost' JAA_ENV='prod' ./run.sh
+JAA_ENV='prod' ./run.sh
 ```
 
 Run arbitrary `docker` command:
 ```bash
-DOCKER_HOST='ssh://user@remotehost' JAA_ENV='prod' ./run.sh stack ps jaa
+JAA_ENV='prod' ./run.sh stack ps jaa
 ```
 
 Undeploy and delete everything (⚠️):
 ```bash
-DOCKER_HOST='ssh://user@remotehost' JAA_ENV='prod' ./run.sh destroy
+JAA_ENV='prod' ./run.sh destroy
 ```
 
 ## Built With

@@ -7,7 +7,6 @@ services:
   directus:
     depends_on:
       - directus-db
-      - directus-cache
     ports:
       - 8055:8055
     environment:

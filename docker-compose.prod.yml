@@ -38,6 +38,7 @@ services:
       - jaa-directus
     logging: *default-logging
   directus-cache:
+    image: redis:6-alpine
     networks:
       - jaa-directus
     logging: *default-logging
@@ -53,6 +54,10 @@ services:
       PUBLIC_URL: https://directus.${PUBLIC_DOMAIN}
       REFRESH_TOKEN_COOKIE_SECURE: 'true'
       DB_POOL_MIN: number:0
+      CACHE_ENABLED: 'true'
+      CACHE_STORE: redis
+      CACHE_REDIS: redis://directus-cache:6379
+      CACHE_AUTO_PURGE: 'true'
       KEY_FILE: /run/secrets/jaa_directus_key
       SECRET_FILE: /run/secrets/jaa_directus_secret
       DB_PASSWORD_FILE: /run/secrets/jaa_directus_db_password

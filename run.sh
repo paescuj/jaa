@@ -107,8 +107,6 @@ get_config() {
       [CHATWOOT_MAILER_SENDER_EMAIL]="${CHATWOOT_MAILER_SENDER_EMAIL:-${_config[CHATWOOT_SMTP_USERNAME]}}"
     )
     _envs+=(
-      'CHATWOOT_SECRET_KEY_BASE'
-      'CHATWOOT_DB_PASSWORD'
       'CHATWOOT_MAILER_SENDER_EMAIL'
       'CHATWOOT_SMTP_ADDRESS'
       'CHATWOOT_SMTP_AUTHENTICATION'
@@ -116,7 +114,6 @@ get_config() {
       'CHATWOOT_SMTP_ENABLE_STARTTLS_AUTO'
       'CHATWOOT_SMTP_PORT'
       'CHATWOOT_SMTP_USERNAME'
-      'CHATWOOT_SMTP_PASSWORD'
       'DOCKER_HOST'
       'REGISTRY_PREFIX'
       'TRAEFIK_NETWORK'
@@ -128,7 +125,9 @@ get_config() {
       'DIRECTUS_SECRET'
       'DIRECTUS_DB_PASSWORD'
       'DIRECTUS_ADMIN_PASSWORD'
+      'CHATWOOT_SECRET_KEY_BASE'
       'CHATWOOT_DB_PASSWORD'
+      'CHATWOOT_SMTP_PASSWORD'
     )
   fi
 }
@@ -167,10 +166,6 @@ init() {
     done
   fi
 
-  for var in "${!config[@]}"; do
-    unset "$var"
-  done
-
   echo "Access data:
   Web:
     URL:  ${web_url}/admin
@@ -186,6 +181,10 @@ init() {
     if [[ -n ${config[CHATWOOT_SMTP_PASSWORD]} ]] && [[ -z $CHATWOOT_SMTP_PASSWORD ]]; then
       echo "    SMTP Password: ${config[CHATWOOT_SMTP_PASSWORD]}"
     fi
+
+  for var in "${!config[@]}"; do
+    unset "$var"
+  done
 }
 
 # Function to delete all data

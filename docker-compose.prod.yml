@@ -89,10 +89,14 @@ services:
       - jaa-chatwoot
     logging: *default-logging
   chatwoot-sidekiq:
+    secrets:
+      - jaa_chatwoot_secret_key_base
+      - jaa_chatwoot_db_password
+      - jaa_chatwoot_smtp_password
     environment:
       FRONTEND_URL: https://chatwoot.${PUBLIC_DOMAIN}
-      SECRET_KEY_BASE: $CHATWOOT_SECRET_KEY_BASE
-      POSTGRES_PASSWORD: $CHATWOOT_DB_PASSWORD
+      SECRET_KEY_BASE_FILE: /run/secrets/jaa_chatwoot_secret_key_base
+      POSTGRES_PASSWORD_FILE: /run/secrets/jaa_chatwoot_db_password
       MAILER_SENDER_EMAIL: $CHATWOOT_MAILER_SENDER_EMAIL
       SMTP_ADDRESS: $CHATWOOT_SMTP_ADDRESS
       SMTP_AUTHENTICATION: $CHATWOOT_SMTP_AUTHENTICATION
@@ -100,7 +104,7 @@ services:
       SMTP_ENABLE_STARTTLS_AUTO: '$CHATWOOT_SMTP_ENABLE_STARTTLS_AUTO'
       SMTP_PORT: $CHATWOOT_SMTP_PORT
       SMTP_USERNAME: $CHATWOOT_SMTP_USERNAME
-      SMTP_PASSWORD: $CHATWOOT_SMTP_PASSWORD
+      SMTP_PASSWORD_FILE: /run/secrets/jaa_chatwoot_smtp_password
     networks:
       - default
       - jaa-chatwoot
@@ -108,11 +112,14 @@ services:
   chatwoot-rails:
     volumes:
       - chatwoot-rails-storage:/app/storage
+    secrets:
+      - jaa_chatwoot_secret_key_base
+      - jaa_chatwoot_db_password
     environment:
       FRONTEND_URL: https://chatwoot.${PUBLIC_DOMAIN}
       FORCE_SSL: 'true'
-      SECRET_KEY_BASE: $CHATWOOT_SECRET_KEY_BASE
-      POSTGRES_PASSWORD: $CHATWOOT_DB_PASSWORD
+      SECRET_KEY_BASE_FILE: /run/secrets/jaa_chatwoot_secret_key_base
+      POSTGRES_PASSWORD_FILE: /run/secrets/jaa_chatwoot_db_password
     networks:
       - jaa-chatwoot
       - web
@@ -150,5 +157,9 @@ secrets:
     external: true
   jaa_directus_admin_password:
     external: true
+  jaa_chatwoot_secret_key_base:
+    external: true
   jaa_chatwoot_db_password:
+    external: true
+  jaa_chatwoot_smtp_password:
     external: true

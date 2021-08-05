@@ -41,7 +41,12 @@ import Layout from '../components/Layout';
 import Loader from '../components/Loader';
 import Search from '../components/Search';
 import IntroductionMdx from '../data/introduction.mdx';
-import { checkSession, directus, getBearer } from '../lib/directus';
+import {
+  checkSession,
+  directus,
+  getBearer,
+  url as directusUrl,
+} from '../lib/directus';
 import { DocumentStore } from '../store/DocumentStore';
 
 function mapOrder(source, order, key) {
@@ -52,6 +57,7 @@ function mapOrder(source, order, key) {
 export default function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState({ state: true });
+  const [user, setUser] = useState({});
   const [job, setJob] = useState({});
   const [settings, setSettings] = useState({});
   const [documents, setDocuments] = useState([]);
@@ -80,6 +86,10 @@ export default function Home() {
           router.push('/admin');
         } else {
           setLoading({ state: true, text: 'Bewerbung wird geladen...' });
+
+          // Store infos about user
+          setUser(user);
+
           let data = [];
           try {
             // Get info about job
@@ -99,7 +109,7 @@ export default function Home() {
                 id: doc.id,
                 title: doc.title,
                 file: {
-                  url: `${process.env.NEXT_PUBLIC_API_URL}assets/${doc.file[0]}`,
+                  url: `${directusUrl}/assets/${doc.file[0]}`,
                   httpHeaders: {
                     Authorization: getBearer,
                   },
@@ -236,9 +246,8 @@ export default function Home() {
             <IntroductionMdx
               job={job}
               chat={
-                process.env.NEXT_PUBLIC_PAPERCUPS_URL &&
-                process.env.NEXT_PUBLIC_CHAT_WIDGET_URL &&
-                settings.papercupsToken
+                process.env.NEXT_PUBLIC_CHATWOOT_URL &&
+                settings.chatwoot_website_token
               }
             />
           </Box>
@@ -370,14 +379,14 @@ export default function Home() {
         <Footer isSmallScreen={isSmallScreen} />
       </Layout>
 
-      {process.env.NEXT_PUBLIC_PAPERCUPS_URL &&
-        process.env.NEXT_PUBLIC_CHAT_WIDGET_URL &&
-        settings.papercupsToken && (
+      {process.env.NEXT_PUBLIC_CHATWOOT_URL &&
+        settings.chatwoot_website_token && (
           <Chat
-            papercupsUrl={process.env.NEXT_PUBLIC_PAPERCUPS_URL}
-            chatWidgetUrl={process.env.NEXT_PUBLIC_CHAT_WIDGET_URL}
-            papercupsToken={settings.papercupsToken}
-            customer={{ name: job.company, metadata: { jobId: job.id } }}
+            url={process.env.NEXT_PUBLIC_CHATWOOT_URL}
+            token={settings.chatwoot_website_token}
+            identifier={user.id}
+            name={`${job.company} - ${job.position}`}
+            hash={job.identity_hash}
           />
         )}
     </>

@@ -10,23 +10,29 @@ services:
     ports:
       - 8055:8055
     environment:
+      PUBLIC_URL: http://localhost:8055
       KEY: $DIRECTUS_KEY
       SECRET: $DIRECTUS_SECRET
       DB_PASSWORD: $DIRECTUS_DB_PASSWORD
       ADMIN_PASSWORD: $DIRECTUS_ADMIN_PASSWORD
-  papercups-chat-window:
-    ports:
-      - 4001:8080
-  papercups-db:
+
+  chatwoot-db:
     environment:
-      POSTGRES_PASSWORD: $PAPERCUPS_DB_PASSWORD
-  papercups:
+      POSTGRES_PASSWORD: $CHATWOOT_DB_PASSWORD
+  chatwoot-sidekiq:
     depends_on:
-      - papercups-db
+      - chatwoot-db
+      - chatwoot-cache
+    environment:
+      SECRET_KEY_BASE: $CHATWOOT_SECRET_KEY_BASE
+      POSTGRES_PASSWORD: $CHATWOOT_DB_PASSWORD
+  chatwoot-rails:
+    depends_on:
+      - chatwoot-db
+      - chatwoot-cache
     ports:
       - 3001:3000
-      - 4000:4000
     environment:
-      REACT_APP_URL: localhost:3001
-      SECRET_KEY_BASE: $PAPERCUPS_KEY
-      DATABASE_PASSWORD: $PAPERCUPS_DB_PASSWORD
+      FRONTEND_URL: http://localhost:3001
+      SECRET_KEY_BASE: $CHATWOOT_SECRET_KEY_BASE
+      POSTGRES_PASSWORD: $CHATWOOT_DB_PASSWORD

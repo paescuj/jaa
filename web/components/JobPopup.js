@@ -6,7 +6,7 @@ import { OpenInWindow } from 'iconoir-react';
 import { useEffect, useState } from 'react';
 import { followCursor } from 'tippy.js';
 
-import { getBearer } from '../lib/directus';
+import { getBearer, url as directusUrl } from '../lib/directus';
 
 // Hide tooltip when loosing focus (keyboard navigation)
 const hideOnPopperBlur = {
@@ -35,7 +35,7 @@ export default function JobPopup({ link, previewUrl, children }) {
   useEffect(() => {
     if (previewUrl) {
       getBearer().then((bearer) => {
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}assets/${previewUrl}`, {
+        fetch(`${directusUrl}/assets/${previewUrl}`, {
           method: 'GET',
           headers: { Authorization: bearer },
         }).then(async (response) => {
@@ -48,33 +48,40 @@ export default function JobPopup({ link, previewUrl, children }) {
   }, [previewUrl]);
 
   return (
-    <Tippy
-      followCursor
-      interactive
-      placement="bottom"
-      theme="chakra"
-      offset={[0, 20]}
-      plugins={[followCursor, hideOnPopperBlur]}
-      content={
-        <>
-          <Link
-            d="inline-flex"
-            alignContent="center"
-            mb="1"
-            href={link}
-            isExternal
-          >
-            Stelleninserat auf {new URL(link).hostname}
-            <Box as="span" d="inline-flex" sx={{ alignItems: 'center' }} ml="1">
-              <OpenInWindow width="1em" height="1em" />
-            </Box>
-          </Link>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={previewImg} alt="Job-Vorschau" />
-        </>
-      }
-    >
-      <button>{children}</button>
-    </Tippy>
+    <span>
+      <Tippy
+        followCursor
+        interactive
+        placement="bottom"
+        theme="chakra"
+        offset={[0, 20]}
+        plugins={[followCursor, hideOnPopperBlur]}
+        content={
+          <>
+            <Link
+              d="inline-flex"
+              alignContent="center"
+              mb="1"
+              href={link}
+              isExternal
+            >
+              Stelleninserat auf {new URL(link).hostname}
+              <Box
+                as="span"
+                d="inline-flex"
+                sx={{ alignItems: 'center' }}
+                ml="1"
+              >
+                <OpenInWindow width="1em" height="1em" />
+              </Box>
+            </Link>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={previewImg} alt="Job-Vorschau" />
+          </>
+        }
+      >
+        <button>{children}</button>
+      </Tippy>
+    </span>
   );
 }

@@ -14,21 +14,30 @@ services:
       DB_DATABASE: directus
       DB_USER: directus
       ADMIN_EMAIL: admin@${PUBLIC_DOMAIN}
-  papercups-chat-window:
-    build: ./chat-window
-  papercups-db:
+
+  chatwoot-db:
     image: postgres:13-alpine
-  papercups:
-    # Switch back once https://github.com/papercups-io/papercups/pull/905 has been merged/released
-    # image: papercups/papercups:latest
-    image: paescuj/papercups:latest
-    command: sh -c "sleep 10 && /entrypoint.sh db createdb && /entrypoint.sh db migrate && echo 'running' && /entrypoint.sh run"
     environment:
-      BACKEND_URL: localhost
-      MIX_ENV: prod
-      REQUIRE_DB_SSL: 'false'
-      REACT_APP_FILE_UPLOADS_ENABLED: 'false'
-      PAPERCUPS_REGISTRATION_DISABLED: '$PAPERCUPS_REGISTRATION_DISABLED'
-      DATABASE_HOST: papercups-db
-      DATABASE_USER: postgres
-      DATABASE: postgres
+      POSTGRES_USER: chatwoot
+  chatwoot-cache:
+    image: redis:6-alpine
+  chatwoot-sidekiq:
+    #image: chatwoot/chatwoot:v1.18.1
+    image: paescuj/chatwoot:latest
+    environment:
+      POSTGRES_HOST: chatwoot-db
+      POSTGRES_USERNAME: chatwoot
+      REDIS_URL: redis://chatwoot-cache:6379
+    command: [bundle, exec, sidekiq, -C, config/sidekiq.yml]
+  chatwoot-rails:
+    #image: chatwoot/chatwoot:v1.18.1
+    image: paescuj/chatwoot:latest
+    environment:
+      POSTGRES_HOST: chatwoot-db
+      POSTGRES_USERNAME: chatwoot
+      REDIS_URL: redis://chatwoot-cache:6379
+      ACTIVE_STORAGE_SERVICE: local
+      ENABLE_ACCOUNT_SIGNUP: 'false'
+      DEFAULT_LOCALE: de
+      DISABLE_TELEMETRY: 'true'
+    command: [sh, -c, 'docker/entrypoints/rails.sh bundle exec rails db:chatwoot_prepare && docker/entrypoints/rails.sh bundle exec rails s -p 3000 -b 0.0.0.0']

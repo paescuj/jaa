@@ -45,8 +45,10 @@ import {
   UnorderedList,
   useColorMode,
   useDisclosure,
+  useTheme,
   useToast,
 } from '@chakra-ui/react';
+import crypto from 'crypto';
 import { Lock, Plus, Trash } from 'iconoir-react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -62,7 +64,12 @@ import Layout from '../components/Layout';
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
 import { useDebounce } from '../lib/debounce';
-import { checkSession, directus, getBearer, url } from '../lib/directus';
+import {
+  checkSession,
+  directus,
+  getBearer,
+  url as directusUrl,
+} from '../lib/directus';
 import { init } from '../lib/init';
 
 function Preview({ name, previewUrl, type }) {
@@ -72,7 +79,7 @@ function Preview({ name, previewUrl, type }) {
     if (previewUrl) {
       getBearer().then((bearer) => {
         fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}assets/${previewUrl}?fit=cover&width=100&height=100&quality=90`,
+          `${directusUrl}/assets/${previewUrl}?fit=cover&width=100&height=100&quality=90`,
           {
             method: 'GET',
             headers: { Authorization: bearer },
@@ -144,12 +151,32 @@ export default function Admin() {
   const [jobs, setJobs] = useState({});
   const [docs, setDocs] = useState({});
   const [settings, setSettings] = useState({});
+  const [directusInfo, setDirectusInfo] = useState({});
 
   const [feedback, setFeedback] = useState({});
   const [feedbackSaved, setFeedbackSaved] = useState(false);
   const debouncedFeedback = useDebounce(feedback, 400);
 
   const toast = useToast();
+
+  const theme = useTheme();
+
+  const [tabIndex, setTabIndex] = useState(0);
+  useEffect(() => {
+    if (router.query.tab) {
+      setTabIndex(parseInt(router.query.tab));
+    }
+  }, [router.query.tab]);
+
+  function changeTab(index) {
+    router.push(
+      {
+        query: { tab: index },
+      },
+      undefined,
+      { shallow: true }
+    );
+  }
 
   const {
     isOpen: newJobIsOpen,
@@ -186,10 +213,22 @@ export default function Admin() {
   });
 
   const {
-    formState: settingsFormState,
-    handleSubmit: settingsHandleSubmit,
-    register: settingsRegister,
+    isOpen: chatwootSetupIsOpen,
+    onOpen: onOpenChatwootSetup,
+    onClose: onCloseChatwootSetup,
+  } = useDisclosure();
+  const {
+    formState: chatwootSetupFormState,
+    handleSubmit: chatwootSetupHandleSubmit,
+    register: chatwootSetupRegister,
+    reset: chatwootSetupReset,
+    setError: chatwootSetupSetError,
   } = useForm();
+  const chatwootSetupInitialRef = useRef();
+  const { ref: chatwootSetupUserTokenRef, ...chatwootSetupUserTokenRest } =
+    chatwootSetupRegister('chatwootUserToken', {
+      required: true,
+    });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -225,8 +264,10 @@ export default function Admin() {
             setDocs(docs.data);
 
             const settings = await directus.singleton('settings').read();
-            delete settings.id;
             setSettings(settings);
+
+            const directusInfo = await directus.server.info();
+            setDirectusInfo(directusInfo);
 
             setLoading({ state: false });
           } catch (error) {
@@ -252,6 +293,11 @@ export default function Admin() {
   async function refreshDocs() {
     const docs = await directus.items('docs').readMany();
     setDocs(docs.data);
+  }
+
+  async function refreshSettings() {
+    const settings = await directus.singleton('settings').read();
+    setSettings(settings);
   }
 
   async function deleteJob(jobId) {
@@ -294,7 +340,8 @@ export default function Admin() {
     }
   }
 
-  async function updateJobSent(jobId, value) {
+  async function updateJobSent(jobId, enabled) {
+    const value = enabled ? new Date() : null;
     await directus.items('jobs').updateOne(jobId, { sent: value });
     refreshJobs();
   }
@@ -334,7 +381,7 @@ export default function Admin() {
       search: 'Companies',
     });
     let code = generatePassword();
-    await directus.users.createOne({
+    const user = await directus.users.createOne({
       email: getAccessEmail(company, job.id),
       password: code,
       role: role.data[0].id,
@@ -352,15 +399,25 @@ export default function Admin() {
     const formData = new FormData();
     formData.append('title', `preview-${job.id}`);
     formData.append('file', await webPreview.blob());
-    const preview = await fetch(`${url}files`, {
+    const preview = await fetch(`${directusUrl}/files`, {
       method: 'POST',
       headers: { Authorization: bearer },
       body: formData,
     });
     const previewData = await preview.json();
     const previewId = previewData.data.id;
+
+    const identity_hash = settings.chatwoot_hmac_token
+      ? crypto
+          .createHmac('sha256', settings.chatwoot_hmac_token)
+          .update(user.id)
+          .digest('hex')
+      : null;
+
+    // Update job
     await directus.items('jobs').updateOne(job.id, {
       preview: [previewId],
+      identity_hash: identity_hash,
     });
 
     newJobReset();
@@ -408,7 +465,7 @@ export default function Admin() {
     formData.append('file', await pdfPreview.blob());
     formData.append('title', title);
     formData.append('file', await file[0]);
-    const files = await fetch(`${url}files`, {
+    const files = await fetch(`${directusUrl}/files`, {
       method: 'POST',
       headers: { Authorization: bearer },
       body: formData,
@@ -422,7 +479,7 @@ export default function Admin() {
       preview: [filesData.find((file) => file.title === `preview-${title}`).id],
       file: [filesData.find((file) => file.title === title).id],
       global: !newDocTarget ? true : false,
-      job: newDocTarget ? newDocTarget : null,
+      job: newDocTarget ? newDocTarget.id : null,
     });
 
     refreshDocs();
@@ -430,8 +487,83 @@ export default function Admin() {
     newDocReset();
   }
 
-  async function onSubmitSettings(data) {
-    await directus.singleton('settings').update(data);
+  async function onSubmitChatwootSetup({ chatwootUserToken }) {
+    const profile = await fetch(
+      `${process.env.NEXT_PUBLIC_CHATWOOT_URL}/api/v1/profile`,
+      {
+        headers: { api_access_token: chatwootUserToken },
+      }
+    );
+    const profileResponse = await profile.json();
+
+    if (!profileResponse.account_id) {
+      chatwootSetupSetError('chatwootUserToken', {
+        type: 'manual',
+        message: 'Token funktioniert nicht',
+      });
+      return false;
+    }
+
+    const inboxBody = {
+      name: 'Pascal Jufer',
+      greeting_enabled: false,
+      channel: {
+        type: 'web_widget',
+        website_url: `https://${process.env.NEXT_PUBLIC_DOMAIN}`,
+        welcome_title: 'Chatten Sie mit mir!',
+        welcome_tagline:
+          'Sollte ich gerade offline sein, so können Sie mir gerne eine Nachricht hinterlassen und ich werde Ihnen baldmöglichst unter Ihrer angegebenen E-Mail-Adresse antworten 😃',
+        widget_color: theme.colors.blue[500],
+      },
+    };
+    const inbox = await fetch(
+      `${process.env.NEXT_PUBLIC_CHATWOOT_URL}/api/v1/accounts/${profileResponse.account_id}/inboxes`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          api_access_token: chatwootUserToken,
+        },
+        body: JSON.stringify(inboxBody),
+      }
+    );
+    const inboxResponse = await inbox.json();
+
+    const membersBody = {
+      inbox_id: inboxResponse.id,
+      user_ids: [profileResponse.account_id],
+    };
+    await fetch(
+      `${process.env.NEXT_PUBLIC_CHATWOOT_URL}/api/v1/accounts/${profileResponse.account_id}/inbox_members`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          api_access_token: chatwootUserToken,
+        },
+        body: JSON.stringify(membersBody),
+      }
+    );
+
+    // Update existing jobs
+    Object.values(jobs).forEach(async (job) => {
+      const identity_hash = crypto
+        .createHmac('sha256', inboxResponse.hmac_token)
+        .update(job.user[0])
+        .digest('hex');
+      await directus.items('jobs').updateOne(job.id, {
+        identity_hash: identity_hash,
+      });
+    });
+
+    await directus.singleton('settings').update({
+      chatwoot_website_token: inboxResponse.website_token,
+      chatwoot_hmac_token: inboxResponse.hmac_token,
+    });
+
+    refreshSettings();
+    onCloseChatwootSetup();
+    chatwootSetupReset();
   }
 
   useEffect(() => {
@@ -502,11 +634,11 @@ export default function Admin() {
       <Layout>
         <Header title={<Logo />} />
         <Box as="main" flex="1" mt={10}>
-          <Tabs>
+          <Tabs index={tabIndex} onChange={(index) => changeTab(index)}>
             <TabList>
               <Tab>Jobs</Tab>
               <Tab>Allgemeine Dokumente</Tab>
-              <Tab>Einstellungen</Tab>
+              <Tab>Einstellungen & Informationen</Tab>
             </TabList>
 
             <TabPanels>
@@ -520,15 +652,39 @@ export default function Admin() {
                         <AccordionItem key={job.id}>
                           <h2>
                             <AccordionButton>
-                              <Flex flex="1">
+                              <Flex flex="1" wrap="wrap">
                                 <Preview
                                   name={job.company}
                                   previewUrl={job.preview[0]}
                                   type="avatar"
                                 />
-                                <Box ml="3" textAlign="left">
-                                  <Text fontWeight="bold">{job.company}</Text>
-                                  <Text fontSize="sm">{job.position}</Text>
+                                <Box
+                                  ml="3"
+                                  alignSelf="center"
+                                  fontSize="lg"
+                                  textAlign="left"
+                                >
+                                  <Text fontWeight="bold" lineHeight="1">
+                                    {job.company}
+                                  </Text>
+                                  <Text>{job.position}</Text>
+                                </Box>
+                                <Box
+                                  flex="1"
+                                  textAlign="right"
+                                  mr="1"
+                                  fontSize="sm"
+                                  alignSelf="center"
+                                >
+                                  <Text>
+                                    {new Date(
+                                      job.date_created
+                                    ).toLocaleDateString('de-CH', {
+                                      year: 'numeric',
+                                      month: 'long',
+                                      day: 'numeric',
+                                    })}
+                                  </Text>
                                 </Box>
                               </Flex>
                               <AccordionIcon />
@@ -647,7 +803,10 @@ export default function Admin() {
                                     size="sm"
                                     leftIcon={<Plus />}
                                     onClick={() => {
-                                      setNewDocTarget(job.id);
+                                      setNewDocTarget({
+                                        id: job.id,
+                                        title: `${job.company} - ${job.position}`,
+                                      });
                                       onOpenNewDoc();
                                     }}
                                   >
@@ -667,6 +826,18 @@ export default function Admin() {
                                     }
                                   />
                                   <Collapse in={job.sent}>
+                                    Am{' '}
+                                    {job.sent &&
+                                      `${new Date(job.sent).toLocaleDateString(
+                                        'de-CH',
+                                        {
+                                          year: 'numeric',
+                                          month: 'long',
+                                          day: 'numeric',
+                                          hour: 'numeric',
+                                          minute: 'numeric',
+                                        }
+                                      )}`}
                                     <Text>Feedback:</Text>
                                     <Textarea
                                       maxW="500"
@@ -808,7 +979,6 @@ export default function Admin() {
                     ml={{ base: 0, sm: 4 }}
                     leftIcon={<Plus />}
                     colorScheme="blue"
-                    variant="solid"
                     onClick={onOpenNewJob}
                   >
                     Job hinzufügen
@@ -835,7 +1005,9 @@ export default function Admin() {
                                     type="avatar"
                                   />
                                   <Flex ml="3" align="center">
-                                    <Text fontWeight="bold">{doc.title}</Text>
+                                    <Text fontSize="lg" fontWeight="bold">
+                                      {doc.title}
+                                    </Text>
                                   </Flex>
                                 </Flex>
                                 <AccordionIcon />
@@ -898,7 +1070,6 @@ export default function Admin() {
                     ml={{ base: 0, sm: 4 }}
                     leftIcon={<Plus />}
                     colorScheme="blue"
-                    variant="solid"
                     onClick={() => {
                       setNewDocTarget();
                       onOpenNewDoc();
@@ -910,33 +1081,115 @@ export default function Admin() {
               </TabPanel>
 
               <TabPanel>
-                <form onSubmit={settingsHandleSubmit(onSubmitSettings)}>
-                  {Object.keys(settings).map((key, index) => {
-                    return (
-                      <FormControl mt={index > 0 && 4} key={index} id={key}>
-                        <FormLabel>
-                          {key
-                            .replace(/((?<!^)[A-Z](?![A-Z]))(?=\S)/g, ' $1')
-                            .replace(/^./, (s) => s.toUpperCase())}
-                        </FormLabel>
-                        <Input
-                          id={key}
-                          defaultValue={settings[key]}
-                          maxW="500"
-                          {...settingsRegister(key)}
-                        />
-                      </FormControl>
-                    );
-                  })}
-                  <Button
-                    mt={4}
-                    isLoading={settingsFormState.isSubmitting}
-                    colorScheme="blue"
-                    type="submit"
-                  >
-                    Speichern
-                  </Button>
-                </form>
+                <Accordion
+                  flex="1"
+                  defaultIndex={[0]}
+                  allowToggle
+                  allowMultiple
+                >
+                  <AccordionItem>
+                    <h2>
+                      <AccordionButton>
+                        <Box
+                          flex="1"
+                          textAlign="left"
+                          fontSize="lg"
+                          fontWeight="bold"
+                        >
+                          Chatwoot
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
+                      <Stack flex="1" spacing={4}>
+                        <Box>
+                          <Text fontWeight="bold">Instanz</Text>
+                          <Link
+                            color="blue.500"
+                            href={process.env.NEXT_PUBLIC_CHATWOOT_URL}
+                            isExternal
+                          >
+                            {process.env.NEXT_PUBLIC_CHATWOOT_URL}
+                          </Link>
+                        </Box>
+                        <Box>
+                          <Text fontWeight="bold">Status</Text>
+                          {!settings.chatwoot_website_token ||
+                          !settings.chatwoot_hmac_token ? (
+                            <Box>
+                              <Text>Noch nicht eingerichtet</Text>
+                              <Button
+                                mt={4}
+                                colorScheme="blue"
+                                onClick={() => {
+                                  onOpenChatwootSetup();
+                                }}
+                              >
+                                Jetzt einrichten
+                              </Button>
+                            </Box>
+                          ) : (
+                            <Box>
+                              <Text>Ist eingerichtet</Text>
+                              <Button
+                                mt={4}
+                                colorScheme="blue"
+                                onClick={() => {
+                                  onOpenChatwootSetup();
+                                }}
+                              >
+                                Erneut einrichten
+                              </Button>
+                            </Box>
+                          )}
+                        </Box>
+                      </Stack>
+                    </AccordionPanel>
+                  </AccordionItem>
+                  <AccordionItem>
+                    <h2>
+                      <AccordionButton>
+                        <Box
+                          flex="1"
+                          textAlign="left"
+                          fontSize="lg"
+                          fontWeight="bold"
+                        >
+                          Directus
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
+                      <Stack flex="1" spacing={4}>
+                        <Box>
+                          <Text fontWeight="bold">Instanz</Text>
+                          <Link color="blue.500" href={directusUrl} isExternal>
+                            {directusUrl}
+                          </Link>
+                        </Box>
+                        <Box>
+                          <Text fontWeight="bold">Version</Text>
+                          <Text>{directusInfo.directus.version}</Text>
+                        </Box>
+                        <Box>
+                          <Text fontWeight="bold">Gestartet</Text>
+                          <Text>
+                            {new Intl.RelativeTimeFormat('de', {
+                              numeric: 'auto',
+                            }).format(
+                              -Math.floor(
+                                directusInfo.node.uptime / (3600 * 24)
+                              ),
+                              'day'
+                            )}
+                          </Text>
+                        </Box>
+                      </Stack>
+                    </AccordionPanel>
+                  </AccordionItem>
+                </Accordion>
               </TabPanel>
             </TabPanels>
           </Tabs>
@@ -1015,7 +1268,7 @@ export default function Admin() {
         <ModalContent>
           <ModalHeader>
             {newDocTarget
-              ? `Dokument zu Job "${newDocTarget}" hinzufügen`
+              ? `Dokument zu Job "${newDocTarget.title}" hinzufügen`
               : 'Allgemeines Dokument hinzufügen'}
           </ModalHeader>
           <ModalCloseButton />
@@ -1059,6 +1312,53 @@ export default function Admin() {
               Speichern
             </Button>
             <Button onClick={onCloseNewDoc}>Abbrechen</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal
+        initialFocusRef={chatwootSetupInitialRef}
+        isOpen={chatwootSetupIsOpen}
+        onClose={onCloseChatwootSetup}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Chatwoot einrichten</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <form
+              id="chatwoot-setup-form"
+              onSubmit={chatwootSetupHandleSubmit(onSubmitChatwootSetup)}
+            >
+              <FormControl
+                isInvalid={chatwootSetupFormState.errors.chatwootUserToken}
+              >
+                <FormLabel>Benutzer-Token</FormLabel>
+                <Input
+                  {...chatwootSetupUserTokenRest}
+                  ref={(e) => {
+                    chatwootSetupUserTokenRef(e);
+                    chatwootSetupInitialRef.current = e;
+                  }}
+                />
+                <FormErrorMessage>
+                  {chatwootSetupFormState.errors.chatwootUserToken?.message}
+                </FormErrorMessage>
+              </FormControl>
+            </form>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              isLoading={chatwootSetupFormState.isSubmitting}
+              type="submit"
+              form="chatwoot-setup-form"
+              colorScheme="blue"
+              mr={3}
+            >
+              Speichern
+            </Button>
+            <Button onClick={onCloseChatwootSetup}>Abbrechen</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

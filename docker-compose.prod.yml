@@ -27,6 +27,7 @@ services:
       traefik.http.routers.jaa-web.entrypoints: $TRAEFIK_ENTRYPOINTS
       traefik.http.routers.jaa-web.tls.certresolver: $TRAEFIK_CERTRESOLVER
     logging: *default-logging
+
   directus-db:
     volumes:
       - directus-db-data:/var/lib/postgresql/data
@@ -71,51 +72,58 @@ services:
       traefik.http.routers.jaa-directus.entrypoints: $TRAEFIK_ENTRYPOINTS
       traefik.http.routers.jaa-directus.tls.certresolver: $TRAEFIK_CERTRESOLVER
     logging: *default-logging
-  papercups-chat-window:
-    image: ${REGISTRY_PREFIX:-}papercups-chat-window:latest
-    networks:
-      - web
-    labels:
-      traefik.enable: 'true'
-      traefik.http.routers.jaa-chat-window.rule: Host(`chat-window.${PUBLIC_DOMAIN}`)
-      traefik.http.routers.jaa-chat-window.entrypoints: $TRAEFIK_ENTRYPOINTS
-      traefik.http.routers.jaa-chat-window.tls.certresolver: $TRAEFIK_CERTRESOLVER
-      traefik.http.services.jaa-chat-window.loadbalancer.server.port: 8080
-    logging: *default-logging
-  papercups-db:
+
+
+  chatwoot-db:
     volumes:
-      - papercups-db-data:/var/lib/postgresql/data
+      - chatwoot-db-data:/var/lib/postgresql/data
     secrets:
-      - jaa_papercups_db_password
+      - jaa_chatwoot_db_password
     environment:
-      POSTGRES_PASSWORD_FILE: /run/secrets/jaa_papercups_db_password
+      POSTGRES_PASSWORD_FILE: /run/secrets/jaa_chatwoot_db_password
     networks:
-      - jaa-papercups
+      - jaa-chatwoot
     logging: *default-logging
-  papercups:
-    init: true
-    secrets:
-      - jaa_papercups_key
-      - jaa_papercups_db_password
-      - jaa_papercups_smtp_password
-    environment:
-      REACT_APP_URL: https://papercups.${PUBLIC_DOMAIN}
-      SECRET_KEY_BASE_FILE: /run/secrets/jaa_papercups_key
-      DATABASE_PASSWORD_FILE: /run/secrets/jaa_papercups_db_password
-      MAILER_ADAPTER: Swoosh.Adapters.SMTP
-      SMTP_HOST_ADDR: $PAPERCUPS_SMTP_HOST
-      SMTP_HOST_PORT: $PAPERCUPS_SMTP_PORT
-      SMTP_HOST_SSL_ENABLED: '$PAPERCUPS_SMTP_SSL'
-      SMTP_USER_NAME: $PAPERCUPS_SMTP_USER
-      SMTP_USER_PWD_FILE: /run/secrets/jaa_papercups_smtp_password
+  chatwoot-cache:
     networks:
-      - jaa-papercups
+      - jaa-chatwoot
+    logging: *default-logging
+  chatwoot-sidekiq:
+    environment:
+      FRONTEND_URL: https://chatwoot.${PUBLIC_DOMAIN}
+      SECRET_KEY_BASE: $CHATWOOT_SECRET_KEY_BASE
+      POSTGRES_PASSWORD: $CHATWOOT_DB_PASSWORD
+      MAILER_SENDER_EMAIL: $CHATWOOT_MAILER_SENDER_EMAIL
+      SMTP_ADDRESS: $CHATWOOT_SMTP_ADDRESS
+      SMTP_AUTHENTICATION: $CHATWOOT_SMTP_AUTHENTICATION
+      SMTP_DOMAIN: $CHATWOOT_SMTP_DOMAIN
+      SMTP_ENABLE_STARTTLS_AUTO: '$CHATWOOT_SMTP_ENABLE_STARTTLS_AUTO'
+      SMTP_PORT: $CHATWOOT_SMTP_PORT
+      SMTP_USERNAME: $CHATWOOT_SMTP_USERNAME
+      SMTP_PASSWORD: $CHATWOOT_SMTP_PASSWORD
+    networks:
+      - default
+      - jaa-chatwoot
+    logging: *default-logging
+  chatwoot-rails:
+    volumes:
+      - chatwoot-rails-storage:/app/storage
+    environment:
+      FRONTEND_URL: https://chatwoot.${PUBLIC_DOMAIN}
+      FORCE_SSL: 'true'
+      SECRET_KEY_BASE: $CHATWOOT_SECRET_KEY_BASE
+      POSTGRES_PASSWORD: $CHATWOOT_DB_PASSWORD
+    networks:
+      - jaa-chatwoot
       - web
     labels:
       traefik.enable: 'true'
-      traefik.http.routers.jaa-papercups.rule: Host(`papercups.${PUBLIC_DOMAIN}`)
-      traefik.http.routers.jaa-papercups.entrypoints: $TRAEFIK_ENTRYPOINTS
-      traefik.http.routers.jaa-papercups.tls.certresolver: $TRAEFIK_CERTRESOLVER
+      traefik.http.routers.jaa-chatwoot.rule: Host(`chatwoot.${PUBLIC_DOMAIN}`)
+      traefik.http.routers.jaa-chatwoot.entrypoints: $TRAEFIK_ENTRYPOINTS
+      traefik.http.routers.jaa-chatwoot.tls.certresolver: $TRAEFIK_CERTRESOLVER
+      traefik.http.services.jaa-chatwoot.loadbalancer.server.port: 3000
+      traefik.http.routers.jaa-chatwoot.middlewares: chatwoot-headers
+      traefik.http.middlewares.chatwoot-headers.headers.customrequestheaders.X-Forwarded-Proto: https
     logging: *default-logging
 
 networks:
@@ -124,13 +132,14 @@ networks:
     external: true
   jaa-directus:
     internal: true
-  jaa-papercups:
+  jaa-chatwoot:
     internal: true
 
 volumes:
   directus-db-data:
   directus-uploads:
-  papercups-db-data:
+  chatwoot-db-data:
+  chatwoot-rails-storage:
 
 secrets:
   jaa_directus_key:
@@ -141,9 +150,5 @@ secrets:
     external: true
   jaa_directus_admin_password:
     external: true
-  jaa_papercups_key:
-    external: true
-  jaa_papercups_db_password:
-    external: true
-  jaa_papercups_smtp_password:
+  jaa_chatwoot_db_password:
     external: true

@@ -19,6 +19,19 @@ export async function init(directus) {
           },
         },
         {
+          field: 'date_created',
+          type: 'timestamp',
+          meta: {
+            special: ['date-created'],
+            interface: 'datetime',
+            readonly: true,
+            hidden: true,
+            width: 'half',
+            display: 'datetime',
+            display_options: { relative: true },
+          },
+        },
+        {
           field: 'company',
           type: 'string',
           meta: {
@@ -53,10 +66,10 @@ export async function init(directus) {
         },
         {
           field: 'sent',
-          type: 'boolean',
+          type: 'timestamp',
           meta: {
-            interface: 'boolean',
-            special: 'boolean',
+            interface: 'datetime',
+            display: 'datetime',
           },
         },
         {
@@ -64,6 +77,13 @@ export async function init(directus) {
           type: 'text',
           meta: {
             interface: 'input-multiline',
+          },
+        },
+        {
+          field: 'identity_hash',
+          type: 'string',
+          meta: {
+            interface: 'input',
           },
         },
         {
@@ -176,11 +196,17 @@ export async function init(directus) {
           },
         },
         {
-          field: 'papercupsToken',
-          type: 'uuid',
+          field: 'chatwoot_website_token',
+          type: 'string',
           meta: {
             interface: 'input',
-            special: 'uuid',
+          },
+        },
+        {
+          field: 'chatwoot_hmac_token',
+          type: 'string',
+          meta: {
+            interface: 'input',
           },
         },
       ],
@@ -288,7 +314,7 @@ export async function init(directus) {
           _eq: '$CURRENT_USER',
         },
       },
-      fields: ['job'],
+      fields: ['id', 'job'],
     },
     // Read access on related "jobs"
     {
@@ -302,7 +328,7 @@ export async function init(directus) {
           },
         },
       },
-      fields: ['id', 'company', 'position', 'link', 'preview'],
+      fields: ['id', 'company', 'position', 'link', 'preview', 'identity_hash'],
     },
     // Read access on "docs" based on "jobs"
     {
@@ -368,12 +394,11 @@ export async function init(directus) {
       fields: ['filename_download'],
     },
     // Read access on "settings"
-    // (only logged in users should be able to get papercups token)
     {
       collection: 'settings',
       action: 'read',
       role: role.id,
-      fields: ['papercupsToken'],
+      fields: ['chatwoot_website_token'],
     },
   ]);
 }

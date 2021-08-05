@@ -68,47 +68,31 @@ Currently intended for a single [Docker swarm](https://docs.docker.com/engine/sw
 
 Initialize the app:
 ```bash
+# Docker host where the app is deployed to
 export DOCKER_HOST='ssh://user@remotehost'
-export JAA_ENV='prod'
+# Domain under which the app will be available
 export PUBLIC_DOMAIN='jaa.example.org'
+# Registry where the image will be pushed to (e.g. your Docker Hub user or URL to another registry)
+# (if omitted, the image is uploaded directly to your DOCKER_HOST)
+export REGISTRY_PREFIX='docker-hub-user'
+export JAA_ENV='prod'
+
+# For further configuration variables, consolidate the 'run.sh' script.
+# You can also change them later on in the '.env.prod' file.
+# Some examples:
+# export CHATWOOT_SMTP_ADDRESS='mail.example.org'
+# export CHATWOOT_SMTP_USERNAME='chatwoot@jaa.example.org'
+# export CHATWOOT_SMTP_PASSWORD='your-mail-account-password'
 
 # Random access data will be generated and displayed during initialization
 ./run.sh init
 ```
 
-##### Papercups
-* Create a Papercups account (Hint: Use your name as company name):
-  ```bash
-  echo "https://papercups.${PUBLIC_DOMAIN}/register"
-  ```
-* Immediately afterwards, disable registration for further accounts:
-  ```bash
-  sed -i '' -E 's/^(PAPERCUPS_REGISTRATION_DISABLED=).*$/\1true/' ".env.${JAA_ENV}" && ./run.sh
-  ```
-* Update your profile:
-  ```bash
-  echo "https://papercups.${PUBLIC_DOMAIN}/settings/profile"
-  ```
-* Adjust the [settings for the chat widget](#recommended-chat-widget-settings) and get the token:
-  ```bash
-  echo "https://papercups.${PUBLIC_DOMAIN}/settings/chat-widget"
-  ```
-* Log in to the «Job Application Assistant» with the admin user and store the token under the settings tab:
-  ```bash
-  echo "https://${PUBLIC_DOMAIN}/admin"
-  ```
+##### Chatwoot
 
-###### Recommended chat widget settings
-| Setting | Value |
-|---|---|
-| Title | Chatten Sie mit mir 😃 |
-| Subtitle | " " (_whitespace_ to disable subtitle) |
-| Greeting | Guten Tag! Gerne stehe ich Ihnen zur Verfügung! Sollte ich gerade offline sein, so können Sie mir eine Nachricht hinterlassen und ich werde Ihnen baldmöglichst unter Ihrer angegebenen E-Mail-Adresse antworten. |
-| New message placeholder | Ihre Nachricht... |
-| Require unidentified customers to provide their email upfront? | Yes |
-| Show agent availability? | Yes |
-| Text when agents are available | Ich bin online |
-| Text when agents are unavailable | Ich bin gerade offline |
+* Create a Chatwoot account (Hint: Use your name as company name).
+* Get your API token from the profile settings page.
+* Log in to the «Job Application Assistant» with the admin user, go to the settings tab and setup Chatwoot intergration by using your token.
 
 #### Production - Commands
 
@@ -135,7 +119,7 @@ Jaa is built with the following great open source components:
 * [Iconoir](https://iconoir.com) - The Definitive Open Source Icons Library
 * [Directus](https://directus.io) - Open-Source Data Platform
 * [PostgreSQL](https://www.postgresql.org) - The World's Most Advanced Open Source Relational Database
-* [Papercups](https://papercups.io) - Open-source live customer chat
+* [Chatwoot](https://www.chatwoot.com) - Open-source, self-hosted customer communication platform
 * [Docker](https://www.docker.com/community/open-source) - Containerization technology
 
 ## License

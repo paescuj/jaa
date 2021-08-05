@@ -29,9 +29,6 @@ RUN apk upgrade --no-cache \
   cairo \
   pango \
   chromium \
-  nss \
-  freetype \
-  harfbuzz \
   ca-certificates \
   ttf-freefont
 USER app

@@ -1,6 +1,6 @@
 import { Auth, AxiosTransport, Directus, MemoryStorage } from '@directus/sdk';
 
-export const url = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8055/';
+export const url = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8055';
 // A bit safer to store JWT in memory as opposed to local storage.
 const storage = new MemoryStorage();
 const transport = new AxiosTransport(url, storage, async () => {

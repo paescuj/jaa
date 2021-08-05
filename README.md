@@ -90,9 +90,12 @@ export JAA_ENV='prod'
 
 ##### Chatwoot
 
-* Create a Chatwoot account (Hint: Use your name as company name).
+* Log in to the «Job Application Assistant» with the admin user, go to the settings tab and click on the Chatwoot instance link.
+* Create a Chatwoot account.
+
+  *(Hint: Use your name as company name)*
 * Get your API token from the profile settings page.
-* Log in to the «Job Application Assistant» with the admin user, go to the settings tab and setup Chatwoot intergration by using your token.
+* Back in the «Job Application Assistant», click on the Chatwoot setup button and paste your token there.
 
 #### Production - Commands
 

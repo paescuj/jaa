@@ -8,17 +8,11 @@ _jaa_env=${JAA_ENV:-dev}
 _stack_name='jaa'
 _env_file="${_dir}/.env.${_jaa_env}"
 _compose_files=("${_dir}/docker-compose.yml" "${_dir}/docker-compose.${_jaa_env}.yml")
-if docker compose >/dev/null 2>&1; then
-  _docker_compose_cmd=('docker' 'compose')
-else
-  _docker_compose_cmd=('docker-compose')
-fi
-_docker_compose_cmd+=('--env-file' "$_env_file")
+_docker_compose_cmd=('docker-compose' '--env-file' "$_env_file")
 for compose_file in "${_compose_files[@]}"; do
   _docker_compose_cmd+=('--file' "$compose_file")
 done
-_get_env_cmd=('sed' '-e' '/^#/d;/^\s*$/d' '-e' "s/'/'\\\''/g" '-e' "s/=\(.*\)/='\1'/g" "$_env_file")
-readonly _dir _jaa_env _stack_name _env_file _compose_files _docker_compose_cmd _get_env_cmd
+readonly _dir _jaa_env _stack_name _env_file _compose_files _docker_compose_cmd
 
 # Function to get config
 get_config() {
@@ -74,7 +68,6 @@ get_config() {
     [DIRECTUS_ADMIN_PASSWORD]="${DIRECTUS_ADMIN_PASSWORD:-$(getPassword 12)}"
     [CHATWOOT_SECRET_KEY_BASE]="${CHATWOOT_SECRET_KEY_BASE:-$(getPassword 64)}"
     [CHATWOOT_DB_PASSWORD]="${CHATWOOT_DB_PASSWORD:-$(getPassword 24)}"
-    [DOCKER_HOST]="$DOCKER_HOST"
   )
   _envs+=(
     'PUBLIC_DOMAIN'
@@ -102,6 +95,7 @@ get_config() {
       [TRAEFIK_NETWORK]="${TRAEFIK_NETWORK:-web}"
       [TRAEFIK_ENTRYPOINTS]="${TRAEFIK_ENTRYPOINTS:-websecure}"
       [TRAEFIK_CERTRESOLVER]="${TRAEFIK_CERTRESOLVER:-le}"
+      [DOCKER_HOST]="$DOCKER_HOST"
     )
     _config+=(
       [CHATWOOT_MAILER_SENDER_EMAIL]="${CHATWOOT_MAILER_SENDER_EMAIL:-${_config[CHATWOOT_SMTP_USERNAME]}}"
@@ -217,17 +211,19 @@ destroy() {
   exit
 }
 
-# Function to build & upload image
-do_image() {
-  echo 'Building image...'
-  DOCKER_HOST="$DOCKER_BUILD_HOST" "${_docker_compose_cmd[@]}" build --pull
+# Function to build / push images
+do_images() {
+  echo 'Building images...'
+  DOCKER_HOST="$DOCKER_BUILD_HOST" "${_docker_compose_cmd[@]}" build --pull --parallel
 
-  echo 'Uploading image...'
-  source <("${_get_env_cmd[@]}" | grep '^REGISTRY_PREFIX=')
-  if [[ -n $REGISTRY_PREFIX ]]; then
-    DOCKER_HOST="$DOCKER_BUILD_HOST" "${_docker_compose_cmd[@]}" push
-  else
-    DOCKER_HOST="$DOCKER_BUILD_HOST" docker save jaa-web:latest | gzip | docker load
+  if [[ $_jaa_env == 'prod' ]]; then
+    echo 'Uploading images...'
+    if [[ -n $REGISTRY_PREFIX ]]; then
+      DOCKER_HOST="$DOCKER_BUILD_HOST" "${_docker_compose_cmd[@]}" push
+    else
+      readarray -t images < <("${_docker_compose_cmd[@]}" config --no-interpolate | sed -n 's/^.*image: ${REGISTRY_PREFIX:-}//p' | uniq)
+      DOCKER_HOST="$DOCKER_BUILD_HOST" docker save "${images[@]}" | gzip | docker load
+    fi
   fi
 }
 
@@ -237,17 +233,11 @@ start() {
     echo 'Starting containers...'
     "${_docker_compose_cmd[@]}" up -d
 
-    set -a
-    source <("${_get_env_cmd[@]}")
-    set +a
     echo "Starting web app..."
     npm install --prefix "${_dir}/web"
     exec npm run --prefix "${_dir}/web" dev
   else
     echo 'Deploying stack...'
-    set -a
-    source <("${_get_env_cmd[@]}" | grep -v '^DOCKER_HOST=')
-    set +a
     docker_stack_deploy_cmd=('docker' 'stack' 'deploy')
     for compose_file in "${_compose_files[@]}"; do
       docker_stack_deploy_cmd+=('--compose-file' "$compose_file")
@@ -266,15 +256,6 @@ cmd() {
   fi
 }
 
-# Function to load DOCKER_HOST variable
-load_docker_host_var() {
-  if [[ -z $DOCKER_HOST ]]; then
-    set -a
-    source <("${_get_env_cmd[@]}" | grep '^DOCKER_HOST=')
-    set +a
-  fi
-}
-
 main() {
   # Check env
   if [[ $_jaa_env != 'dev' && $_jaa_env != 'prod' ]]; then
@@ -282,37 +263,37 @@ main() {
     exit 1
   fi
 
-  # Check env file
-  if [[ $1 != 'init' ]] && [[ ! -f "$_env_file" ]]; then
-    echo "Missing file $(basename "$_env_file")"
-    exit 1
+  if [[ $1 != 'init' ]]; then
+    # Check env file
+    if [[ ! -f "$_env_file" ]]; then
+      echo "Missing file $(basename "$_env_file")"
+      exit 1
+    # Load env file
+    else
+      set -a
+      source <(sed -e '/^#/d;/^\s*$/d' -e "s/'/'\\\''/g" -e "s/=\(.*\)/='\1'/g" "$_env_file")
+      set +a
+    fi
   fi
 
   case "$1" in
   'init')
     init
     if [[ $2 != '--no-start' ]]; then
-      load_docker_host_var
-      if [[ $_jaa_env == 'prod' ]]; then
-        do_image
-      fi
+      main 'do-images'
       start
     fi
     ;;
-  'do-image')
-    load_docker_host_var
-    do_image
+  'do-images')
+    do_images
     ;;
   'destroy')
-    load_docker_host_var
     destroy
     ;;
   '')
-    load_docker_host_var
     start
     ;;
   *)
-    load_docker_host_var
     cmd "$@"
     ;;
   esac

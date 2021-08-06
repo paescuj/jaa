@@ -1,0 +1,14 @@
+diff --git a/app/javascript/widget/components/TeamAvailability.vue b/app/javascript/widget/components/TeamAvailability.vue
+index 41c389ae..db363c47 100644
+--- a/app/javascript/widget/components/TeamAvailability.vue
++++ b/app/javascript/widget/components/TeamAvailability.vue
+@@ -9,9 +9,6 @@
+               : $t('TEAM_AVAILABILITY.OFFLINE')
+           }}
+         </div>
+-        <div class="text-xs leading-4 mt-1">
+-          {{ replyWaitMeessage }}
+-        </div>
+       </div>
+       <available-agents v-if="isOnline" :agents="availableAgents" />
+     </div>

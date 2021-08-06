@@ -22,16 +22,19 @@ services:
   chatwoot-cache:
     image: redis:6-alpine
   chatwoot-sidekiq:
-    #image: chatwoot/chatwoot:v1.18.1
-    image: paescuj/chatwoot:latest
+    build:
+      context: chatwoot
+    image: jaa-chatwoot:latest
     environment:
       POSTGRES_HOST: chatwoot-db
       POSTGRES_USERNAME: chatwoot
       REDIS_URL: redis://chatwoot-cache:6379
+      DISABLE_TELEMETRY: 'true'
     command: [bundle, exec, sidekiq, -C, config/sidekiq.yml]
   chatwoot-rails:
-    #image: chatwoot/chatwoot:v1.18.1
-    image: paescuj/chatwoot:latest
+    build:
+      context: chatwoot
+    image: jaa-chatwoot:latest
     environment:
       POSTGRES_HOST: chatwoot-db
       POSTGRES_USERNAME: chatwoot

@@ -1,0 +1,31 @@
+diff --git a/app/services/message_templates/template/email_collect.rb b/app/services/message_templates/template/email_collect.rb
+index ba49a6c5..c6c0b01f 100644
+--- a/app/services/message_templates/template/email_collect.rb
++++ b/app/services/message_templates/template/email_collect.rb
+@@ -3,7 +3,6 @@ class MessageTemplates::Template::EmailCollect
+ 
+   def perform
+     ActiveRecord::Base.transaction do
+-      conversation.messages.create!(ways_to_reach_you_message_params)
+       conversation.messages.create!(email_input_box_template_message_params)
+     end
+   rescue StandardError => e
+@@ -16,18 +15,6 @@ class MessageTemplates::Template::EmailCollect
+   delegate :contact, :account, to: :conversation
+   delegate :inbox, to: :message
+ 
+-  def ways_to_reach_you_message_params
+-    content = I18n.t('conversations.templates.ways_to_reach_you_message_body',
+-                     account_name: account.name)
+-
+-    {
+-      account_id: @conversation.account_id,
+-      inbox_id: @conversation.inbox_id,
+-      message_type: :template,
+-      content: content
+-    }
+-  end
+-
+   def email_input_box_template_message_params
+     content = I18n.t('conversations.templates.email_input_box_message_body',
+                      account_name: account.name)

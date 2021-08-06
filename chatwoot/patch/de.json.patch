@@ -1,0 +1,23 @@
+diff --git a/app/javascript/widget/i18n/locale/de.json b/app/javascript/widget/i18n/locale/de.json
+index 3be3bd70..f1a9fa24 100644
+--- a/app/javascript/widget/i18n/locale/de.json
++++ b/app/javascript/widget/i18n/locale/de.json
+@@ -9,15 +9,15 @@
+     }
+   },
+   "TEAM_AVAILABILITY": {
+-    "ONLINE": "Wir sind online",
+-    "OFFLINE": "Wir sind momentan abwesend"
++    "ONLINE": "Ich bin online",
++    "OFFLINE": "Ich bin momentan abwesend"
+   },
+   "REPLY_TIME": {
+     "IN_A_FEW_MINUTES": "Wir antworten üblicherweise innerhalb weniger Minuten",
+     "IN_A_FEW_HOURS": "Wir antworten üblicherweise innerhalb weniger Stunden",
+     "IN_A_DAY": "Wir antworten üblicherweise innerhalb eines Tages"
+   },
+-  "START_CONVERSATION": "Sende uns eine Nachricht",
++  "START_CONVERSATION": "Chat starten",
+   "START_NEW_CONVERSATION": "Neue Unterhaltung starten",
+   "UNREAD_VIEW": {
+     "VIEW_MESSAGES_BUTTON": "Neue Nachrichten anzeigen",

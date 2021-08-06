@@ -73,7 +73,6 @@ services:
       traefik.http.routers.jaa-directus.tls.certresolver: $TRAEFIK_CERTRESOLVER
     logging: *default-logging
 
-
   chatwoot-db:
     volumes:
       - chatwoot-db-data:/var/lib/postgresql/data
@@ -89,6 +88,7 @@ services:
       - jaa-chatwoot
     logging: *default-logging
   chatwoot-sidekiq:
+    image: ${REGISTRY_PREFIX:-}jaa-chatwoot:latest
     secrets:
       - jaa_chatwoot_secret_key_base
       - jaa_chatwoot_db_password
@@ -110,6 +110,7 @@ services:
       - jaa-chatwoot
     logging: *default-logging
   chatwoot-rails:
+    image: ${REGISTRY_PREFIX:-}jaa-chatwoot:latest
     volumes:
       - chatwoot-rails-storage:/app/storage
     secrets:
@@ -128,7 +129,6 @@ services:
       traefik.http.routers.jaa-chatwoot.rule: Host(`chatwoot.${PUBLIC_DOMAIN}`)
       traefik.http.routers.jaa-chatwoot.entrypoints: $TRAEFIK_ENTRYPOINTS
       traefik.http.routers.jaa-chatwoot.tls.certresolver: $TRAEFIK_CERTRESOLVER
-      traefik.http.services.jaa-chatwoot.loadbalancer.server.port: 3000
       traefik.http.routers.jaa-chatwoot.middlewares: chatwoot-headers
       traefik.http.middlewares.chatwoot-headers.headers.customrequestheaders.X-Forwarded-Proto: https
     logging: *default-logging

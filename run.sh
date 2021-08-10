@@ -140,7 +140,7 @@ init() {
   declare -a envs secrets
   get_config 'config' 'envs' 'secrets'
 
-  echo "Creating $(basename "$_env_file") file..."
+  echo "Creating file '$(basename "$_env_file")'..."
   for env in "${envs[@]}"; do
     printf '%s=%s\n' "$env" "${config[$env]}" >>"$_env_file"
   done
@@ -204,7 +204,7 @@ destroy() {
         docker volume rm "${_stack_name}_${volume}" >/dev/null
       done
     fi
-    echo 'Removing env file...'
+    echo "Removing file '$(basename "$_env_file")'..."
     rm "$_env_file"
     set -e
   fi
@@ -266,7 +266,7 @@ main() {
   if [[ $1 != 'init' ]]; then
     # Check env file
     if [[ ! -f "$_env_file" ]]; then
-      echo "Missing file $(basename "$_env_file")"
+      echo "Missing file '$(basename "$_env_file")'"
       exit 1
     # Load env file
     else

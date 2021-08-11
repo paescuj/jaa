@@ -188,14 +188,18 @@ init() {
 
   info "Access data:
   Web:
-    URL:  ${web_url}/admin
-    Code: ${config[DIRECTUS_ADMIN_PASSWORD]}
-
+    URL:  ${web_url}/admin"
+  if [[ -z $DIRECTUS_ADMIN_PASSWORD ]]; then
+    info "    Code: ${config[DIRECTUS_ADMIN_PASSWORD]}"
+  fi
+  info "
   Directus:
     URL:      ${directus_url}
-    User:     admin@${config[PUBLIC_DOMAIN]}
-    Password: ${config[DIRECTUS_ADMIN_PASSWORD]}
-
+    User:     admin@${config[PUBLIC_DOMAIN]}"
+  if [[ -z $DIRECTUS_ADMIN_PASSWORD ]]; then
+    info "    Password: ${config[DIRECTUS_ADMIN_PASSWORD]}"
+  fi
+  info "
   Chatwoot:
     URL: ${chatwoot_url}"
   if [[ -n ${config[CHATWOOT_SMTP_PASSWORD]} ]] && [[ -z $CHATWOOT_SMTP_PASSWORD ]]; then

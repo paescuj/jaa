@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -o errexit
 set -o pipefail
 
 # Global vars
@@ -13,6 +13,32 @@ for compose_file in "${_compose_files[@]}"; do
   _docker_compose_cmd+=('--file' "$compose_file")
 done
 readonly _dir _jaa_env _stack_name _env_file _compose_files _docker_compose_cmd
+
+# Function to print a message
+print() {
+  declare color="$1" message="$2"
+  local color_reset='\x1b[0m'
+
+  if [[ -v NO_COLOR ]]; then
+    color=''
+    color_reset=''
+  fi
+
+  while IFS=$'\n' read -r log_line; do
+    printf "%b[%s]%b %s\n" "$color" "$(basename $0)" "$color_reset" "$log_line"
+  done <<< "$message"
+}
+
+# Function to print info message
+info() {
+  print '\x1b[32m' "$*"
+}
+
+# Function to print error message and exit
+error() {
+  print '\x1b[31m' "$*" >&2
+  exit 1
+}
 
 # Function to get config
 get_config() {
@@ -129,7 +155,7 @@ get_config() {
 # Function to create env file / secrets
 init() {
   if [[ -f "$_env_file" ]]; then
-    read -r -p "The file $(basename "$_env_file") already exists. Do you want to overwrite it? [y/N] " response
+    read -r -p "The file '$(basename "$_env_file")' already exists. Do you want to overwrite it? [y/N] " response
     if [[ ! ${response,,} =~ ^y(es)?$ ]]; then
       exit
     fi
@@ -140,7 +166,7 @@ init() {
   declare -a envs secrets
   get_config 'config' 'envs' 'secrets'
 
-  echo "Creating file '$(basename "$_env_file")'..."
+  info "Creating file '$(basename "$_env_file")'..."
   for env in "${envs[@]}"; do
     printf '%s=%s\n' "$env" "${config[$env]}" >>"$_env_file"
   done
@@ -154,13 +180,13 @@ init() {
     local directus_url="https://directus.${config[PUBLIC_DOMAIN]}"
     local chatwoot_url="https:/chatwoot.${config[PUBLIC_DOMAIN]}"
 
-    echo 'Creating Docker secrets...'
+    info 'Creating Docker secrets...'
     for secret in "${secrets[@]}"; do
       printf '%s' "${config[$secret]}" | docker secret create "${_stack_name}_${secret,,}" - >/dev/null
     done
   fi
 
-  echo "Access data:
+  info "Access data:
   Web:
     URL:  ${web_url}/admin
     Code: ${config[DIRECTUS_ADMIN_PASSWORD]}
@@ -172,9 +198,9 @@ init() {
 
   Chatwoot:
     URL: ${chatwoot_url}"
-    if [[ -n ${config[CHATWOOT_SMTP_PASSWORD]} ]] && [[ -z $CHATWOOT_SMTP_PASSWORD ]]; then
-      echo "    SMTP Password: ${config[CHATWOOT_SMTP_PASSWORD]}"
-    fi
+  if [[ -n ${config[CHATWOOT_SMTP_PASSWORD]} ]] && [[ -z $CHATWOOT_SMTP_PASSWORD ]]; then
+    info "    SMTP Password: ${config[CHATWOOT_SMTP_PASSWORD]}"
+  fi
 
   for var in "${!config[@]}"; do
     unset "$var"
@@ -187,37 +213,36 @@ destroy() {
   if [[ ${response,,} =~ ^y(es)?$ ]]; then
     set +e
     if [[ $_jaa_env == 'dev' ]]; then
-      echo 'Removing containers...'
+      info 'Removing containers...'
       "${_docker_compose_cmd[@]}" down --volumes
     else
-      echo 'Removing stack...'
+      info 'Removing stack...'
       docker stack rm "$_stack_name"
       sleep 10
-      echo 'Removing secrets...'
+      info 'Removing secrets...'
       declare -a secrets
       get_config '' '' 'secrets'
       secrets=("${secrets[@],,}")
       secrets=("${secrets[@]/#/jaa_}")
       docker secret rm "${secrets[@]}" >/dev/null
-      echo 'Removing volumes...'
+      info 'Removing volumes...'
       for volume in $("${_docker_compose_cmd[@]}" config --volumes 2>/dev/null); do
         docker volume rm "${_stack_name}_${volume}" >/dev/null
       done
     fi
-    echo "Removing file '$(basename "$_env_file")'..."
+    info "Removing file '$(basename "$_env_file")'..."
     rm "$_env_file"
     set -e
   fi
-  exit
 }
 
 # Function to build / push images
 do_images() {
-  echo 'Building images...'
+  info 'Building images...'
   DOCKER_HOST="$DOCKER_BUILD_HOST" "${_docker_compose_cmd[@]}" build --pull --parallel
 
   if [[ $_jaa_env == 'prod' ]]; then
-    echo 'Uploading images...'
+    info 'Uploading images...'
     if [[ -n $REGISTRY_PREFIX ]]; then
       DOCKER_HOST="$DOCKER_BUILD_HOST" "${_docker_compose_cmd[@]}" push
     else
@@ -230,14 +255,14 @@ do_images() {
 # Function to start the project
 start() {
   if [[ $_jaa_env == 'dev' ]]; then
-    echo 'Starting containers...'
+    info 'Starting containers...'
     "${_docker_compose_cmd[@]}" up -d
 
-    echo "Starting web app..."
+    info "Starting web app..."
     npm install --prefix "${_dir}/web"
     exec npm run --prefix "${_dir}/web" dev
   else
-    echo 'Deploying stack...'
+    info 'Deploying stack...'
     docker_stack_deploy_cmd=('docker' 'stack' 'deploy')
     for compose_file in "${_compose_files[@]}"; do
       docker_stack_deploy_cmd+=('--compose-file' "$compose_file")
@@ -259,15 +284,13 @@ cmd() {
 main() {
   # Check env
   if [[ $_jaa_env != 'dev' && $_jaa_env != 'prod' ]]; then
-    echo "JAA_ENV must either be 'dev' or 'prod'" >&2
-    exit 1
+    error "JAA_ENV must either be 'dev' or 'prod'"
   fi
 
   if [[ $1 != 'init' ]]; then
     # Check env file
     if [[ ! -f "$_env_file" ]]; then
-      echo "Missing file '$(basename "$_env_file")'"
-      exit 1
+      error "Missing file '$(basename "$_env_file")'"
     # Load env file
     else
       set -a

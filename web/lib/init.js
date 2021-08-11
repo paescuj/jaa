@@ -1,3 +1,5 @@
+// See https://github.com/directus/directus/discussions/3891
+
 export async function init(directus) {
   // Create collections
   await directus.collections.createMany([

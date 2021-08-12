@@ -393,7 +393,6 @@ export async function init(directus) {
           },
         ],
       },
-      fields: ['filename_download'],
     },
     // Read access on "settings"
     {

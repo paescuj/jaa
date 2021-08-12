@@ -178,7 +178,7 @@ export default function Card({
     });
     const blob = await result.blob();
     const href = window.URL.createObjectURL(blob);
-    downloadLink.current.download = newFile.filename_download;
+    downloadLink.current.download = newFile.filename;
     downloadLink.current.href = href;
     downloadLink.current.click();
   };

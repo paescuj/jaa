@@ -104,7 +104,6 @@ export default function Home() {
               sort: ['job'],
             });
             for (const doc of docs.data) {
-              const file = await directus.files.readOne(doc.file[0]);
               data.push({
                 id: doc.id,
                 title: doc.title,
@@ -113,7 +112,11 @@ export default function Home() {
                   httpHeaders: {
                     Authorization: getBearer,
                   },
-                  filename_download: file.filename_download,
+                  filename:
+                    doc.title
+                      .replace(/[^a-z0-9]/gi, '_')
+                      .replace(/_{2,}/g, '_')
+                      .toLowerCase() + '.pdf',
                 },
               });
             }

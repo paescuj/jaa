@@ -247,7 +247,7 @@ export default function Admin() {
             setLoading({ state: true, text: 'Überprüfe Applikation...' });
 
             // Assuming the backend isn't initialized if 'job' collection is missing
-            const collections = await directus.collections.readMany();
+            const collections = await directus.collections.readAll();
             const result = collections.data.find((obj) => {
               return obj.collection === 'jobs';
             });

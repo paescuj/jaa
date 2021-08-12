@@ -216,19 +216,19 @@ export async function init(directus) {
   ]);
 
   // Create "job", "doc" and "docPreview" fields on "directus_users" and "directus_files" for relation
-  await directus.items('directus_fields/directus_users').createOne({
+  await directus.fields.createOne('directus_users', {
     field: 'job',
     type: 'integer',
   });
-  await directus.items('directus_fields/directus_files').createOne({
+  await directus.fields.createOne('directus_files', {
     field: 'job',
     type: 'integer',
   });
-  await directus.items('directus_fields/directus_files').createOne({
+  await directus.fields.createOne('directus_files', {
     field: 'doc',
     type: 'uuid',
   });
-  await directus.items('directus_fields/directus_files').createOne({
+  await directus.fields.createOne('directus_files', {
     field: 'docPreview',
     type: 'uuid',
   });

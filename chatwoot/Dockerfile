@@ -1,7 +1,4 @@
-# Switch back as soon as new version has been released with ruby 3
-# and https://github.com/chatwoot/chatwoot/pull/2779 merged
-# FROM chatwoot/chatwoot:v1.18.2
-FROM paescuj/chatwoot:latest
+FROM chatwoot/chatwoot:v1.19.0
 
 COPY ./patches/*.patch /patches/
 

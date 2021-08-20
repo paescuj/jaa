@@ -7,7 +7,8 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/license/paescuj/jaa?style=flat-square" alt="License">
+  <a href="./LICENSE"><img src="https://img.shields.io/github/license/paescuj/jaa" alt="License"></a>
+  <a href="https://github.com/paescuj/jaa/actions/workflows/lint.yml"><img src="https://github.com/paescuj/jaa/actions/workflows/lint.yml/badge.svg" alt="Lint"></a>
 </p>
 
 <p align="center">

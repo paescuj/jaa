@@ -2,9 +2,12 @@ import '@fontsource/quicksand/latin-400.css';
 import '@fontsource/quicksand/latin-500.css';
 // Unfortunately we have to import swiper css here to prevent having unstyled instances during page transition
 // (see https://github.com/vercel/next.js/issues/17464)
-import 'swiper/swiper.min.css';
-import 'swiper/components/navigation/navigation.min.css';
-import 'swiper/components/pagination/pagination.min.css';
+// eslint-disable-next-line import/no-unresolved
+import 'swiper/css';
+// eslint-disable-next-line import/no-unresolved
+import 'swiper/css/navigation';
+// eslint-disable-next-line import/no-unresolved
+import 'swiper/css/pagination';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';

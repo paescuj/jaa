@@ -12,13 +12,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import Measure from 'react-measure';
 import { Document, Page, pdfjs } from 'react-pdf';
-import SwiperCore, {
-  A11y,
-  Controller,
-  Keyboard,
-  Navigation,
-  Pagination,
-} from 'swiper';
+import { A11y, Controller, Keyboard, Navigation, Pagination } from 'swiper';
+// eslint-disable-next-line import/no-unresolved
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { highlight } from '../lib/search';
@@ -28,9 +23,6 @@ import Loader from './Loader';
 
 // See https://github.com/wojtekmaj/react-pdf/issues/136
 pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
-
-// Initialize swiper plugins
-SwiperCore.use([A11y, Controller, Keyboard, Navigation, Pagination]);
 
 const MotionFlex = motion(Flex);
 
@@ -218,6 +210,7 @@ export default function Pdf({
             >
               <Box role="group">
                 <Swiper
+                  modules={[A11y, Controller, Keyboard, Navigation, Pagination]}
                   width={mesWidth}
                   simulateTouch={false}
                   navigation

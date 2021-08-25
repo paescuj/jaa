@@ -30,7 +30,7 @@ const pdf = (props) => ({
 
 // Use theme colors for swiper
 const swiper = (props) => ({
-  '.swiper-container': {
+  '.swiper': {
     '--swiper-theme-color': mode(
       props.theme.colors.blue[500],
       props.theme.colors.blue[200]
@@ -43,14 +43,6 @@ const swiper = (props) => ({
   '[role="group"]:hover :not(.swiper-button-hidden) .swiper-button-prev, [role="group"]:hover :not(.swiper-button-hidden) .swiper-button-next':
     {
       opacity: '1 !important',
-    },
-  ':not(.swiper-button-hidden) :not(.swiper-button-disabled).swiper-button-prev:focus, :not(.swiper-button-hidden) :not(.swiper-button-disabled).swiper-button-next:focus':
-    {
-      opacity: '1 !important',
-    },
-  ':not(.swiper-button-hidden) .swiper-button-disabled.swiper-button-prev:focus, :not(.swiper-button-hidden) .swiper-button-disabled.swiper-button-next:focus':
-    {
-      opacity: '0.35 !important',
     },
   '[role="group"]:hover :not(.swiper-button-hidden) .swiper-button-disabled': {
     opacity: '0.35 !important',

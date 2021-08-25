@@ -214,6 +214,7 @@ export default function Pdf({
               }
               onLoadSuccess={onDocumentLoadSuccess}
               onLoadError={onDocumentLoadError}
+              externalLinkTarget="_blank"
             >
               <Box role="group">
                 <Swiper

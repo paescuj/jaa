@@ -32,6 +32,7 @@ module.exports = {
     ],
     'prettier/prettier': ['error'],
   },
+  reportUnusedDisableDirectives: true,
   settings: {
     'mdx/code-blocks': true,
   },

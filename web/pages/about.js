@@ -24,7 +24,6 @@ const mdxComponents = {
   h2: (props) => <Heading as="h2" size="lg" {...props} />,
   // eslint-disable-next-line react/display-name
   h3: (props) => <Heading as="h3" size="md" {...props} />,
-  // eslint-disable-next-line react/display-name
 };
 
 export default function About() {

@@ -242,6 +242,13 @@ destroy() {
 
 # Function to build / push images
 do_images() {
+  if [[ $_jaa_env == 'prod' ]]; then
+    info 'Fetch existing images...'
+    for image in $("${_docker_compose_cmd[@]}" config --no-interpolate | sed -n 's/^.*image: ${REGISTRY_PREFIX:-}//p' | uniq); do
+      DOCKER_HOST="$DOCKER_BUILD_HOST" docker pull "${REGISTRY_PREFIX}${image}"
+    done
+  fi
+
   info 'Building images...'
   DOCKER_HOST="$DOCKER_BUILD_HOST" "${_docker_compose_cmd[@]}" build --pull --parallel
 

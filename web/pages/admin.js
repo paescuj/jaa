@@ -202,6 +202,7 @@ export default function Admin() {
     onClose: onCloseNewDoc,
   } = useDisclosure({ onClose: () => setNewDocTarget() });
   const {
+    setValue: newDocSetValue,
     formState: newDocFormState,
     handleSubmit: newDocHandleSubmit,
     register: newDocRegister,
@@ -461,8 +462,10 @@ export default function Admin() {
     });
     // Upload preview and pdf itself
     const formData = new FormData();
-    formData.append('title', `preview-${title}`);
-    formData.append('file', await pdfPreview.blob());
+    if (!newDocTarget?.doc) {
+      formData.append('title', `preview-${title}`);
+      formData.append('file', await pdfPreview.blob());
+    }
     formData.append('title', title);
     formData.append('file', await file[0]);
     const files = await fetch(`${directusUrl}/files`, {
@@ -473,14 +476,22 @@ export default function Admin() {
     const filesResponse = await files.json();
     const filesData = filesResponse.data;
 
-    // Create doc entry
-    await directus.items('docs').createOne({
-      title: title,
-      preview: [filesData.find((file) => file.title === `preview-${title}`).id],
-      file: [filesData.find((file) => file.title === title).id],
-      global: !newDocTarget ? true : false,
-      job: newDocTarget ? newDocTarget.id : null,
-    });
+    // Create / update doc entry
+    if (!newDocTarget?.doc) {
+      await directus.items('docs').createOne({
+        title: title,
+        preview: [
+          filesData.find((file) => file.title === `preview-${title}`).id,
+        ],
+        file: [filesData.find((file) => file.title === title).id],
+        global: newDocTarget?.job ? false : true,
+        job: newDocTarget?.job ?? null,
+      });
+    } else {
+      await directus.items('docs').updateOne(newDocTarget.doc, {
+        file_dark: [filesData.id],
+      });
+    }
 
     refreshDocs();
     onCloseNewDoc();
@@ -734,6 +745,28 @@ export default function Admin() {
                                                     previewUrl={doc.preview[0]}
                                                     type="image"
                                                   />
+                                                  <Button
+                                                    mt={2}
+                                                    size="sm"
+                                                    colorScheme="blue"
+                                                    disabled={
+                                                      doc.file_dark.length > 0
+                                                    }
+                                                    onClick={() => {
+                                                      setNewDocTarget({
+                                                        job: job.id,
+                                                        title: `${job.company} - ${job.position}`,
+                                                        doc: doc.id,
+                                                      });
+                                                      newDocSetValue(
+                                                        'title',
+                                                        doc.title
+                                                      );
+                                                      onOpenNewDoc();
+                                                    }}
+                                                  >
+                                                    Dunkle Variante hinzufügen
+                                                  </Button>
                                                 </PopoverBody>
                                                 <PopoverFooter
                                                   d="flex"
@@ -804,7 +837,7 @@ export default function Admin() {
                                     leftIcon={<Plus />}
                                     onClick={() => {
                                       setNewDocTarget({
-                                        id: job.id,
+                                        job: job.id,
                                         title: `${job.company} - ${job.position}`,
                                       });
                                       onOpenNewDoc();
@@ -1018,6 +1051,23 @@ export default function Admin() {
                               <Popover>
                                 {({ onClose }) => (
                                   <>
+                                    <Button
+                                      size="sm"
+                                      leftIcon={<Plus />}
+                                      colorScheme="blue"
+                                      disabled={doc.file_dark.length > 0}
+                                      mr={{ base: 0, sm: 4 }}
+                                      mb={{ base: 4, sm: 0 }}
+                                      onClick={() => {
+                                        setNewDocTarget({
+                                          doc: doc.id,
+                                        });
+                                        newDocSetValue('title', doc.title);
+                                        onOpenNewDoc();
+                                      }}
+                                    >
+                                      Dunkle Variante hinzufügen
+                                    </Button>
                                     <PopoverTrigger>
                                       <Button
                                         size="sm"
@@ -1267,7 +1317,7 @@ export default function Admin() {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            {newDocTarget
+            {newDocTarget?.job
               ? `Dokument zu Job "${newDocTarget.title}" hinzufügen`
               : 'Allgemeines Dokument hinzufügen'}
           </ModalHeader>
@@ -1281,6 +1331,7 @@ export default function Admin() {
                 <FormLabel>Titel</FormLabel>
                 <Input
                   placeholder="Arbeitszeugnis"
+                  disabled={newDocTarget?.doc}
                   {...newDocTitleRest}
                   ref={(e) => {
                     newDocTitleRef(e);

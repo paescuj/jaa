@@ -142,6 +142,18 @@ export async function init(directus) {
           },
         },
         {
+          field: 'file_dark',
+          type: 'o2m',
+          meta: {
+            display: 'related-values',
+            display_options: {
+              template: '{{title}}',
+            },
+            interface: 'list-o2m',
+            special: 'o2m',
+          },
+        },
+        {
           field: 'preview',
           type: 'o2m',
           meta: {
@@ -229,6 +241,10 @@ export async function init(directus) {
     type: 'uuid',
   });
   await directus.fields.createOne('directus_files', {
+    field: 'doc_dark',
+    type: 'uuid',
+  });
+  await directus.fields.createOne('directus_files', {
     field: 'docPreview',
     type: 'uuid',
   });
@@ -277,6 +293,19 @@ export async function init(directus) {
     related_collection: 'docs',
     meta: {
       one_field: 'file',
+    },
+    // Delete "directus_files" entries when related "docs" entry is deleted
+    schema: {
+      on_delete: 'CASCADE',
+    },
+  });
+  // From "doc_dark" in "directus_files" to "file_dark" in "docs"
+  await directus.relations.createOne({
+    collection: 'directus_files',
+    field: 'doc_dark',
+    related_collection: 'docs',
+    meta: {
+      one_field: 'file_dark',
     },
     // Delete "directus_files" entries when related "docs" entry is deleted
     schema: {
@@ -355,7 +384,7 @@ export async function init(directus) {
           },
         ],
       },
-      fields: ['id', 'title', 'file'],
+      fields: ['id', 'title', 'file', 'file_dark'],
     },
     // Read access on "files" based on "job" or "doc"
     {
@@ -382,6 +411,24 @@ export async function init(directus) {
           },
           {
             doc: {
+              job: {
+                user: {
+                  id: {
+                    _eq: '$CURRENT_USER',
+                  },
+                },
+              },
+            },
+          },
+          {
+            doc_dark: {
+              global: {
+                _eq: true,
+              },
+            },
+          },
+          {
+            doc_dark: {
               job: {
                 user: {
                   id: {

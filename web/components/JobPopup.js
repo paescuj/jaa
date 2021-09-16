@@ -48,7 +48,7 @@ export default function JobPopup({ link, previewUrl, children }) {
   }, [previewUrl]);
 
   return (
-    <span>
+    <span style={{ display: 'inline-block' }}>
       <Tippy
         followCursor
         interactive

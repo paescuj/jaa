@@ -1,18 +1,5 @@
-diff --git a/config/locales/de.yml b/config/locales/de.yml
-index 65724b16..3c673dcb 100644
---- a/config/locales/de.yml
-+++ b/config/locales/de.yml
-@@ -65,7 +65,7 @@ de:
-     templates:
-       greeting_message_body: "%{account_name} antwortet in der Regel in wenigen Stunden."
-       ways_to_reach_you_message_body: "Geben Sie dem Team einen Weg, Sie zu erreichen."
--      email_input_box_message_body: "Lassen Sie sich per E-Mail benachrichtigen"
-+      email_input_box_message_body: "Bitte teilen Sie mir Ihre E-Mail-Adresse mit. Vielen Dank!"
-       csat_input_message_body: "Bitte bewerte die Unterhaltung"
-     reply:
-       email_subject: "Neue Nachrichten in dieser Unterhaltung"
 diff --git a/app/javascript/widget/i18n/locale/de.json b/app/javascript/widget/i18n/locale/de.json
-index 3be3bd70..f1a9fa24 100644
+index a31a0e17..53a0cf95 100644
 --- a/app/javascript/widget/i18n/locale/de.json
 +++ b/app/javascript/widget/i18n/locale/de.json
 @@ -9,15 +9,15 @@
@@ -34,3 +21,16 @@ index 3be3bd70..f1a9fa24 100644
    "START_NEW_CONVERSATION": "Neue Unterhaltung starten",
    "UNREAD_VIEW": {
      "VIEW_MESSAGES_BUTTON": "Neue Nachrichten anzeigen",
+diff --git a/config/locales/de.yml b/config/locales/de.yml
+index 9a462ce5..897450cd 100644
+--- a/config/locales/de.yml
++++ b/config/locales/de.yml
+@@ -66,7 +66,7 @@ de:
+     templates:
+       greeting_message_body: "%{account_name} antwortet in der Regel in wenigen Stunden."
+       ways_to_reach_you_message_body: "Geben Sie dem Team einen Weg, Sie zu erreichen."
+-      email_input_box_message_body: "Lassen Sie sich per E-Mail benachrichtigen"
++      email_input_box_message_body: "Bitte teilen Sie mir Ihre E-Mail-Adresse mit. Vielen Dank!"
+       csat_input_message_body: "Bitte bewerte die Unterhaltung"
+     reply:
+       email_subject: "Neue Nachrichten in dieser Unterhaltung"

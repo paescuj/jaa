@@ -8,7 +8,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 // eslint-disable-next-line import/no-unresolved
 import 'swiper/css/pagination';
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import '@paescuj/react-pdf/dist/esm/Page/AnnotationLayer.css';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';

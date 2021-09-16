@@ -6,10 +6,10 @@ import {
   useBreakpointValue,
   useColorMode,
 } from '@chakra-ui/react';
+import { Document, Page, pdfjs } from '@paescuj/react-pdf';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import Measure from 'react-measure';
-import { Document, Page, pdfjs } from 'react-pdf';
 import { A11y, Controller, Keyboard, Navigation, Pagination } from 'swiper';
 // eslint-disable-next-line import/no-unresolved
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -99,7 +99,6 @@ export default function Pdf({
 
   // Initialize page
   const onPageLoadSuccess = async (page) => {
-    // Remove text layer offset
     // Get text content of the page and add it to the search index
     const textContent = await page.getTextContent();
     DocumentStore.update((s) => {
@@ -193,11 +192,8 @@ export default function Pdf({
               file={transformedFile}
               loading=""
               error={
-                <Center h="150px">
-                  <Box
-                    bg={colorMode === 'light' ? 'white' : '#191919'}
-                    textAlign="center"
-                  >
+                <Center minH="150px">
+                  <Box textAlign="center">
                     Dokument konnte nicht geladen werden.
                   </Box>
                 </Center>
@@ -233,8 +229,15 @@ export default function Pdf({
                           <Page
                             className={
                               colorMode === 'dark' &&
-                              transformedFile?.mode === 'dark' &&
-                              'no-invert'
+                              transformedFile?.mode === 'dark'
+                                ? 'no-invert'
+                                : undefined
+                            }
+                            canvasBackground={
+                              colorMode === 'dark' &&
+                              transformedFile?.mode === 'dark'
+                                ? 'transparent'
+                                : undefined
                             }
                             onClick={(e) => e.stopPropagation()}
                             loading=""

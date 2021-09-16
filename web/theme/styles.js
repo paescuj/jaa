@@ -11,7 +11,7 @@ const tippy = (props) => ({
     },
 });
 
-// Fixes for PDFs
+// Fixes and additions for PDFs
 const pdf = (props) => ({
   '.react-pdf__Page__textContent span': {
     opacity: '0.15',
@@ -25,6 +25,12 @@ const pdf = (props) => ({
   },
   '.react-pdf__Page': {
     filter: mode('', 'invert(90%)')(props),
+  },
+  '.no-invert': {
+    filter: 'invert(0%)',
+  },
+  '.no-invert .react-pdf__Page__textContent': {
+    filter: 'invert(90%)',
   },
 });
 

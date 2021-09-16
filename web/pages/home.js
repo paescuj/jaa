@@ -12,6 +12,7 @@ import {
   Text,
   Tooltip,
   useBreakpointValue,
+  useColorMode,
 } from '@chakra-ui/react';
 import {
   closestCenter,
@@ -74,6 +75,7 @@ export default function Home() {
     })
   );
   const isSmallScreen = useBreakpointValue({ base: true, lg: false });
+  const { colorMode } = useColorMode();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -104,20 +106,32 @@ export default function Home() {
               sort: ['job'],
             });
             for (const doc of docs.data) {
+              const filename =
+                doc.title
+                  .replace(/[^a-z0-9]/gi, '_')
+                  .replace(/_{2,}/g, '_')
+                  .toLowerCase() + '.pdf';
               data.push({
                 id: doc.id,
                 title: doc.title,
-                file: {
+                file_light: {
                   url: `${directusUrl}/assets/${doc.file[0]}`,
                   httpHeaders: {
                     Authorization: getBearer,
                   },
-                  filename:
-                    doc.title
-                      .replace(/[^a-z0-9]/gi, '_')
-                      .replace(/_{2,}/g, '_')
-                      .toLowerCase() + '.pdf',
+                  filename,
                 },
+                file_dark:
+                  doc.file_dark.length > 0
+                    ? {
+                        url: `${directusUrl}/assets/${doc.file_dark[0]}`,
+                        httpHeaders: {
+                          Authorization: getBearer,
+                        },
+                        filename,
+                        mode: 'dark',
+                      }
+                    : null,
               });
             }
             // Initial order
@@ -358,12 +372,16 @@ export default function Home() {
                               !manuallyFilteredDocuments.includes(id) &&
                               !(results[id] && results[id].count === 0)
                           )
-                          .map(({ id, title, file }) => (
+                          .map(({ id, title, file_light, file_dark }) => (
                             <Card
                               key={id}
                               id={id}
                               title={title}
-                              file={file}
+                              file={
+                                colorMode === 'dark' && file_dark
+                                  ? file_dark
+                                  : file_light
+                              }
                               grid={grid}
                               addToFilteredDocuments={
                                 addToManuallyFilteredDocuments

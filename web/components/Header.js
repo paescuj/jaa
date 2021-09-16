@@ -15,9 +15,7 @@ export default function Header({ title }) {
       <Flex>
         <Tooltip
           hasArrow
-          label={`Wechsle zu ${
-            colorMode === 'light' ? 'Nachtmodus' : 'Tagesmodus'
-          }`}
+          label={`${colorMode === 'light' ? 'Dunkler' : 'Heller'} Modus`}
         >
           <IconButton
             onClick={toggleColorMode}
@@ -25,9 +23,7 @@ export default function Header({ title }) {
             overflow="hidden"
             colorScheme={colorMode === 'light' ? 'blackAlpha' : 'gray'}
             color={colorMode === 'light' ? 'gray.600' : 'gray.400'}
-            aria-label={`Wechsle zu ${
-              colorMode === 'light' ? 'Nachtmodus' : 'Tagesmodus'
-            }`}
+            aria-label={`${colorMode === 'light' ? 'Dunkler' : 'Heller'} Modus`}
             icon={
               <AnimatePresence initial={false} exitBeforeEnter>
                 <MotionBox

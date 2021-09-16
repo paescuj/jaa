@@ -1,5 +1,3 @@
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-
 import {
   Box,
   Center,
@@ -233,6 +231,11 @@ export default function Pdf({
                       <Center>
                         <Box pos="relative">
                           <Page
+                            className={
+                              colorMode === 'dark' &&
+                              transformedFile?.mode === 'dark' &&
+                              'no-invert'
+                            }
                             onClick={(e) => e.stopPropagation()}
                             loading=""
                             onRenderSuccess={addToPageRendered}

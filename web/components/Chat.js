@@ -1,5 +1,4 @@
 import { Button } from '@chakra-ui/react';
-import Script from 'next/script';
 import { useEffect, useRef } from 'react';
 
 export function ChatToggle(props) {
@@ -31,6 +30,23 @@ export function ChatToggle(props) {
 
 export default function Chat({ url, token, identifier, name, hash }) {
   useEffect(() => {
+    (function (d, t) {
+      var BASE_URL = url;
+      var g = d.createElement(t),
+        s = d.getElementsByTagName(t)[0];
+      g.id = 'woot-script';
+      g.src = BASE_URL + '/packs/js/sdk.js';
+      g.defer = true;
+      g.async = true;
+      s.parentNode.insertBefore(g, s);
+      g.onload = function () {
+        window.chatwootSDK.run({
+          websiteToken: token,
+          baseUrl: BASE_URL,
+        });
+      };
+    })(document, 'script');
+
     const setup = () => {
       window.$chatwoot.setUser(identifier, {
         name: name,
@@ -52,26 +68,7 @@ export default function Chat({ url, token, identifier, name, hash }) {
         )
         .forEach((el) => el.remove());
     };
-  }, [hash, identifier, name]);
+  }, [hash, identifier, name, token, url]);
 
-  return (
-    <Script id="woot-script" strategy="lazyOnload">
-      {`
-        (function(d,t) {
-              var BASE_URL="${url}";
-              var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-              g.src=BASE_URL+"/packs/js/sdk.js";
-              g.defer = true;
-              g.async = true;
-              s.parentNode.insertBefore(g,s);
-              g.onload=function(){
-                window.chatwootSDK.run({
-                  websiteToken: '${token}',
-                  baseUrl: BASE_URL
-                })
-              }
-            })(document,"script");
-      `}
-    </Script>
-  );
+  return null;
 }

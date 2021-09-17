@@ -138,7 +138,7 @@ export default function Card({
   } = useSortable({ id: id });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Translate.toString(transform),
     transition,
     zIndex: isDragging && 999,
   };

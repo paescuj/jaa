@@ -259,7 +259,7 @@ export default function Home() {
         />
 
         <Flex as="main" direction="column" flex="1">
-          <Box mt={6} maxW="800" fontSize={{ md: 18 }}>
+          <Box mt={6} maxW="700" fontSize={{ md: 18 }}>
             <IntroductionMdx
               job={job}
               chat={

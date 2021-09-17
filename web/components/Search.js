@@ -74,7 +74,8 @@ export default function Search(props) {
               inputRef.current.value = '';
               setQuery(null);
             }}
-            aria-label="Suche zurücksetzen"
+            title="Filter entfernen"
+            aria-label="Filter entfernen"
             icon={<Cancel />}
             variant="unstyled"
             display="inline-flex"

@@ -152,7 +152,8 @@ export default function Login() {
                       tabIndex="0"
                       variant="unstyled"
                       display="inline-flex"
-                      aria-label={isOpen ? 'Code verstecken' : 'Code anzeigen'}
+                      title={isOpen ? 'Code verbergen' : 'Code anzeigen'}
+                      aria-label={isOpen ? 'Code verbergen' : 'Code anzeigen'}
                       icon={isOpen ? <EyeEmpty /> : <EyeOff />}
                       onClick={onClickReveal}
                     />

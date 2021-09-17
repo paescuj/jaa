@@ -261,7 +261,9 @@ export default function Admin() {
             setLoading({ state: true, text: 'Lade Daten...' });
             const jobs = await directus.items('jobs').readMany();
             setJobs(jobs.data);
-            const docs = await directus.items('docs').readMany();
+            const docs = await directus.items('docs').readMany({
+              sort: ['job'],
+            });
             setDocs(docs.data);
 
             const settings = await directus.singleton('settings').read();

@@ -157,7 +157,11 @@ export default function Pdf({
               ? prev
               : current
         );
-        if (cardSwiper !== null && !cardSwiper.destroyed) {
+        if (
+          cardSwiper !== null &&
+          !cardSwiper.destroyed &&
+          results.pages[pageWithMaxCount].count > 0
+        ) {
           cardSwiper.slideTo(pageWithMaxCount);
         }
       }

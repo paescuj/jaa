@@ -13,7 +13,7 @@
     "@chakra-ui/react": "1.6.8",
     "@directus/sdk": "9.0.0-rc.95",
     "@dnd-kit/core": "4.0.0",
-    "@dnd-kit/sortable": "4.0.0",
+    "@dnd-kit/sortable": "5.0.0",
     "@dnd-kit/utilities": "3.0.0",
     "@emotion/react": "11.4.1",
     "@emotion/styled": "11.3.0",

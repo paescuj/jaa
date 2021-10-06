@@ -1,7 +1,7 @@
 // Check whether pdf worker is available in react-pdf
 // (otherwise it got deduped)
 const context = require.context(
-  '@paescuj/react-pdf',
+  '@paescuj',
   true,
   /legacy\/build\/pdf\.worker\.(min\.)?js$/
 );

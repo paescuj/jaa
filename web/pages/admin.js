@@ -527,6 +527,7 @@ export default function Admin() {
         welcome_tagline:
           'Sollte ich gerade offline sein, so können Sie mir gerne eine Nachricht hinterlassen und ich werde Ihnen baldmöglichst unter Ihrer angegebenen E-Mail-Adresse antworten 😃',
         widget_color: theme.colors.blue[500],
+        hmac_mandatory: true,
       },
     };
     const inbox = await fetch(

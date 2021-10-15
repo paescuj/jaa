@@ -1,6 +1,9 @@
 const withMDX = require('@next/mdx')();
 
 module.exports = withMDX({
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   webpack: (config) => {
     // Load pdf worker files as URLs by using asset modules
     config.module.rules.unshift({

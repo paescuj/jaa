@@ -25,7 +25,7 @@ print() {
   fi
 
   while IFS=$'\n' read -r log_line; do
-    printf "%b[%s]%b %s\n" "$color" "$(basename $0)" "$color_reset" "$log_line"
+    printf "%b[%s]%b %s\n" "$color" "$(basename "$0")" "$color_reset" "$log_line"
   done <<< "$message"
 }
 
@@ -99,7 +99,7 @@ get_config() {
     'PUBLIC_DOMAIN'
   )
 
-  if [[ $_jaa_env == 'dev' ]]; then
+  if [[ $_jaa_env = 'dev' ]]; then
     _envs+=(
       'DIRECTUS_KEY'
       'DIRECTUS_SECRET'
@@ -171,7 +171,7 @@ init() {
     printf '%s=%s\n' "$env" "${config[$env]}" >>"$_env_file"
   done
 
-  if [[ $_jaa_env == 'dev' ]]; then
+  if [[ $_jaa_env = 'dev' ]]; then
     local web_url="http://localhost:3000"
     local directus_url="http://localhost:8055"
     local chatwoot_url="http://localhost:3001"
@@ -216,7 +216,7 @@ destroy() {
   read -r -p "All data will be deleted! Do you want to continue? [y/N] " response
   if [[ ${response,,} =~ ^y(es)?$ ]]; then
     set +e
-    if [[ $_jaa_env == 'dev' ]]; then
+    if [[ $_jaa_env = 'dev' ]]; then
       info 'Removing containers...'
       "${_docker_compose_cmd[@]}" down --volumes
     else
@@ -242,22 +242,45 @@ destroy() {
 
 # Function to build / push images
 do_images() {
-  if [[ $_jaa_env == 'prod' ]]; then
-    info 'Fetch existing images...'
-    for image in $("${_docker_compose_cmd[@]}" config --no-interpolate | sed -n 's/^.*image: ${REGISTRY_PREFIX:-}//p' | uniq); do
-      DOCKER_HOST="$DOCKER_BUILD_HOST" docker pull "${REGISTRY_PREFIX}${image}"
+  if [[ $_jaa_env = 'prod' && -n $REGISTRY_PREFIX ]]; then
+    info 'Fetching existing images...'
+    declare -a images
+    readarray -t images < <("${_docker_compose_cmd[@]}" config | sed -n "s/^.*image: \(${REGISTRY_PREFIX//\//\\/}.*\)$/\1/p" | uniq)
+    declare -a pull_pids
+    for image in "${images[@]}"; do
+      DOCKER_HOST="$DOCKER_BUILD_HOST" docker pull "${image}" &
+      pull_pids+=($!)
+    done
+    for pid in "${pull_pids[@]}"; do
+      wait "$pid"
     done
   fi
 
   info 'Building images...'
   DOCKER_HOST="$DOCKER_BUILD_HOST" "${_docker_compose_cmd[@]}" build --pull --parallel
 
-  if [[ $_jaa_env == 'prod' ]]; then
+  if [[ $_jaa_env = 'prod' ]]; then
     info 'Uploading images...'
     if [[ -n $REGISTRY_PREFIX ]]; then
-      DOCKER_HOST="$DOCKER_BUILD_HOST" "${_docker_compose_cmd[@]}" push
+      declare -a push_pids
+      local images_up_to_date=true
+      for image in "${images[@]}"; do
+        local digest
+        digest=$(DOCKER_HOST="$DOCKER_BUILD_HOST" docker image inspect --format '{{.RepoDigests}}' "${image}")
+        # Empty repo digest indicates that image has changed
+        if [[ $digest = '[]' ]]; then
+          images_up_to_date=false
+          DOCKER_HOST="$DOCKER_BUILD_HOST" docker push "$image" &
+          push_pids+=($!)
+        fi
+      done
+      for pid in "${push_pids[@]}"; do
+        wait "$pid"
+      done
+      if [[ $images_up_to_date = true ]]; then
+        info 'Images on registry already up to date'
+      fi
     else
-      readarray -t images < <("${_docker_compose_cmd[@]}" config --no-interpolate | sed -n 's/^.*image: ${REGISTRY_PREFIX:-}//p' | uniq)
       DOCKER_HOST="$DOCKER_BUILD_HOST" docker save "${images[@]}" | gzip | docker load
     fi
   fi
@@ -265,7 +288,7 @@ do_images() {
 
 # Function to start the project
 start() {
-  if [[ $_jaa_env == 'dev' ]]; then
+  if [[ $_jaa_env = 'dev' ]]; then
     info 'Starting containers...'
     "${_docker_compose_cmd[@]}" up -d
 
@@ -285,7 +308,7 @@ start() {
 
 # Function to execute command in Docker context
 cmd() {
-  if [[ $_jaa_env == 'dev' ]]; then
+  if [[ $_jaa_env = 'dev' ]]; then
     exec "${_docker_compose_cmd[@]}" "$@"
   else
     exec docker "$@"

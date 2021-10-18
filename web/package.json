@@ -38,7 +38,7 @@
     "react-flip-toolkit": "7.0.13",
     "react-hook-form": "7.17.4",
     "react-measure": "2.5.2",
-    "swiper": "7.0.8"
+    "swiper": "7.0.9"
   },
   "devDependencies": {
     "eslint": "7.32.0",

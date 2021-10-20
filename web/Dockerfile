@@ -1,4 +1,4 @@
-FROM node:16-alpine AS build
+FROM node:17-alpine AS build
 RUN addgroup -g 1001 app \
   && adduser -u 1001 -G app -s /bin/sh -D app
 RUN apk upgrade --no-cache \
@@ -21,7 +21,7 @@ ARG PUBLIC_DOMAIN
 RUN npm run build \
   && npm prune
 
-FROM node:16-alpine AS production
+FROM node:17-alpine AS production
 RUN addgroup -g 1001 app \
   && adduser -u 1001 -G app -s /bin/sh -D app
 RUN apk upgrade --no-cache \

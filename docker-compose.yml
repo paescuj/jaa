@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_USER: directus
   directus:
-    image: directus/directus:9.0.0-rc.99
+    image: directus/directus:9.0.0-rc.98
     environment:
       DB_CLIENT: pg
       DB_HOST: directus-db

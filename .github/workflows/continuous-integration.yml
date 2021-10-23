@@ -1,0 +1,37 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  pre_check:
+    name: Pre Check
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.check_duplicate_workflows.outputs.should_skip }}
+    steps:
+      - name: Check Duplicate Workflows
+        id: check_duplicate_workflows
+        uses: fkirc/skip-duplicate-actions@v3.4.1
+        with:
+          cancel_others: 'true'
+          concurrent_skipping: 'same_content_newer'
+          paths: '["web/**"]'
+
+  lint:
+    name: Lint
+    needs: pre_check
+    if: ${{ needs.pre_check.outputs.should_skip != 'true' }}
+    uses: paescuj/jaa/.github/workflows/lint.yml@main
+
+  test_build:
+    name: Test Build
+    needs: pre_check
+    if: ${{ needs.pre_check.outputs.should_skip != 'true' }}
+    uses: paescuj/jaa/.github/workflows/test-build.yml@main

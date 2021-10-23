@@ -16,12 +16,12 @@ jobs:
     outputs:
       should_skip: ${{ steps.check_duplicate_workflows.outputs.should_skip }}
     steps:
-      - name: Check Duplicate Workflows
+      - name: Check duplicate workflows
         id: check_duplicate_workflows
         uses: fkirc/skip-duplicate-actions@v3.4.1
         with:
           cancel_others: 'true'
-          concurrent_skipping: 'same_content_newer'
+          concurrent_skipping: same_content_newer
           paths: '["web/**"]'
 
   lint:

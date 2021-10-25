@@ -6,10 +6,10 @@ import {
   useBreakpointValue,
   useColorMode,
 } from '@chakra-ui/react';
-import { Document, Page, pdfjs } from '@paescuj/react-pdf';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import Measure from 'react-measure';
+import { Document, Page, pdfjs } from 'react-pdf';
 import { A11y, Controller, Keyboard, Navigation, Pagination } from 'swiper';
 // eslint-disable-next-line import/no-unresolved
 import { Swiper, SwiperSlide } from 'swiper/react';

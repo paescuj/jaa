@@ -1,11 +1,11 @@
 // Check whether pdf worker is available in react-pdf
 // (otherwise it got deduped)
 const context = require.context(
-  '@paescuj',
+  'react-pdf',
   true,
   /legacy\/build\/pdf\.worker\.(min\.)?js$/
 );
-let packagePath = '@paescuj/react-pdf/node_modules/';
+let packagePath = 'react-pdf/node_modules/';
 if (context.keys().length !== 2) {
   packagePath = '';
 }

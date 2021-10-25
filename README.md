@@ -8,8 +8,7 @@
 
 <p align="center">
   <a href="./LICENSE"><img src="https://img.shields.io/github/license/paescuj/jaa" alt="License"></a>
-  <a href="https://github.com/paescuj/jaa/actions/workflows/lint.yml"><img src="https://github.com/paescuj/jaa/actions/workflows/lint.yml/badge.svg" alt="Lint"></a>
-  <a href="https://github.com/paescuj/jaa/actions/workflows/test-build.yml"><img src="https://github.com/paescuj/jaa/actions/workflows/test-build.yml/badge.svg" alt="Test Build"></a>
+  <a href="https://github.com/paescuj/jaa/actions/workflows/continuous-integration.yml"><img src="https://github.com/paescuj/jaa/actions/workflows/continuous-integration.yml/badge.svg" alt="Continuous Integration"></a>
 </p>
 
 <p align="center">

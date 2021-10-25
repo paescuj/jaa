@@ -38,7 +38,7 @@
     "react-hook-form": "7.17.5",
     "react-measure": "2.5.2",
     "react-pdf": "5.5.0",
-    "swiper": "7.0.9"
+    "swiper": "7.1.0"
   },
   "devDependencies": {
     "eslint": "7.32.0",

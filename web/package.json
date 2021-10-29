@@ -20,7 +20,7 @@
     "@fontsource/quicksand": "4.5.1",
     "@mdx-js/loader": "1.6.22",
     "@next/mdx": "12.0.1",
-    "@tippyjs/react": "4.2.5",
+    "@tippyjs/react": "4.2.6",
     "animate.css": "4.1.1",
     "canvas": "2.8.0",
     "framer-motion": "5.0.0",

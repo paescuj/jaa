@@ -3,12 +3,12 @@
 </h1>
 
 <p align="center">
-  <strong>A different way to manage and present your job applications</strong>
+  <strong>Keep track of your current job applications and impress your future employer</strong>
 </p>
 
 <p align="center">
   <a href="./LICENSE"><img src="https://img.shields.io/github/license/paescuj/jaa" alt="License"></a>
-  <a href="https://github.com/paescuj/jaa/actions/workflows/continuous-integration.yml"><img src="https://github.com/paescuj/jaa/actions/workflows/continuous-integration.yml/badge.svg" alt="Continuous Integration"></a>
+  <a href="https://github.com/paescuj/jaa/actions/workflows/ci.yml"><img src="https://github.com/paescuj/jaa/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
 </p>
 
 <p align="center">
@@ -22,15 +22,15 @@
 
 ## Key Features
 
-* Admin area where you can add and manage all your job applications:
+* Admin area where you can manage all your job applications:
   * Upload of generic and job-specific application documents (PDFs)
-  * Automatically generates and stores screenshots of job ads and preview of documents
+  * Automatically generates and stores screenshots of job ads and documents
 * Dedicated access for each company:
   * Web page with introduction text, application documents and chat widget
   * Companies will be able to filter, search, drag'n'drop and download application documents and chat with you
 * About page
 * Light & dark mode
-* Responsive and accessible
+* Responsive & accessible
 
 ## Usage
 

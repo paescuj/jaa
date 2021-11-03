@@ -15,10 +15,10 @@ jobs:
     continue-on-error: true
     runs-on: ubuntu-latest
     outputs:
-      should_skip: ${{ steps.check_duplicate_workflows.outputs.should_skip }}
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
     steps:
-      - name: Check duplicate workflows
-        id: check_duplicate_workflows
+      - name: Check whether workflow is skippable
+        id: skip_check
         uses: fkirc/skip-duplicate-actions@master
         with:
           cancel_others: 'true'

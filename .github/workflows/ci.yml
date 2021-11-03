@@ -1,4 +1,5 @@
-name: Continuous Integration
+# Continuous Integration
+name: CI
 
 on:
   push:
@@ -10,7 +11,7 @@ on:
 
 jobs:
   pre_check:
-    name: Pre Check
+    name: Pre-Check
     continue-on-error: true
     runs-on: ubuntu-latest
     outputs:
@@ -18,10 +19,9 @@ jobs:
     steps:
       - name: Check duplicate workflows
         id: check_duplicate_workflows
-        uses: fkirc/skip-duplicate-actions@v3.4.1
+        uses: fkirc/skip-duplicate-actions@master
         with:
           cancel_others: 'true'
-          concurrent_skipping: same_content_newer
           paths: '["web/**"]'
 
   lint:

@@ -12,6 +12,7 @@
     {
       "matchDatasources": ["npm"],
       "matchUpdateTypes": ["minor", "patch", "pin"],
+      "excludePackagePrefixes": ["@directus"],
       "stabilityDays": 3,
       "automerge": true
     }

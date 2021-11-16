@@ -6,6 +6,8 @@ export async function init(directus) {
     // Collection "jobs"
     {
       collection: 'jobs',
+      meta: { singleton: false },
+      schema: {},
       fields: [
         {
           field: 'id',
@@ -108,6 +110,8 @@ export async function init(directus) {
     // Collection "docs"
     {
       collection: 'docs',
+      meta: { singleton: false },
+      schema: {},
       fields: [
         {
           field: 'id',
@@ -195,6 +199,7 @@ export async function init(directus) {
       meta: {
         singleton: true,
       },
+      schema: {},
       fields: [
         {
           field: 'id',

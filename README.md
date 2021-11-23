@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-  <strong>Keep track of your current job applications and impress your future employer</strong>
+  <strong>Keep track of your job applications and impress your future employer</strong>
 </p>
 
 <p align="center">

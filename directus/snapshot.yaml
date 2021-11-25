@@ -1,0 +1,1088 @@
+version: 1
+directus: 9.1.1
+collections:
+  - collection: docs
+    meta:
+      collection: docs
+      icon: null
+      note: null
+      display_template: null
+      hidden: false
+      singleton: false
+      translations: null
+      archive_field: null
+      archive_app_filter: true
+      archive_value: null
+      unarchive_value: null
+      sort_field: null
+      accountability: all
+      color: null
+      item_duplication_fields: null
+      sort: null
+      group: null
+      collapse: open
+    schema:
+      name: docs
+      sql: >-
+        CREATE TABLE "docs" (`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+        `title` varchar(255) NULL, `job` integer NULL, `global` boolean null,
+        CONSTRAINT `docs_job_foreign` FOREIGN KEY (`job`) REFERENCES `jobs`
+        (`id`) ON DELETE CASCADE)
+  - collection: jobs
+    meta:
+      collection: jobs
+      icon: null
+      note: null
+      display_template: null
+      hidden: false
+      singleton: false
+      translations: null
+      archive_field: null
+      archive_app_filter: true
+      archive_value: null
+      unarchive_value: null
+      sort_field: null
+      accountability: all
+      color: null
+      item_duplication_fields: null
+      sort: null
+      group: null
+      collapse: open
+    schema:
+      name: jobs
+      sql: >-
+        CREATE TABLE "jobs" (`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+        `date_created` datetime NULL, `company` varchar(255) NULL, `position`
+        varchar(255) NULL, `link` varchar(255) NULL, `sent` datetime null,
+        `notes` text null, `identity_hash` varchar(255) null)
+  - collection: settings
+    meta:
+      collection: settings
+      icon: null
+      note: null
+      display_template: null
+      hidden: false
+      singleton: true
+      translations: null
+      archive_field: null
+      archive_app_filter: true
+      archive_value: null
+      unarchive_value: null
+      sort_field: null
+      accountability: all
+      color: null
+      item_duplication_fields: null
+      sort: null
+      group: null
+      collapse: open
+    schema:
+      name: settings
+      sql: >-
+        CREATE TABLE `settings` (`id` integer not null primary key
+        autoincrement, `chatwoot_website_token` varchar(255) null,
+        `chatwoot_hmac_token` varchar(255) null)
+fields:
+  - collection: directus_notifications
+    field: status
+    type: string
+    schema:
+      name: status
+      table: directus_notifications
+      data_type: varchar
+      default_value: inbox
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      has_auto_increment: false
+      foreign_key_column: null
+      foreign_key_table: null
+    meta: null
+  - collection: jobs
+    field: id
+    type: integer
+    schema:
+      name: id
+      table: jobs
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: false
+      is_unique: false
+      is_primary_key: true
+      has_auto_increment: true
+      foreign_key_column: null
+      foreign_key_table: null
+    meta:
+      collection: jobs
+      field: id
+      special: null
+      interface: input
+      options: null
+      display: null
+      display_options: null
+      readonly: true
+      hidden: true
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: jobs
+    field: date_created
+    type: dateTime
+    schema:
+      name: date_created
+      table: jobs
+      data_type: datetime
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      has_auto_increment: false
+      foreign_key_column: null
+      foreign_key_table: null
+    meta:
+      collection: jobs
+      field: date_created
+      special:
+        - date-created
+      interface: datetime
+      options: null
+      display: datetime
+      display_options:
+        relative: true
+      readonly: true
+      hidden: true
+      sort: null
+      width: half
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: jobs
+    field: company
+    type: string
+    schema:
+      name: company
+      table: jobs
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      has_auto_increment: false
+      foreign_key_column: null
+      foreign_key_table: null
+    meta:
+      collection: jobs
+      field: company
+      special: null
+      interface: input
+      options: null
+      display: null
+      display_options: null
+      readonly: false
+      hidden: false
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: jobs
+    field: position
+    type: string
+    schema:
+      name: position
+      table: jobs
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      has_auto_increment: false
+      foreign_key_column: null
+      foreign_key_table: null
+    meta:
+      collection: jobs
+      field: position
+      special: null
+      interface: input
+      options: null
+      display: null
+      display_options: null
+      readonly: false
+      hidden: false
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: jobs
+    field: link
+    type: string
+    schema:
+      name: link
+      table: jobs
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      has_auto_increment: false
+      foreign_key_column: null
+      foreign_key_table: null
+    meta:
+      collection: jobs
+      field: link
+      special: null
+      interface: input
+      options: null
+      display: null
+      display_options: null
+      readonly: false
+      hidden: false
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: jobs
+    field: sent
+    type: dateTime
+    schema:
+      name: sent
+      table: jobs
+      data_type: datetime
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      has_auto_increment: false
+      foreign_key_column: null
+      foreign_key_table: null
+    meta:
+      collection: jobs
+      field: sent
+      special: null
+      interface: datetime
+      options: null
+      display: null
+      display_options: null
+      readonly: false
+      hidden: false
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: jobs
+    field: notes
+    type: text
+    schema:
+      name: notes
+      table: jobs
+      data_type: text
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      has_auto_increment: false
+      foreign_key_column: null
+      foreign_key_table: null
+    meta:
+      collection: jobs
+      field: notes
+      special: null
+      interface: input-multiline
+      options: null
+      display: null
+      display_options: null
+      readonly: false
+      hidden: false
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: jobs
+    field: identity_hash
+    type: string
+    schema:
+      name: identity_hash
+      table: jobs
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      has_auto_increment: false
+      foreign_key_column: null
+      foreign_key_table: null
+    meta:
+      collection: jobs
+      field: identity_hash
+      special: null
+      interface: input
+      options: null
+      display: null
+      display_options: null
+      readonly: false
+      hidden: false
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: directus_users
+    field: job
+    type: integer
+    schema:
+      name: job
+      table: directus_users
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      has_auto_increment: false
+      foreign_key_column: id
+      foreign_key_table: jobs
+    meta:
+      collection: directus_users
+      field: job
+      special: null
+      interface: select-dropdown-m2o
+      options: null
+      display: null
+      display_options: null
+      readonly: false
+      hidden: true
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: directus_files
+    field: job
+    type: integer
+    schema:
+      name: job
+      table: directus_files
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      has_auto_increment: false
+      foreign_key_column: id
+      foreign_key_table: jobs
+    meta:
+      collection: directus_files
+      field: job
+      special: null
+      interface: select-dropdown-m2o
+      options: null
+      display: null
+      display_options: null
+      readonly: false
+      hidden: true
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: directus_files
+    field: doc
+    type: integer
+    schema:
+      name: doc
+      table: directus_files
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      has_auto_increment: false
+      foreign_key_column: id
+      foreign_key_table: docs
+    meta:
+      collection: directus_files
+      field: doc
+      special: null
+      interface: select-dropdown-m2o
+      options: null
+      display: null
+      display_options: null
+      readonly: false
+      hidden: true
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: directus_files
+    field: doc_dark
+    type: integer
+    schema:
+      name: doc_dark
+      table: directus_files
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      has_auto_increment: false
+      foreign_key_column: id
+      foreign_key_table: docs
+    meta:
+      collection: directus_files
+      field: doc_dark
+      special: null
+      interface: select-dropdown-m2o
+      options: null
+      display: null
+      display_options: null
+      readonly: false
+      hidden: true
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: directus_files
+    field: doc_preview
+    type: integer
+    schema:
+      name: doc_preview
+      table: directus_files
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      has_auto_increment: false
+      foreign_key_column: id
+      foreign_key_table: docs
+    meta:
+      collection: directus_files
+      field: doc_preview
+      special: null
+      interface: select-dropdown-m2o
+      options: null
+      display: null
+      display_options: null
+      readonly: false
+      hidden: true
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: docs
+    field: id
+    type: integer
+    schema:
+      name: id
+      table: docs
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: false
+      is_unique: false
+      is_primary_key: true
+      has_auto_increment: true
+      foreign_key_column: null
+      foreign_key_table: null
+    meta:
+      collection: docs
+      field: id
+      special: null
+      interface: input
+      options: null
+      display: null
+      display_options: null
+      readonly: true
+      hidden: true
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: docs
+    field: title
+    type: string
+    schema:
+      name: title
+      table: docs
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      has_auto_increment: false
+      foreign_key_column: null
+      foreign_key_table: null
+    meta:
+      collection: docs
+      field: title
+      special: null
+      interface: input
+      options: null
+      display: null
+      display_options: null
+      readonly: false
+      hidden: false
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: docs
+    field: job
+    type: integer
+    schema:
+      name: job
+      table: docs
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      has_auto_increment: false
+      foreign_key_column: id
+      foreign_key_table: jobs
+    meta:
+      collection: docs
+      field: job
+      special:
+        - m2o
+      interface: select-dropdown-m2o
+      options:
+        template: '{{company}}-{{position}}'
+      display: related-values
+      display_options:
+        template: '{{company}}-{{position}}'
+      readonly: false
+      hidden: false
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: docs
+    field: global
+    type: boolean
+    schema:
+      name: global
+      table: docs
+      data_type: boolean
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      has_auto_increment: false
+      foreign_key_column: null
+      foreign_key_table: null
+    meta:
+      collection: docs
+      field: global
+      special:
+        - boolean
+      interface: boolean
+      options: null
+      display: boolean
+      display_options: null
+      readonly: false
+      hidden: false
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: settings
+    field: id
+    type: integer
+    schema:
+      name: id
+      table: settings
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: false
+      is_unique: false
+      is_primary_key: true
+      has_auto_increment: true
+      foreign_key_column: null
+      foreign_key_table: null
+    meta:
+      collection: settings
+      field: id
+      special: null
+      interface: input
+      options: null
+      display: null
+      display_options: null
+      readonly: true
+      hidden: true
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: settings
+    field: chatwoot_website_token
+    type: string
+    schema:
+      name: chatwoot_website_token
+      table: settings
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      has_auto_increment: false
+      foreign_key_column: null
+      foreign_key_table: null
+    meta:
+      collection: settings
+      field: chatwoot_website_token
+      special: null
+      interface: input
+      options: null
+      display: raw
+      display_options: null
+      readonly: false
+      hidden: false
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: settings
+    field: chatwoot_hmac_token
+    type: string
+    schema:
+      name: chatwoot_hmac_token
+      table: settings
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_generated: false
+      generation_expression: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      has_auto_increment: false
+      foreign_key_column: null
+      foreign_key_table: null
+    meta:
+      collection: settings
+      field: chatwoot_hmac_token
+      special: null
+      interface: input
+      options: null
+      display: raw
+      display_options: null
+      readonly: false
+      hidden: false
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: jobs
+    field: preview
+    type: alias
+    schema: null
+    meta:
+      collection: jobs
+      field: preview
+      special:
+        - o2m
+      interface: list-o2m
+      options:
+        template: '{{$thumbnail}}'
+      display: related-values
+      display_options:
+        template: '{{$thumbnail}}'
+      readonly: false
+      hidden: false
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: jobs
+    field: user
+    type: alias
+    schema: null
+    meta:
+      collection: jobs
+      field: user
+      special:
+        - o2m
+      interface: list-o2m
+      options:
+        template: '{{email}}'
+      display: null
+      display_options: null
+      readonly: false
+      hidden: false
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: docs
+    field: file
+    type: alias
+    schema: null
+    meta:
+      collection: docs
+      field: file
+      special:
+        - o2m
+      interface: list-o2m
+      options:
+        template: '{{title}}'
+      display: related-values
+      display_options:
+        template: '{{title}}'
+      readonly: false
+      hidden: false
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: docs
+    field: file_dark
+    type: alias
+    schema: null
+    meta:
+      collection: docs
+      field: file_dark
+      special:
+        - o2m
+      interface: list-o2m
+      options:
+        template: '{{title}}'
+      display: related-values
+      display_options:
+        template: '{{title}}'
+      readonly: false
+      hidden: false
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+  - collection: docs
+    field: preview
+    type: alias
+    schema: null
+    meta:
+      collection: docs
+      field: preview
+      special:
+        - o2m
+      interface: list-o2m
+      options:
+        template: '{{title}}'
+      display: related-values
+      display_options:
+        template: '{{title}}'
+      readonly: false
+      hidden: false
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+relations:
+  - collection: directus_collections
+    field: group
+    related_collection: directus_collections
+    schema:
+      table: directus_collections
+      column: group
+      foreign_key_table: directus_collections
+      foreign_key_column: collection
+      on_update: NO ACTION
+      on_delete: NO ACTION
+      constraint_name: null
+    meta: null
+  - collection: directus_users
+    field: job
+    related_collection: jobs
+    schema:
+      table: directus_users
+      column: job
+      foreign_key_table: jobs
+      foreign_key_column: id
+      on_update: NO ACTION
+      on_delete: SET NULL
+      constraint_name: null
+    meta:
+      many_collection: directus_users
+      many_field: job
+      one_collection: jobs
+      one_field: user
+      one_collection_field: null
+      one_allowed_collections: null
+      junction_field: null
+      sort_field: null
+      one_deselect_action: nullify
+  - collection: directus_files
+    field: doc_preview
+    related_collection: docs
+    schema:
+      table: directus_files
+      column: doc_preview
+      foreign_key_table: docs
+      foreign_key_column: id
+      on_update: NO ACTION
+      on_delete: CASCADE
+      constraint_name: null
+    meta:
+      many_collection: directus_files
+      many_field: doc_preview
+      one_collection: docs
+      one_field: preview
+      one_collection_field: null
+      one_allowed_collections: null
+      junction_field: null
+      sort_field: null
+      one_deselect_action: nullify
+  - collection: directus_files
+    field: doc_dark
+    related_collection: docs
+    schema:
+      table: directus_files
+      column: doc_dark
+      foreign_key_table: docs
+      foreign_key_column: id
+      on_update: NO ACTION
+      on_delete: CASCADE
+      constraint_name: null
+    meta:
+      many_collection: directus_files
+      many_field: doc_dark
+      one_collection: docs
+      one_field: file_dark
+      one_collection_field: null
+      one_allowed_collections: null
+      junction_field: null
+      sort_field: null
+      one_deselect_action: nullify
+  - collection: directus_files
+    field: doc
+    related_collection: docs
+    schema:
+      table: directus_files
+      column: doc
+      foreign_key_table: docs
+      foreign_key_column: id
+      on_update: NO ACTION
+      on_delete: CASCADE
+      constraint_name: null
+    meta:
+      many_collection: directus_files
+      many_field: doc
+      one_collection: docs
+      one_field: file
+      one_collection_field: null
+      one_allowed_collections: null
+      junction_field: null
+      sort_field: null
+      one_deselect_action: nullify
+  - collection: directus_files
+    field: job
+    related_collection: jobs
+    schema:
+      table: directus_files
+      column: job
+      foreign_key_table: jobs
+      foreign_key_column: id
+      on_update: NO ACTION
+      on_delete: CASCADE
+      constraint_name: null
+    meta:
+      many_collection: directus_files
+      many_field: job
+      one_collection: jobs
+      one_field: preview
+      one_collection_field: null
+      one_allowed_collections: null
+      junction_field: null
+      sort_field: null
+      one_deselect_action: nullify
+  - collection: docs
+    field: job
+    related_collection: jobs
+    schema:
+      table: docs
+      column: job
+      foreign_key_table: jobs
+      foreign_key_column: id
+      on_update: NO ACTION
+      on_delete: CASCADE
+      constraint_name: null
+    meta:
+      many_collection: docs
+      many_field: job
+      one_collection: jobs
+      one_field: null
+      one_collection_field: null
+      one_allowed_collections: null
+      junction_field: null
+      sort_field: null
+      one_deselect_action: nullify

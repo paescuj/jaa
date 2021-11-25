@@ -23,6 +23,8 @@ services:
       - directus-db
     ports:
       - 8055:8055
+    volumes:
+      - ./directus/snapshot.yaml:/directus/snapshot.yaml
     environment:
       PUBLIC_URL: http://localhost:8055
       KEY: $DIRECTUS_KEY

@@ -153,9 +153,9 @@ export default function Admin() {
   const [settings, setSettings] = useState({});
   const [directusInfo, setDirectusInfo] = useState({});
 
-  const [feedback, setFeedback] = useState({});
-  const [feedbackSaved, setFeedbackSaved] = useState(false);
-  const debouncedFeedback = useDebounce(feedback, 400);
+  const [notes, setNotes] = useState({});
+  const [notesSaved, setNotesSaved] = useState(false);
+  const debouncedNotes = useDebounce(notes, 400);
 
   const toast = useToast();
 
@@ -235,7 +235,7 @@ export default function Admin() {
     const fetchData = async () => {
       checkSession().then(async (user) => {
         if (!user) {
-          // Go to instruction page if user is not logged in
+          // Go to login page if user is not logged in
           await router.push({
             pathname: '/login',
             query: { admin: true },
@@ -247,10 +247,10 @@ export default function Admin() {
           try {
             setLoading({ state: true, text: 'Überprüfe Applikation...' });
 
-            // Assuming the backend isn't initialized if 'job' collection is missing
-            const collections = await directus.collections.readAll();
-            const result = collections.data.find((obj) => {
-              return obj.collection === 'jobs';
+            // Assuming the backend isn't initialized if 'Companies' role is missing
+            const roles = await directus.roles.readMany();
+            const result = roles.data.find((obj) => {
+              return obj.name === 'Companies';
             });
             if (result === undefined) {
               // Initialize backend
@@ -581,16 +581,20 @@ export default function Admin() {
   }
 
   useEffect(() => {
-    async function updateFeedback() {
-      await directus.items('jobs').updateOne(debouncedFeedback.jobId, {
-        feedback: debouncedFeedback.value,
-      });
-      setFeedbackSaved(true);
+    async function updateNotes() {
+      try {
+        await directus.items('jobs').updateOne(debouncedNotes.jobId, {
+          notes: debouncedNotes.value,
+        });
+        setNotesSaved(true);
+      } catch {
+        setNotesSaved('error');
+      }
     }
-    if (debouncedFeedback.jobId) {
-      updateFeedback();
+    if (debouncedNotes.jobId) {
+      updateNotes();
     }
-  }, [debouncedFeedback]);
+  }, [debouncedNotes]);
 
   if (loading.state) {
     return (
@@ -874,28 +878,30 @@ export default function Admin() {
                                           minute: 'numeric',
                                         }
                                       )}`}
-                                    <Text>Feedback:</Text>
-                                    <Textarea
-                                      maxW="500"
-                                      defaultValue={job.feedback}
-                                      onChange={(e) => {
-                                        setFeedbackSaved(false);
-                                        setFeedback({
-                                          jobId: job.id,
-                                          value: e.target.value,
-                                        });
-                                      }}
-                                      placeholder="Noch kein Feedback eingetragen"
-                                      _placeholder={{
-                                        color: 'gray.500',
-                                      }}
-                                      focusBorderColor={
-                                        feedback.jobId === job.id &&
-                                        feedbackSaved &&
-                                        'green.500'
-                                      }
-                                    />
                                   </Collapse>
+                                </Box>
+                                <Box>
+                                  <Text fontWeight="bold">Notizen</Text>
+                                  <Textarea
+                                    maxW="500"
+                                    defaultValue={job.notes}
+                                    onChange={(e) => {
+                                      setNotesSaved(false);
+                                      setNotes({
+                                        jobId: job.id,
+                                        value: e.target.value,
+                                      });
+                                    }}
+                                    placeholder="Noch keine Notizen eingetragen"
+                                    _placeholder={{
+                                      color: 'gray.500',
+                                    }}
+                                    focusBorderColor={
+                                      notes.jobId === job.id && notesSaved
+                                        ? 'green.500'
+                                        : notesSaved === 'error' && 'red.500'
+                                    }
+                                  />
                                 </Box>
                                 <Box>
                                   <Text fontWeight="bold">Zugangslink</Text>

@@ -46,6 +46,9 @@ services:
   directus:
     volumes:
       - directus-uploads:/directus/uploads
+    configs:
+      - source: snapshot
+        target: /directus/snapshot.yaml
     secrets:
       - jaa_directus_key
       - jaa_directus_secret
@@ -147,6 +150,10 @@ volumes:
   directus-uploads:
   chatwoot-db-data:
   chatwoot-rails-storage:
+
+configs:
+  snapshot:
+    file: ./directus/snapshot.yaml
 
 secrets:
   jaa_directus_key:

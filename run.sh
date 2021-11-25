@@ -8,7 +8,7 @@ _jaa_env=${JAA_ENV:-dev}
 _stack_name='jaa'
 _env_file="${_dir}/.env.${_jaa_env}"
 _compose_files=("${_dir}/docker-compose.yml" "${_dir}/docker-compose.${_jaa_env}.yml")
-_docker_compose_cmd=('docker-compose' '--env-file' "$_env_file")
+_docker_compose_cmd=('docker-compose' '--env-file' "$_env_file" '--profile' 'chatwoot')
 for compose_file in "${_compose_files[@]}"; do
   _docker_compose_cmd+=('--file' "$compose_file")
 done

@@ -1,6 +1,20 @@
 version: '3.9'
 
 services:
+  web:
+    image: node:16
+    volumes:
+      - ./web:/usr/src/app
+    working_dir: /usr/src/app
+    environment:
+      PUBLIC_DOMAIN: $PUBLIC_DOMAIN
+      DIRECTUS_SECRET: $DIRECTUS_SECRET
+    ports:
+      - 3000:3000
+    command: [sh, -c, 'npm install && npm run dev']
+    profiles:
+      - web
+
   directus-db:
     environment:
       POSTGRES_PASSWORD: $DIRECTUS_DB_PASSWORD
@@ -19,6 +33,11 @@ services:
   chatwoot-db:
     environment:
       POSTGRES_PASSWORD: $CHATWOOT_DB_PASSWORD
+    profiles:
+      - chatwoot
+  chatwoot-cache:
+    profiles:
+      - chatwoot
   chatwoot-sidekiq:
     depends_on:
       - chatwoot-db
@@ -26,6 +45,8 @@ services:
     environment:
       SECRET_KEY_BASE: $CHATWOOT_SECRET_KEY_BASE
       POSTGRES_PASSWORD: $CHATWOOT_DB_PASSWORD
+    profiles:
+      - chatwoot
   chatwoot-rails:
     depends_on:
       - chatwoot-db
@@ -36,3 +57,5 @@ services:
       FRONTEND_URL: http://localhost:3001
       SECRET_KEY_BASE: $CHATWOOT_SECRET_KEY_BASE
       POSTGRES_PASSWORD: $CHATWOOT_DB_PASSWORD
+    profiles:
+      - chatwoot

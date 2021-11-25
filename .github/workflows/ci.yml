@@ -20,6 +20,7 @@ jobs:
       - name: Check whether workflow is skippable
         id: skip_check
         uses: fkirc/skip-duplicate-actions@master
+        continue-on-error: true
         with:
           cancel_others: 'true'
           paths: '["web/**"]'
@@ -27,11 +28,13 @@ jobs:
   lint:
     name: Lint
     needs: pre_check
-    if: ${{ needs.pre_check.outputs.should_skip != 'true' }}
     uses: paescuj/jaa/.github/workflows/lint.yml@main
+    with:
+      should_skip: ${{ needs.pre_check.outputs.should_skip }}
 
   test_build:
     name: Test Build
     needs: pre_check
-    if: ${{ needs.pre_check.outputs.should_skip != 'true' }}
     uses: paescuj/jaa/.github/workflows/test-build.yml@main
+    with:
+      should_skip: ${{ needs.pre_check.outputs.should_skip }}

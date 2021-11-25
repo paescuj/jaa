@@ -2,21 +2,29 @@ name: Test Build
 
 on:
   workflow_call:
+    inputs:
+      should_skip:
+        required: false
+        type: string
 
 jobs:
   test_build:
     name: Test Build
+    if: inputs.should_skip != 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Setup NPM cache
+        uses: c-hive/gha-npm-cache@v1
+        with:
+          directory: web
+
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '16'
-          cache: npm
-          cache-dependency-path: web/package-lock.json
 
       - name: Build
         run: |

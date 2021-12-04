@@ -41,7 +41,7 @@
     "swiper": "7.3.1"
   },
   "devDependencies": {
-    "eslint": "7.32.0",
+    "eslint": "8.3.0",
     "eslint-config-next": "12.0.5",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-import": "2.25.3",

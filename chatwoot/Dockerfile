@@ -1,4 +1,4 @@
-FROM chatwoot/chatwoot:v1.22.1
+FROM chatwoot/chatwoot:v2.0.0
 
 COPY ./patches/*.patch /patches/
 

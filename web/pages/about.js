@@ -18,11 +18,8 @@ import AboutMdx from '../data/about.mdx';
 import { checkSession } from '../lib/directus';
 
 const mdxComponents = {
-  // eslint-disable-next-line react/display-name
   h1: (props) => <Heading as="h1" size="xl" mb="2" {...props} />,
-  // eslint-disable-next-line react/display-name
   h2: (props) => <Heading as="h2" size="lg" {...props} />,
-  // eslint-disable-next-line react/display-name
   h3: (props) => <Heading as="h3" size="md" {...props} />,
 };
 

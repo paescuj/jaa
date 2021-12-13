@@ -82,26 +82,6 @@ collections:
         autoincrement, `chatwoot_website_token` varchar(255) null,
         `chatwoot_hmac_token` varchar(255) null)
 fields:
-  - collection: directus_notifications
-    field: status
-    type: string
-    schema:
-      name: status
-      table: directus_notifications
-      data_type: varchar
-      default_value: inbox
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_generated: false
-      generation_expression: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      has_auto_increment: false
-      foreign_key_column: null
-      foreign_key_table: null
-    meta: null
   - collection: jobs
     field: id
     type: integer

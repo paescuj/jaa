@@ -1,27 +1,25 @@
 diff --git a/app/views/layouts/mailer/base.liquid b/app/views/layouts/mailer/base.liquid
-index e836cdbb..fab31b9d 100644
+index 5fa07e13..2e65adf9 100644
 --- a/app/views/layouts/mailer/base.liquid
 +++ b/app/views/layouts/mailer/base.liquid
-@@ -86,22 +86,6 @@
-                             </td>
-                         </tr>
-                     </table>
--                    <div class="footer" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; clear: both; color: #999; margin: 0; padding: 20px;">
--                        <table width="100%" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
--                            <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
--                                {% if global_config['BRAND_NAME'] != '' %}
--                                    <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
--                                        <td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
--                                            Powered by
--                                            <a href="{{ global_config['BRAND_URL'] }}" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; color: #999; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
--                                                {{ global_config['BRAND_NAME'] }}
--                                            </a>
--                                        </td>
--                                    </tr>
--                                {% endif %}
--                            </tr>
--                        </table>
--                    </div>
-                 </div>
-             </td>
-             <td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
+@@ -73,20 +73,6 @@
+               </tr>
+             </table>
+           </div>
+-          <div class="footer" style="color: #93AFC8; margin: 0; padding: 0 20px 40px; text-align: center">
+-            <table width="100%" style="margin: 0;">
+-              <tr style="margin: 0;">
+-                {% if global_config['BRAND_NAME'] != '' %}
+-                  <td class="content-block" style="font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+-                    Powered by
+-                    <a href="{{ global_config['BRAND_URL'] }}" style="vertical-align: top; color: #93AFC8; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
+-                      {{ global_config['BRAND_NAME'] }}
+-                    </a>
+-                  </td>
+-                {% endif %}
+-              </tr>
+-            </table>
+-          </div>
+         </td>
+       </tr>
+     </table>

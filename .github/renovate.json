@@ -1,7 +1,9 @@
 {
   "extends": [
     "config:base",
-    ":disableDependencyDashboard"
+    ":disableDependencyDashboard",
+    "schedule:weekly",
+    ":prHourlyLimitNone"
   ],
   "packageRules": [
     {

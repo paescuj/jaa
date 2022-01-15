@@ -58,17 +58,37 @@ const swiper = (props) => ({
   },
 });
 
+const calendar = (props) => ({
+  // Disable 'all day' row
+  '.rbc-allday-cell': {
+    display: 'none',
+  },
+  // Fix agenda date cell background
+  '.rbc-agenda-date-cell': {
+    backgroundColor: mode('gray.200', 'gray.500')(props),
+  },
+  // Fix today color in dark mode
+  '.rbc-today': {
+    backgroundColor: mode('', 'gray.500')(props),
+  },
+});
+
 const styles = {
   global: (props) => ({
     body: {
-      bg: mode('#C8C6D7', 'gray.700')(props),
+      bg: mode('white', 'gray.700')(props),
     },
     ...tippy(props),
     ...pdf(props),
     ...swiper(props),
+    ...calendar(props),
     // Hide cancel button on search input in Safari
     'input[type="search"]::-webkit-search-cancel-button': {
       WebkitAppearance: 'none',
+    },
+    '.react-colorful-full-width .react-colorful': {
+      minWidth: '200px',
+      width: '100%',
     },
   }),
 };

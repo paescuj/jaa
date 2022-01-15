@@ -1,21 +1,5 @@
-// Check whether pdf worker is available in react-pdf
-// (otherwise it got deduped)
-const context = require.context(
-  'react-pdf',
-  true,
-  /legacy\/build\/pdf\.worker\.(min\.)?js$/
-);
-let packagePath = 'react-pdf/node_modules/';
-if (context.keys().length !== 2) {
-  packagePath = '';
-}
-
 if (process.env.NODE_ENV === 'production') {
-  module.exports = require('../node_modules/' +
-    packagePath +
-    'pdfjs-dist/legacy/build/pdf.worker.min.js');
+  module.exports = require('pdfjs-dist/build/pdf.worker.min.js');
 } else {
-  module.exports = require('../node_modules/' +
-    packagePath +
-    'pdfjs-dist/legacy/build/pdf.worker.js');
+  module.exports = require('pdfjs-dist/build/pdf.worker.js');
 }

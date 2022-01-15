@@ -34,3 +34,31 @@ index 9a462ce5..897450cd 100644
        csat_input_message_body: "Bitte bewerte die Unterhaltung"
      reply:
        email_subject: "Neue Nachrichten in dieser Unterhaltung"
+diff --git a/app/javascript/widget/i18n/locale/en.json b/app/javascript/widget/i18n/locale/en.json
+index fa97c5ab..ee240a64 100644
+--- a/app/javascript/widget/i18n/locale/en.json
++++ b/app/javascript/widget/i18n/locale/en.json
+@@ -9,8 +9,8 @@
+     }
+   },
+   "TEAM_AVAILABILITY": {
+-    "ONLINE": "We are online",
+-    "OFFLINE": "We are away at the moment"
++    "ONLINE": "I'm online",
++    "OFFLINE": "I'm away at the moment"
+   },
+   "REPLY_TIME": {
+     "IN_A_FEW_MINUTES": "Typically replies in a few minutes",
+diff --git a/config/locales/en.yml b/config/locales/en.yml
+index 0804fbcd..62fd637a 100644
+--- a/config/locales/en.yml
++++ b/config/locales/en.yml
+@@ -90,7 +90,7 @@ en:
+     templates:
+       greeting_message_body: "%{account_name} typically replies in a few hours."
+       ways_to_reach_you_message_body: "Give the team a way to reach you."
+-      email_input_box_message_body: "Get notified by email"
++      email_input_box_message_body: "Please tell me your email address. Thank you!"
+       csat_input_message_body: "Please rate the conversation"
+     reply:
+       email:

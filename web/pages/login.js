@@ -1,3 +1,4 @@
+import env from '@beam-australia/react-env';
 import {
   Button,
   FormControl,
@@ -15,99 +16,56 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 
-import Layout from '../components/Layout';
-import Loader from '../components/Loader';
-import { checkSession, directus } from '../lib/directus';
+import Layout from '@/components/common/Layout';
+import Loader from '@/components/common/Loader';
+import { directus } from '@/lib/directus';
+import locales from '@/locales';
+import { AuthStore } from '@/stores/AuthStore';
+import { LocaleStore } from '@/stores/LocaleStore';
 
 export default function Login() {
-  const [checks, setChecks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { formState, handleSubmit, register, setError } = useForm();
-  const { isOpen, onToggle } = useDisclosure();
-  const inputRef = useRef(null);
-  const { ref, ...rest } = register('code', {
-    required: 'Zugangscode darf nicht leer sein',
-  });
+  const { formatMessage } = useIntl();
+
+  const user = AuthStore.useState((s) => s.user);
   const router = useRouter();
-
   useEffect(() => {
-    const { components, isReady, query, pathname } = router;
-
-    if (isReady && pathname === '/login') {
-      // Check session only if not redirected from other page
-      if (
-        !Object.prototype.hasOwnProperty.call(components, '/[[...job]]') &&
-        !Object.prototype.hasOwnProperty.call(components, '/admin')
-      ) {
-        // Go to start page if user is already logged in
-        checkSession().then(async (user) => {
-          if (user) {
-            const redirect = user.email?.startsWith('admin@')
-              ? '/admin'
-              : '/home';
-            await router.push(redirect);
-          } else {
-            // Mark session check as done (not logged in)
-            setChecks((prev) => [...prev, 'session']);
-          }
-        });
-      } else {
-        // Mark session check as done (redirected)
-        setChecks((prev) => [...prev, 'session']);
-      }
-
-      // Go to instruction page if params are missing
-      if ((query.company && query.job) || query.admin) {
-        setChecks((prev) => [...prev, 'params']);
-      } else {
-        router.push('/');
+    // Check user
+    if (user) {
+      // Redirect if user is already logged in
+      const redirect = user.email?.startsWith('admin@')
+        ? '/admin'
+        : '/application';
+      router.push(redirect);
+    } else {
+      // Check query
+      const { isReady, query } = router;
+      if (isReady) {
+        if ((query.company && query.job) || query.admin) {
+          setLoading(false);
+        } else {
+          // Go to instruction page if params are missing
+          router.push('/');
+        }
       }
     }
-  }, [router]);
+  }, [user, router]);
 
-  // Display page once all checks have passed
-  useEffect(() => {
-    if (checks.includes('session') && checks.includes('params')) {
-      setLoading(false);
-    }
-  }, [checks]);
-
-  // Try to login with submitted code
-  async function onSubmit({ code }) {
-    const { company, job, admin } = router.query;
-    // Use domain from env or current domain for users email address
-    const host = process.env.NEXT_PUBLIC_DOMAIN || window.location.host;
-
-    await directus.auth
-      .login({
-        email: admin ? `admin@${host}` : `${company}-${job}@${host}`,
-        password: code,
-      })
-      .then(async () => {
-        await router.push({
-          pathname: admin ? '/admin' : '/home',
-        });
-      })
-      .catch((error) => {
-        const message = {
-          'Network Error': 'Keine Verbindung zum Server',
-          'Invalid user credentials.': 'Zugangscode oder URL ist ungültig',
-          default: 'Ein unbekannter Fehler ist aufgetreten',
-        };
-        setError('code', {
-          type: 'manual',
-          message: message[error.message] || message['default'],
-        });
-      });
-  }
+  const { formState, handleSubmit, register, setError } = useForm();
+  const { isOpen: codeIsRevealed, onToggle: onToggleCode } = useDisclosure();
+  const codeRef = useRef(null);
+  const { ref, ...rest } = register('code', {
+    required: formatMessage({ id: 'access_code_empty' }),
+  });
 
   // Reveal password
   const onClickReveal = () => {
     // Toggle state
-    onToggle();
+    onToggleCode();
     // Put focus back to input and move cursor to end
-    const input = inputRef.current;
+    const input = codeRef.current;
     if (input) {
       input.focus({ preventScroll: true });
       const length = input.value.length * 2;
@@ -117,33 +75,79 @@ export default function Login() {
     }
   };
 
+  // Try to login with submitted code
+  async function onSubmit({ code }) {
+    const { company, job, admin } = router.query;
+    // Use configured domain from env (with fallback of current domain) for users email address
+    const host = env('DOMAIN') || window.location.host;
+
+    await directus.auth
+      .login({
+        email: admin ? `admin@${host}` : `${company}-${job}@${host}`,
+        password: code,
+      })
+      .then(async () => {
+        // Update stores
+        const user = await directus.users.me.read();
+        AuthStore.update((s) => {
+          s.user = user;
+        });
+        // Redirect
+        await router.push({
+          pathname: admin ? '/admin' : '/application',
+        });
+
+        const language = user.language?.split(/[-_]/)[0];
+        if (language in locales) {
+          LocaleStore.update((s) => {
+            s.locale = language;
+          });
+        }
+      })
+      .catch((error) => {
+        const messages = {
+          'Network Error': formatMessage({ id: 'no_connection' }),
+          'Invalid user credentials.': formatMessage({
+            id: 'access_code_or_url_invalid',
+          }),
+          default: formatMessage({ id: 'unknown_error' }),
+        };
+        setError('code', {
+          type: 'manual',
+          message: messages[error.message] || messages['default'],
+        });
+      });
+  }
+
   return (
     <>
       <Head>
-        <title>Anmeldung - Job Application Assistant</title>
+        <title>
+          {formatMessage({ id: 'login_title' })} - Job Application Assistant
+        </title>
       </Head>
       <Layout justify="center" align="center">
         {loading ? (
-          <Loader text="Lade Seite..." />
+          <Loader text={formatMessage({ id: 'loading_page' })} />
         ) : (
           <main>
             <Heading as="h1" size="2xl" pb={6} textAlign="center">
-              Willkommen!
+              {formatMessage({ id: 'welcome' })}
             </Heading>
             <form onSubmit={handleSubmit(onSubmit)}>
               <FormControl isInvalid={formState.errors.code}>
                 <FormLabel htmlFor="code">
-                  Bitte geben Sie Ihren Zugangscode ein
+                  {formatMessage({ id: 'enter_access_code' })}
                 </FormLabel>
                 <InputGroup>
                   <Input
-                    type={isOpen ? 'text' : 'password'}
+                    type={codeIsRevealed ? 'text' : 'password'}
                     name="code"
-                    placeholder="Code"
+                    placeholder={formatMessage({ id: 'code' })}
                     {...rest}
                     ref={(e) => {
                       ref(e);
-                      inputRef.current = e;
+                      codeRef.current = e;
                     }}
                   />
                   <InputRightElement>
@@ -152,9 +156,17 @@ export default function Login() {
                       tabIndex="0"
                       variant="unstyled"
                       display="inline-flex"
-                      title={isOpen ? 'Code verbergen' : 'Code anzeigen'}
-                      aria-label={isOpen ? 'Code verbergen' : 'Code anzeigen'}
-                      icon={isOpen ? <EyeEmpty /> : <EyeOff />}
+                      title={
+                        codeIsRevealed
+                          ? formatMessage({ id: 'hide_code' })
+                          : formatMessage({ id: 'reveal_code' })
+                      }
+                      aria-label={
+                        codeIsRevealed
+                          ? formatMessage({ id: 'hide_code' })
+                          : formatMessage({ id: 'reveal_code' })
+                      }
+                      icon={codeIsRevealed ? <EyeEmpty /> : <EyeOff />}
                       onClick={onClickReveal}
                     />
                   </InputRightElement>
@@ -175,7 +187,7 @@ export default function Login() {
                 isLoading={formState.isSubmitting}
                 type="submit"
               >
-                Login
+                {formatMessage({ id: 'login' })}
               </Button>
             </form>
           </main>

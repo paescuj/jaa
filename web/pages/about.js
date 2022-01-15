@@ -1,53 +1,70 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  IconButton,
-  Tooltip,
-  useColorMode,
-} from '@chakra-ui/react';
-import { MDXProvider } from '@mdx-js/react';
+import { Box, Flex, IconButton, Tooltip, useColorMode } from '@chakra-ui/react';
+import Editor from '@react-page/editor';
 import { ArrowLeft } from 'iconoir-react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useIntl } from 'react-intl';
 
-import Layout from '../components/Layout';
-import Logo from '../components/Logo';
-import AboutMdx from '../data/about.mdx';
-import { checkSession } from '../lib/directus';
-
-const mdxComponents = {
-  h1: (props) => <Heading as="h1" size="xl" mb="2" {...props} />,
-  h2: (props) => <Heading as="h2" size="lg" {...props} />,
-  h3: (props) => <Heading as="h3" size="md" {...props} />,
-};
+import Layout from '@/components/common/Layout';
+import Loader from '@/components/common/Loader';
+import Logo from '@/components/common/Logo';
+import { directus } from '@/lib/directus';
+import { customSlateAbout } from '@/lib/react-page/plugins';
 
 export default function About() {
   const router = useRouter();
-  const [loggedIn, setLoggedIn] = useState(false);
   const { colorMode } = useColorMode();
+  const { formatMessage, locale } = useIntl();
+  const [loading, setLoading] = useState(true);
+  const [aboutText, setAboutText] = useState();
 
   useEffect(() => {
-    checkSession().then((user) => {
-      if (user) {
-        setLoggedIn(true);
+    const loadText = async () => {
+      try {
+        const settings = await directus
+          .singleton('settings')
+          .read({ fields: ['about_text'] });
+        setAboutText(settings?.about_text);
+      } catch {
+        //
       }
-    });
+      setLoading(false);
+    };
+    loadText();
   }, []);
+
+  if (loading) {
+    return (
+      <>
+        <Head>
+          <title>
+            {formatMessage({ id: 'about_application' })} - Job Application
+            Assistant
+          </title>
+        </Head>
+        <Layout justify="center" align="center">
+          <Loader />
+        </Layout>
+      </>
+    );
+  }
 
   return (
     <>
       <Head>
-        <title>Über die Applikation - Job Application Assistant</title>
+        <title>
+          {formatMessage({ id: 'about_application' })} - Job Application
+          Assistant
+        </title>
       </Head>
       <Layout>
         <Flex as="header" justify="space-between" align="center">
           <Logo />
-          <Tooltip hasArrow label={loggedIn ? 'Zurück' : 'Zur Startseite'}>
+          <Tooltip hasArrow label={formatMessage({ id: 'to_start_page' })}>
             <IconButton
               as="a"
-              href={loggedIn ? '/home' : '/'}
+              href="/"
               onClick={(e) => {
                 e.preventDefault();
                 router.push(e.currentTarget.href);
@@ -55,16 +72,34 @@ export default function About() {
               variant="ghost"
               colorScheme={colorMode === 'light' ? 'blackAlpha' : 'gray'}
               color={colorMode === 'light' ? 'gray.600' : 'gray.400'}
-              aria-label={loggedIn ? 'Zurück' : 'Zur Startseite'}
+              aria-label={formatMessage({ id: 'to_start_page' })}
               icon={<ArrowLeft />}
             />
           </Tooltip>
         </Flex>
-
-        <Box as="main" mt={6} maxW="800" fontSize={{ md: 18 }}>
-          <MDXProvider components={mdxComponents}>
-            <AboutMdx />
-          </MDXProvider>
+        <Box
+          as="main"
+          mt={6}
+          maxW="800"
+          fontSize={{ md: 18 }}
+          sx={{
+            'ul,ol': {
+              marginTop: 'var(--chakra-space-2)',
+            },
+            li: {
+              marginInlineStart: '1em',
+            },
+            'li:not(:last-child)': {
+              marginBottom: 'var(--chakra-space-2)',
+            },
+          }}
+        >
+          <Editor
+            cellPlugins={[customSlateAbout]}
+            value={aboutText}
+            readOnly
+            lang={locale}
+          />
         </Box>
       </Layout>
     </>

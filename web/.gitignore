@@ -2,3 +2,4 @@
 /.next/
 /out/
 .env*.local
+/public/__ENV.js

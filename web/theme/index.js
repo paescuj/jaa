@@ -1,6 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
 
-import CloseButton from './components/close-button';
 import Drawer from './components/drawer';
 import Heading from './components/heading';
 import Modal from './components/modal';
@@ -15,7 +14,6 @@ const config = {
 const theme = {
   ...typography,
   components: {
-    CloseButton,
     Drawer,
     Heading,
     Modal,

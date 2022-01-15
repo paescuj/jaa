@@ -1,7 +1,6 @@
 version: '3.9'
 
-x-logging:
-  &default-logging
+x-logging: &default-logging
   driver: json-file
   options:
     max-size: 200k
@@ -11,16 +10,12 @@ services:
   web:
     build:
       context: web
-      args:
-        PUBLIC_DOMAIN: $PUBLIC_DOMAIN
     image: ${REGISTRY_PREFIX:-}jaa-web:latest
     init: true
-    secrets:
-      - jaa_directus_secret
-    environment:
-      JWT_SECRET_FILE: /run/secrets/jaa_directus_secret
     networks:
       - web
+    environment:
+      PUBLIC_DOMAIN: $PUBLIC_DOMAIN
     labels:
       traefik.enable: 'true'
       traefik.http.routers.jaa-web.rule: Host(`${PUBLIC_DOMAIN}`)
@@ -46,9 +41,6 @@ services:
   directus:
     volumes:
       - directus-uploads:/directus/uploads
-    configs:
-      - source: snapshot
-        target: /directus/snapshot.yaml
     secrets:
       - jaa_directus_key
       - jaa_directus_secret
@@ -150,10 +142,6 @@ volumes:
   directus-uploads:
   chatwoot-db-data:
   chatwoot-rails-storage:
-
-configs:
-  snapshot:
-    file: ./directus/snapshot.yaml
 
 secrets:
   jaa_directus_key:

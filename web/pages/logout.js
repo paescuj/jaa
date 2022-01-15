@@ -2,10 +2,12 @@ import { Box, Heading, keyframes } from '@chakra-ui/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useIntl } from 'react-intl';
 
-import Layout from '../components/Layout';
-import Loader from '../components/Loader';
-import { directus } from '../lib/directus';
+import Layout from '@/components/common/Layout';
+import Loader from '@/components/common/Loader';
+import { directus } from '@/lib/directus';
+import { AuthStore } from '@/stores/AuthStore';
 
 const dots = keyframes`
   0% {
@@ -22,24 +24,29 @@ const dots = keyframes`
 export default function Logout() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const { formatMessage } = useIntl();
 
   useEffect(() => {
     async function logout() {
+      // Update store
+      AuthStore.update((s) => {
+        s.user = false;
+      });
+
       try {
         // Try to logout
         await directus.auth.logout();
         // Display logout message
         setLoading(false);
       } catch {
-        // Most likely there was no valid session
-        // Skip logout message in that case
+        // Most likely there was no valid session - skip logout message in this case
         await router.push('/');
       }
     }
     // Call logout function
     logout();
 
-    // Redirect to start page after 6 sec
+    // Redirect to start page after timeout
     setTimeout(() => {
       router.push('/');
     }, 6000);
@@ -49,15 +56,17 @@ export default function Logout() {
   return (
     <>
       <Head>
-        <title>Abmeldung - Job Application Assistant</title>
+        <title>
+          {formatMessage({ id: 'logout' })} - Job Application Assistant
+        </title>
       </Head>
       <Layout justify="center" align="center">
         {loading ? (
-          <Loader text="Lade Seite..." />
+          <Loader text={formatMessage({ id: 'loading_page' })} />
         ) : (
           <main>
             <Heading as="h1" size="xl" textAlign="center">
-              Vielen Dank für Ihren Besuch!
+              {formatMessage({ id: 'logout_success_title' })}
             </Heading>
             <Heading
               as="h2"
@@ -66,7 +75,9 @@ export default function Logout() {
               textAlign="center"
               pt={4}
             >
-              Sie wurden erfolgreich abgemeldet und werden in Kürze umgeleitet
+              {formatMessage({
+                id: 'logout_success_message',
+              })}
               <Box
                 as="span"
                 _after={{

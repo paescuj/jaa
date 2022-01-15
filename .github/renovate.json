@@ -8,9 +8,7 @@
   "packageRules": [
     {
       "matchDatasources": ["npm"],
-      "matchUpdateTypes": ["minor", "patch", "pin"],
-      "stabilityDays": 3,
-      "automerge": true
+      "matchUpdateTypes": ["minor", "patch", "pin"]
     }
   ]
 }

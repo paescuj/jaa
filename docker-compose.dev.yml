@@ -2,16 +2,15 @@ version: '3.9'
 
 services:
   web:
-    image: node:16
+    image: node:16-alpine
     volumes:
       - ./web:/usr/src/app
     working_dir: /usr/src/app
     environment:
       PUBLIC_DOMAIN: $PUBLIC_DOMAIN
-      DIRECTUS_SECRET: $DIRECTUS_SECRET
     ports:
       - 3000:3000
-    command: [sh, -c, 'npm install && npm run dev']
+    command: [sh, -c, 'npm ci && npm run dev']
     profiles:
       - web
 
@@ -25,6 +24,7 @@ services:
       - 8055:8055
     volumes:
       - ./directus/snapshot.yaml:/directus/snapshot.yaml
+      - ./directus/migrations:/directus/extensions/migrations
     environment:
       PUBLIC_URL: http://localhost:8055
       KEY: $DIRECTUS_KEY

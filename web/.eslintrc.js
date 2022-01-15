@@ -13,12 +13,13 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:import/recommended',
-    'plugin:mdx/recommended',
     'plugin:prettier/recommended',
     'next',
     'next/core-web-vitals',
   ],
   rules: {
+    // No console statements in production
+    'no-console': process.env.NODE_ENV !== 'development' ? 'error' : 'off',
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
     'import/first': 'error',
@@ -34,15 +35,10 @@ module.exports = {
   },
   reportUnusedDisableDirectives: true,
   settings: {
-    'mdx/code-blocks': true,
-  },
-  overrides: [
-    {
-      files: ['*.mdx'],
-      rules: {
-        'no-undef': 'off',
-        'react/no-children-prop': 'off',
+    'import/resolver': {
+      alias: {
+        map: [['@', '.']],
       },
     },
-  ],
+  },
 };

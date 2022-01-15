@@ -4,11 +4,5 @@
     ":disableDependencyDashboard",
     "schedule:weekly",
     ":prHourlyLimitNone"
-  ],
-  "packageRules": [
-    {
-      "matchDatasources": ["npm"],
-      "matchUpdateTypes": ["minor", "patch", "pin"]
-    }
   ]
 }

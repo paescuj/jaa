@@ -7,16 +7,11 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  Button,
-  ButtonGroup,
 } from '@chakra-ui/react';
 import Editor from '@react-page/editor';
-import isEqual from 'lodash.isequal';
 import { useCallback, useEffect, useState } from 'react';
-import { RgbaColorPicker } from 'react-colorful';
 import { useIntl } from 'react-intl';
 
-import { defaultBackgroundColor } from '@/lib/color';
 import { useDebounce } from '@/lib/debounce';
 import { directus } from '@/lib/directus';
 import {
@@ -24,17 +19,13 @@ import {
   customSlateIntroduction,
 } from '@/lib/react-page/plugins';
 import locales from '@/locales';
-import { ThemeStore } from '@/stores/ThemeStore';
 
-export default function Customization() {
+export default function Customization({ settings }) {
   const { formatMessage, locale } = useIntl();
-  const theme = ThemeStore.useState((s) => s.theme);
-  const backgroundColor = ThemeStore.useState((s) => s.theme?.backgroundColor);
-  const [savedBackgroundColor, setSavedBackgroundColor] =
-    useState(backgroundColor);
-  const [introductionText, setIntroductionText] = useState();
-  const [aboutText, setAboutText] = useState();
-  const [textsLoaded, setTextsLoaded] = useState(false);
+  const [introductionText, setIntroductionText] = useState(
+    settings?.introduction_text
+  );
+  const [aboutText, setAboutText] = useState(settings?.about_text);
   const [translations, setTranslations] = useState();
 
   useEffect(() => {
@@ -58,48 +49,6 @@ export default function Customization() {
     [translations]
   );
 
-  useEffect(() => {
-    async function loadTexts() {
-      try {
-        const settings = await directus
-          .singleton('settings')
-          .read({ fields: ['introduction_text', 'about_text'] });
-        setIntroductionText(settings?.introduction_text);
-        setAboutText(settings?.about_text);
-      } catch {
-        // Ignore error
-      } finally {
-        setTextsLoaded(true);
-      }
-    }
-    loadTexts();
-  }, []);
-
-  const changeBackgroundColor = (color) => {
-    ThemeStore.update((s) => {
-      s.theme = { ...s.theme, backgroundColor: color };
-    });
-  };
-
-  const saveBackgroundColor = async (reset) => {
-    const color = reset ? defaultBackgroundColor : backgroundColor;
-    if (!isEqual(color, savedBackgroundColor)) {
-      try {
-        await directus.singleton('settings').update({
-          theme: { ...theme, backgroundColor: color },
-        });
-      } catch {
-        // TODO: Show error message
-      }
-    }
-    setSavedBackgroundColor(color);
-    if (reset) {
-      ThemeStore.update((s) => {
-        s.theme = { ...s.theme, backgroundColor: color };
-      });
-    }
-  };
-
   const debouncedIntroductionText = useDebounce(introductionText, 500);
   useEffect(() => {
     async function updateIntroductionText() {
@@ -111,10 +60,11 @@ export default function Customization() {
         // TODO: Show error message
       }
     }
-    if (textsLoaded) {
+    // Should never be empty, even without any content
+    if (debouncedIntroductionText) {
       updateIntroductionText();
     }
-  }, [debouncedIntroductionText, textsLoaded]);
+  }, [debouncedIntroductionText]);
 
   const debouncedAboutText = useDebounce(aboutText, 500);
   useEffect(() => {
@@ -127,53 +77,15 @@ export default function Customization() {
         // TODO: Show error message
       }
     }
-    if (textsLoaded) {
+    // Should never be empty, even without any content
+    if (debouncedAboutText) {
       updateAboutText();
     }
-  }, [debouncedAboutText, textsLoaded]);
+  }, [debouncedAboutText]);
 
   return (
     <>
-      <Accordion flex="1" defaultIndex={[0]} allowToggle allowMultiple>
-        <AccordionItem>
-          <h2>
-            <AccordionButton>
-              <Box flex="1" textAlign="left" fontSize="lg" fontWeight="bold">
-                {formatMessage({ id: 'background_color' })}
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4}>
-            <Box width="max-content" className="react-colorful-full-width">
-              <RgbaColorPicker
-                color={backgroundColor}
-                onChange={changeBackgroundColor}
-              />
-              <ButtonGroup width="100%" mt={2}>
-                <Button
-                  colorScheme="blue"
-                  flex="1"
-                  isDisabled={savedBackgroundColor === backgroundColor}
-                  onClick={() => saveBackgroundColor(false)}
-                >
-                  {formatMessage({ id: 'save' })}
-                </Button>
-                <Button
-                  flex="1"
-                  isDisabled={
-                    savedBackgroundColor === backgroundColor &&
-                    isEqual(savedBackgroundColor, defaultBackgroundColor)
-                  }
-                  onClick={() => saveBackgroundColor(true)}
-                >
-                  {formatMessage({ id: 'reset' })}
-                </Button>
-              </ButtonGroup>
-            </Box>
-          </AccordionPanel>
-        </AccordionItem>
-
+      <Accordion flex="1" allowToggle>
         <AccordionItem>
           <h2>
             <AccordionButton>

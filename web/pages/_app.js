@@ -7,8 +7,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
-import { ChakraProvider, extendTheme, useColorMode } from '@chakra-ui/react';
-import { mode } from '@chakra-ui/theme-tools';
+import { ChakraProvider } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
@@ -16,77 +15,18 @@ import { IntlProvider } from 'react-intl';
 
 import Layout from '@/components/common/Layout';
 import Loader from '@/components/common/Loader';
-import {
-  convertToHex,
-  defaultBackgroundColor,
-  isHighBrightness,
-} from '@/lib/color';
-import { checkSession, directus } from '@/lib/directus';
+import { checkSession } from '@/lib/directus';
 import locales, { defaultLocale } from '@/locales';
 import { AuthStore } from '@/stores/AuthStore';
 import { LocaleStore } from '@/stores/LocaleStore';
-import { ThemeStore } from '@/stores/ThemeStore';
 import theme from '@/theme';
-
-function Theme({ children }) {
-  const { setColorMode } = useColorMode();
-  const themeStore = ThemeStore.useState((s) => s.theme);
-  useEffect(() => {
-    if (themeStore?.backgroundColor) {
-      setColorMode(
-        isHighBrightness(themeStore.backgroundColor) ? 'light' : 'dark'
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [themeStore]);
-
-  return children;
-}
 
 function MyApp({ Component, pageProps, router }) {
   const [checks, setChecks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [dynamicTheme, setDynamicTheme] = useState(theme);
 
-  const themeStore = ThemeStore.useState((s) => s.theme);
+  // Load user
   useEffect(() => {
-    if (themeStore?.backgroundColor) {
-      const styles = {
-        global: (props) => ({
-          body: {
-            bg: isHighBrightness(themeStore.backgroundColor)
-              ? mode(
-                  convertToHex(themeStore.backgroundColor),
-                  'gray.700'
-                )(props)
-              : convertToHex(themeStore.backgroundColor),
-          },
-        }),
-      };
-      setDynamicTheme(extendTheme({ styles }, theme));
-    }
-  }, [themeStore]);
-
-  // Load theme & user
-  useEffect(() => {
-    const loadTheme = async () => {
-      // Fallback theme
-      let customTheme = { backgroundColor: defaultBackgroundColor };
-      try {
-        const settings = await directus
-          .singleton('settings')
-          .read({ fields: ['theme'] });
-        if (settings.theme?.backgroundColor) {
-          customTheme = settings.theme;
-        }
-      } catch {
-        // Ignore error
-      }
-      ThemeStore.update((s) => {
-        s.theme = customTheme;
-      });
-    };
-
     const loadUser = async () => {
       const user = await checkSession();
       let language;
@@ -113,7 +53,6 @@ function MyApp({ Component, pageProps, router }) {
       setChecks((prev) => [...prev, 'session']);
     };
 
-    loadTheme();
     loadUser();
   }, []);
 
@@ -140,25 +79,23 @@ function MyApp({ Component, pageProps, router }) {
   return (
     <>
       <Script strategy="beforeInteractive" src="/__ENV.js"></Script>
-      <ChakraProvider theme={dynamicTheme}>
-        <Theme>
-          <AnimatePresence exitBeforeEnter>
-            {loading ? (
-              <Layout justify="center" align="center">
-                <Loader />
-              </Layout>
-            ) : (
-              <IntlProvider
-                otherKey={locale}
-                locale={locale}
-                defaultLocale={defaultLocale}
-                messages={messages}
-              >
-                <Component {...pageProps} key={router.route} />
-              </IntlProvider>
-            )}
-          </AnimatePresence>
-        </Theme>
+      <ChakraProvider theme={theme}>
+        <AnimatePresence exitBeforeEnter>
+          {loading ? (
+            <Layout justify="center" align="center">
+              <Loader />
+            </Layout>
+          ) : (
+            <IntlProvider
+              otherKey={locale}
+              locale={locale}
+              defaultLocale={defaultLocale}
+              messages={messages}
+            >
+              <Component {...pageProps} key={router.route} />
+            </IntlProvider>
+          )}
+        </AnimatePresence>
       </ChakraProvider>
     </>
   );

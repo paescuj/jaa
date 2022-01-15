@@ -158,8 +158,6 @@
   "field_is_required": "{field} is required",
   "confirm": "Confirm",
   "customization": "Customization",
-  "background_color": "Background Color",
-  "reset": "Reset",
   "introduction_text": "Introduction Text",
   "about_text": "About Text"
 }

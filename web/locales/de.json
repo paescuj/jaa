@@ -158,8 +158,6 @@
   "field_is_required": "{field} ist erforderlich",
   "confirm": "Bestätigen",
   "customization": "Personalisierung",
-  "background_color": "Hintergrundfarbe",
-  "reset": "Zurücksetzen",
   "introduction_text": "Einleitungstext",
   "about_text": "Text für \"Über die Applikation\"-Seite"
 }

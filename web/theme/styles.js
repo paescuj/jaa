@@ -76,7 +76,7 @@ const calendar = (props) => ({
 const styles = {
   global: (props) => ({
     body: {
-      bg: mode('white', 'gray.700')(props),
+      bg: mode('#C8C6D7', 'gray.700')(props),
     },
     ...tippy(props),
     ...pdf(props),
@@ -85,10 +85,6 @@ const styles = {
     // Hide cancel button on search input in Safari
     'input[type="search"]::-webkit-search-cancel-button': {
       WebkitAppearance: 'none',
-    },
-    '.react-colorful-full-width .react-colorful': {
-      minWidth: '200px',
-      width: '100%',
     },
   }),
 };

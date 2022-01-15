@@ -14,13 +14,13 @@ module.exports = {
     await knex('directus_permissions')
       .where({ id })
       .update({
-        fields: [fields, 'theme', 'introduction_text', 'about_text'].join(),
+        fields: [fields, 'introduction_text', 'about_text'].join(),
       });
     await knex('directus_permissions').insert({
       role: null,
       collection: 'settings',
       action: 'read',
-      fields: ['theme', 'about_text'].join(),
+      fields: 'about_text',
     });
   },
 
@@ -32,7 +32,7 @@ module.exports = {
       .where('role', role)
       .orWhere('role', null)
       .andWhere('collection', 'settings')
-      .andWhere('fields', 'like', '%theme%')
+      .andWhere('fields', 'like', '%about_text%')
       .del();
   },
 };

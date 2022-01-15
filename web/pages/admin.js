@@ -229,7 +229,7 @@ export default function Admin() {
                 <Documents docs={docs} refreshDocs={getDocs} />
               </TabPanel>
               <TabPanel>
-                <Customization />
+                <Customization settings={settings} />
               </TabPanel>
               <TabPanel>
                 <Settings

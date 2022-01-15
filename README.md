@@ -125,6 +125,7 @@ Jaa is built with the following great open source components:
 * [PostgreSQL](https://www.postgresql.org) - The World's Most Advanced Open Source Relational Database
 * [Chatwoot](https://www.chatwoot.com) - Open-source, self-hosted customer communication platform
 * [Docker](https://www.docker.com/community/open-source) - Containerization technology
+* ... and many more
 
 ## License
 

@@ -4,5 +4,11 @@
     ":disableDependencyDashboard",
     "schedule:weekly",
     ":prHourlyLimitNone"
+  ],
+  "packageRules": [
+    {
+      "groupName": "Directus",
+      "matchPackagePatterns": ["directus"]
+    }
   ]
 }

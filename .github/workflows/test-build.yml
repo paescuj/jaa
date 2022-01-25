@@ -28,5 +28,5 @@ jobs:
 
       - name: Build
         run: |
-          npm ci --prefix web
+          npm ci --prefer-offline --no-audit --prefix web
           npm run --prefix web build

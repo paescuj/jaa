@@ -18,7 +18,7 @@ jobs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
       paths_result: ${{ steps.skip_check.outputs.paths_result }}
     steps:
-      - name: Check whether workflow is skippable
+      - name: Check for skippable jobs
         id: skip_check
         uses: fkirc/skip-duplicate-actions@master
         continue-on-error: true
@@ -35,6 +35,7 @@ jobs:
             chatwoot:
               paths:
                 - 'chatwoot/**/*'
+      - run: echo "${{ steps.skip_check.outputs.paths_result }}"
 
   map_images:
     name: Map Images

@@ -47,10 +47,9 @@ jobs:
         uses: actions/github-script@v5
         id: map_images
         env:
-          PATHS_RESULT: ${{ steps.pre_check.outputs.paths_result }}
+          PATHS_RESULT: ${{ needs.pre_check.outputs.paths_result }}
         with:
           script: |
-            console.log(process.env.PATHS_RESULT)
             const images = [];
             const map = {
               web: {
@@ -83,7 +82,8 @@ jobs:
 
   build_images:
     name: Build Images
-    needs: map_images
+    needs: [pre_check, map_images]
     uses: paescuj/jaa/.github/workflows/build-images.yml@main
     with:
+      should_skip: ${{ needs.pre_check.outputs.should_skip }}
       images: ${{ needs.map_images.outputs.images }}

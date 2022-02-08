@@ -7,8 +7,13 @@ on:
         required: false
         type: string
       images:
-        required: true
+        default: '[]'
+        required: false
         type: string
+      push:
+        default: false
+        required: false
+        type: boolean
     secrets:
       DOCKERHUB_USERNAME:
         required: true
@@ -37,7 +42,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: '{{defaultContext}}:${{ matrix.context }}'
-          push: false
+          push: ${{ inputs.push }}
           tags: paescuj/${{ matrix.name }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max

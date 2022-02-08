@@ -65,6 +65,15 @@ jobs:
                 context: 'chatwoot'
               },
             };
+
+            const skipped_by = ${{ toJSON(needs) }}.pre_check.outputs.skipped_by
+            if (context.eventName === 'push' && skipped_by && skipped_by.event !== 'push') {
+              for (const name in map) {
+                images.push(map[name]);
+              }
+              return images;
+            }
+
             const paths_result = JSON.parse(process.env.PATHS_RESULT);
             for (const filter in paths_result) {
               if (!paths_result[filter].should_skip && filter in map) {
@@ -87,6 +96,7 @@ jobs:
     with:
       should_skip: ${{ needs.pre_check.outputs.should_skip }}
       images: ${{ needs.map_images.outputs.images }}
+      push: ${{ github.event_name == 'push' }}
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}

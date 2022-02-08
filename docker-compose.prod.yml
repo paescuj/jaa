@@ -83,7 +83,6 @@ services:
       - jaa-chatwoot
     logging: *default-logging
   chatwoot-sidekiq:
-    image: ${REGISTRY_PREFIX:-}jaa-chatwoot:latest
     secrets:
       - jaa_chatwoot_secret_key_base
       - jaa_chatwoot_db_password
@@ -105,7 +104,6 @@ services:
       - jaa-chatwoot
     logging: *default-logging
   chatwoot-rails:
-    image: ${REGISTRY_PREFIX:-}jaa-chatwoot:latest
     volumes:
       - chatwoot-rails-storage:/app/storage
     secrets:

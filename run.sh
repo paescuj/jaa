@@ -90,6 +90,9 @@ get_config() {
     } 2>/dev/null
   }
 
+  # Default registry
+  REGISTRY_PREFIX=${REGISTRY_PREFIX:-paescuj}
+
   _config+=(
     [PUBLIC_DOMAIN]="${PUBLIC_DOMAIN:-jaa.example.org}"
     [DIRECTUS_KEY]="${DIRECTUS_KEY:-$(getUuid)}"
@@ -98,9 +101,11 @@ get_config() {
     [DIRECTUS_ADMIN_PASSWORD]="${DIRECTUS_ADMIN_PASSWORD:-$(getPassword 12)}"
     [CHATWOOT_SECRET_KEY_BASE]="${CHATWOOT_SECRET_KEY_BASE:-$(getPassword 64)}"
     [CHATWOOT_DB_PASSWORD]="${CHATWOOT_DB_PASSWORD:-$(getPassword 24)}"
+    [REGISTRY_PREFIX]="${REGISTRY_PREFIX/%//}"
   )
   _envs+=(
     'PUBLIC_DOMAIN'
+    'REGISTRY_PREFIX'
   )
 
   if [[ $_jaa_env = 'dev' ]]; then
@@ -121,7 +126,6 @@ get_config() {
       [CHATWOOT_SMTP_PORT]="${CHATWOOT_SMTP_PORT:-587}"
       [CHATWOOT_SMTP_USERNAME]="${CHATWOOT_SMTP_USERNAME:-chatwoot@${_config[PUBLIC_DOMAIN]}}"
       [CHATWOOT_SMTP_PASSWORD]="${CHATWOOT_SMTP_PASSWORD:-$(getPassword 12)}"
-      [REGISTRY_PREFIX]="${REGISTRY_PREFIX/%//}"
       [TRAEFIK_NETWORK]="${TRAEFIK_NETWORK:-web}"
       [TRAEFIK_ENTRYPOINTS]="${TRAEFIK_ENTRYPOINTS:-websecure}"
       [TRAEFIK_CERTRESOLVER]="${TRAEFIK_CERTRESOLVER:-le}"
@@ -139,7 +143,6 @@ get_config() {
       'CHATWOOT_SMTP_PORT'
       'CHATWOOT_SMTP_USERNAME'
       'DOCKER_HOST'
-      'REGISTRY_PREFIX'
       'TRAEFIK_NETWORK'
       'TRAEFIK_ENTRYPOINTS'
       'TRAEFIK_CERTRESOLVER'
@@ -248,7 +251,7 @@ destroy() {
 
 # Function to build / push images
 do_images() {
-  if [[ $_jaa_env = 'prod' && -n $REGISTRY_PREFIX ]]; then
+  if [[ -n $REGISTRY_PREFIX ]]; then
     info 'Fetching existing images...'
     declare -a images
     readarray -t images < <("${_docker_compose_cmd[@]}" config | sed -n "s/^.*image: \(${REGISTRY_PREFIX//\//\\/}.*\)$/\1/p" | uniq)

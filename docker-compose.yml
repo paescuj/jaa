@@ -8,7 +8,7 @@ services:
   directus:
     build:
       context: directus
-    image: jaa-directus:latest
+    image: ${REGISTRY_PREFIX:-}jaa-directus:latest
     environment:
       DB_CLIENT: pg
       DB_HOST: directus-db
@@ -26,7 +26,7 @@ services:
   chatwoot-sidekiq:
     build:
       context: chatwoot
-    image: jaa-chatwoot:latest
+    image: ${REGISTRY_PREFIX:-}jaa-chatwoot:latest
     environment:
       POSTGRES_HOST: chatwoot-db
       POSTGRES_USERNAME: chatwoot
@@ -36,7 +36,7 @@ services:
   chatwoot-rails:
     build:
       context: chatwoot
-    image: jaa-chatwoot:latest
+    image: ${REGISTRY_PREFIX:-}jaa-chatwoot:latest
     environment:
       POSTGRES_HOST: chatwoot-db
       POSTGRES_USERNAME: chatwoot

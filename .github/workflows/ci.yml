@@ -68,7 +68,7 @@ jobs:
             };
 
             const skipped_by = ${{ toJSON(needs) }}.pre_check.outputs.skipped_by
-            if (context.eventName === 'push' && skipped_by && skipped_by.event !== 'push') {
+            if (context.eventName === 'push' && skipped_by.event && skipped_by.event !== 'push') {
               for (const name in map) {
                 images.push(map[name]);
               }

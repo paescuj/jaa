@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
+      paths_result: ${{ steps.skip_check.outputs.paths_result }}
     steps:
       - name: Check whether workflow is skippable
         id: skip_check
@@ -23,18 +24,65 @@ jobs:
         continue-on-error: true
         with:
           cancel_others: 'true'
-          paths: '["web/**"]'
+          paths_ignore: '["**/*.md"]'
+          paths_filter: |
+            web:
+              paths:
+                - 'web/**/*'
+            directus:
+              paths:
+                - 'directus/**/*'
+            chatwoot:
+              paths:
+                - 'chatwoot/**/*'
+
+  map_images:
+    name: Map Images
+    needs: pre_check
+    runs-on: ubuntu-latest
+    outputs:
+      images: ${{ steps.map_images.outputs.images }}
+    steps:
+      - name: Map images
+        uses: actions/github-script@v5
+        id: map_images
+        env:
+          PATHS_RESULT: ${{ steps.pre_check.outputs.paths_result }}
+        with:
+          script: |
+            const images = [];
+            const map = {
+              web: {
+                name: 'jaa-web',
+                context: 'web'
+              },
+              directus: {
+                name: 'jaa-directus',
+                context: 'directus'
+              },
+              chatwoot: {
+                name: 'jaa-chatwoot',
+                context: 'chatwoot'
+              },
+            };
+            const paths_result = JSON.parse(process.env.PATHS_RESULT);
+            for (const filter in paths_result) {
+              if (filter in map) {
+                images.push(map[filter]);
+              }
+            }
+            return images;
 
   lint:
     name: Lint
     needs: pre_check
     uses: paescuj/jaa/.github/workflows/lint.yml@main
     with:
-      should_skip: ${{ needs.pre_check.outputs.should_skip }}
+      should_skip: ${{ needs.pre_check.outputs.should_skip == 'true' || fromJSON(needs.pre_check.outputs.paths_result).web.should_skip }}
 
-  test_build:
-    name: Test Build
-    needs: pre_check
-    uses: paescuj/jaa/.github/workflows/test-build.yml@main
+  build_images:
+    name: Build Images
+    needs: map_images
+    uses: paescuj/jaa/.github/workflows/build-images.yml@main
     with:
-      should_skip: ${{ needs.pre_check.outputs.should_skip }}
+      images: ${{ needs.map_images.outputs.images }}

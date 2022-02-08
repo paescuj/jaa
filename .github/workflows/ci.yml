@@ -41,7 +41,7 @@ jobs:
     needs: pre_check
     runs-on: ubuntu-latest
     outputs:
-      images: ${{ steps.map_images.outputs.images }}
+      images: ${{ steps.map_images.outputs.result }}
     steps:
       - name: Map images
         uses: actions/github-script@v5
@@ -71,7 +71,6 @@ jobs:
                 images.push(map[filter]);
               }
             }
-            console.log(images)
             return images;
 
   lint:

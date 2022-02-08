@@ -71,6 +71,7 @@ jobs:
                 images.push(map[filter]);
               }
             }
+            console.log(images)
             return images;
 
   lint:

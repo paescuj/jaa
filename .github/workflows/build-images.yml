@@ -44,7 +44,7 @@ jobs:
           context: '{{defaultContext}}:${{ matrix.context }}'
           push: ${{ inputs.push }}
           tags: paescuj/${{ matrix.name }}:latest
-          cache-from: type=gha
+          cache-from: type=gha,scope=${{ matrix.name }}
           cache-to: type=gha,mode=max,scope=${{ matrix.name }}
 
   result:

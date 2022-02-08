@@ -67,7 +67,7 @@ jobs:
             };
             const paths_result = JSON.parse(process.env.PATHS_RESULT);
             for (const filter in paths_result) {
-              if (!filter.should_skip && filter in map) {
+              if (!paths_result[filter].should_skip && filter in map) {
                 images.push(map[filter]);
               }
             }

@@ -12,7 +12,7 @@
   "dependencies": {
     "@beam-australia/react-env": "3.1.1",
     "@chakra-ui/react": "1.8.3",
-    "@directus/sdk": "9.4.3",
+    "@directus/sdk": "9.5.1",
     "@dnd-kit/core": "5.0.1",
     "@dnd-kit/sortable": "6.0.0",
     "@dnd-kit/utilities": "3.1.0",

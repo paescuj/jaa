@@ -12,6 +12,7 @@ on:
 
 jobs:
   build:
+    name: Build
     if: inputs.should_skip != 'true' && inputs.images != '[]'
     runs-on: ubuntu-latest
     strategy:

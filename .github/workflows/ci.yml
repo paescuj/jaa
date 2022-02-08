@@ -87,5 +87,6 @@ jobs:
     with:
       should_skip: ${{ needs.pre_check.outputs.should_skip }}
       images: ${{ needs.map_images.outputs.images }}
+    secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}

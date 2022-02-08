@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
+      skipped_by: ${{ steps.skip_check.outputs.skipped_by }}
       paths_result: ${{ steps.skip_check.outputs.paths_result }}
     steps:
       - name: Check for skippable jobs

@@ -87,12 +87,12 @@ jobs:
                     artifact_id: artifact.id,
                     archive_format: 'zip'
                   });
-                  const { appendFileSync } = require('fs');
+                  const { appendFileSync, readFileSync } = require('fs');
                   appendFileSync('paths_result.zip', Buffer.from(data));
                   await exec.exec('unzip', ['paths_result.zip']);
-                  paths_result = JSON.parse(fs.readFileSync('paths_result').toString());
+                  paths_result = JSON.parse(readFileSync('paths_result').toString());
                 } catch (error) {
-                  core.warn(error);
+                  core.warning(error);
                 }
               } else {
                 return images;
@@ -100,8 +100,6 @@ jobs:
             } else {
               paths_result = JSON.parse(process.env.PATHS_RESULT);
             }
-
-            console.log(paths_result);
 
             if (paths_result) {
               for (const filter in paths_result) {
@@ -114,8 +112,6 @@ jobs:
                 images.push(map[name]);
               }
             }
-
-            console.log(images);
 
             return images;
 

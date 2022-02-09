@@ -50,8 +50,8 @@ jobs:
         uses: actions/github-script@v5
         id: map_images
         env:
-          SKIPPED_BY: ${{ steps.pre_check.outputs.skipped_by }}
-          PATHS_RESULT: ${{ steps.pre_check.outputs.paths_result }}
+          SKIPPED_BY: ${{ steps.skip_check.outputs.skipped_by }}
+          PATHS_RESULT: ${{ steps.skip_check.outputs.paths_result }}
         with:
           script: |
             const images = [];

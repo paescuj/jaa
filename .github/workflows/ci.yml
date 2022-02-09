@@ -15,9 +15,7 @@ jobs:
     continue-on-error: true
     runs-on: ubuntu-latest
     outputs:
-      should_skip: ${{ steps.skip_check.outputs.should_skip }}
-      skipped_by: ${{ steps.skip_check.outputs.skipped_by }}
-      paths_result: ${{ steps.skip_check.outputs.paths_result }}
+      images: ${{ steps.map_images.outputs.result }}
     steps:
       - name: Check for skippable jobs
         id: skip_check
@@ -48,18 +46,12 @@ jobs:
           name: paths_result
           path: paths_result
 
-  map_images:
-    name: Map Images
-    needs: pre_check
-    runs-on: ubuntu-latest
-    outputs:
-      images: ${{ steps.map_images.outputs.result }}
-    steps:
       - name: Map images
         uses: actions/github-script@v5
         id: map_images
         env:
-          PATHS_RESULT: ${{ needs.pre_check.outputs.paths_result }}
+          SKIPPED_BY: ${{ steps.pre_check.outputs.skipped_by }}
+          PATHS_RESULT: ${{ steps.pre_check.outputs.paths_result }}
         with:
           script: |
             const images = [];
@@ -79,31 +71,37 @@ jobs:
             };
             let paths_result;
 
-            const skipped_by = ${{ toJSON(needs) }}.pre_check.outputs.skipped_by
-            if (context.eventName === 'push' && skipped_by.event && skipped_by.event !== 'push') {
-             try {
-                const { data: { artifacts } } = await github.rest.actions.listWorkflowRunArtifacts({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  run_id: skipped_by.runId
-                });
-                const artifact = artifacts.find((artifact) => artifact.name === 'paths_result')
-                const { data } = await github.rest.actions.downloadArtifact({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  artifact_id: artifact.id,
-                  archive_format: 'zip'
-                });
-                const { appendFileSync } = require('fs');
-                appendFileSync('paths_result.zip', Buffer.from(data));
-                await exec.exec('unzip', ['paths_result.zip']);
-                paths_result = JSON.parse(fs.readFileSync('paths_result').toString());
-              } catch (error) {
-                core.warn(error)
+            const skipped_by = JSON.parse(process.env.SKIPPED_BY)
+            if (skipped_by.event) {
+              if (context.eventName === 'push' && skipped_by.event !== 'push') {
+                try {
+                  const { data: { artifacts } } = await github.rest.actions.listWorkflowRunArtifacts({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    run_id: skipped_by.runId
+                  });
+                  const artifact = artifacts.find((artifact) => artifact.name === 'paths_result')
+                  const { data } = await github.rest.actions.downloadArtifact({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    artifact_id: artifact.id,
+                    archive_format: 'zip'
+                  });
+                  const { appendFileSync } = require('fs');
+                  appendFileSync('paths_result.zip', Buffer.from(data));
+                  await exec.exec('unzip', ['paths_result.zip']);
+                  paths_result = JSON.parse(fs.readFileSync('paths_result').toString());
+                } catch (error) {
+                  core.warn(error);
+                }
+              } else {
+                return images;
               }
             } else {
               paths_result = JSON.parse(process.env.PATHS_RESULT);
             }
+
+            console.log(paths_result);
 
             if (paths_result) {
               for (const filter in paths_result) {
@@ -117,22 +115,16 @@ jobs:
               }
             }
 
-            return images;
+            console.log(images);
 
-  lint:
-    name: Lint
-    needs: pre_check
-    uses: paescuj/jaa/.github/workflows/lint.yml@main
-    with:
-      should_skip: ${{ needs.pre_check.outputs.should_skip == 'true' || fromJSON(needs.pre_check.outputs.paths_result).web.should_skip }}
+            return images;
 
   build_images:
     name: Build Images
-    needs: [pre_check, map_images]
+    needs: pre_check
     uses: paescuj/jaa/.github/workflows/build-images.yml@main
     with:
-      should_skip: ${{ needs.pre_check.outputs.should_skip }}
-      images: ${{ needs.map_images.outputs.images }}
+      images: ${{ needs.pre_check.outputs.images }}
       push: ${{ github.event_name == 'push' }}
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}

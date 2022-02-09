@@ -97,7 +97,7 @@ jobs:
                 const { appendFileSync } = require('fs');
                 appendFileSync('paths_result.zip', Buffer.from(data));
                 await exec.exec('unzip', ['paths_result.zip']);
-                const paths_result = JSON.parse(fs.readFileSync('paths_result').toString());
+                paths_result = JSON.parse(fs.readFileSync('paths_result').toString());
               } catch (error) {
                 core.warn(error)
               }

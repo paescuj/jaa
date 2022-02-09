@@ -2,6 +2,7 @@ name: Build Images
 
 on:
   workflow_call:
+    inputs:
       images:
         required: true
         type: string

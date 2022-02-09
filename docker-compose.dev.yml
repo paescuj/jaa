@@ -18,6 +18,8 @@ services:
     environment:
       POSTGRES_PASSWORD: $DIRECTUS_DB_PASSWORD
   directus:
+    build:
+      context: directus
     depends_on:
       - directus-db
     ports:
@@ -41,6 +43,8 @@ services:
     profiles:
       - chatwoot
   chatwoot-sidekiq:
+    build:
+      context: chatwoot
     depends_on:
       - chatwoot-db
       - chatwoot-cache
@@ -50,6 +54,8 @@ services:
     profiles:
       - chatwoot
   chatwoot-rails:
+    build:
+      context: chatwoot
     depends_on:
       - chatwoot-db
       - chatwoot-cache

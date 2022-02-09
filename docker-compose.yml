@@ -6,8 +6,6 @@ services:
     environment:
       POSTGRES_USER: directus
   directus:
-    build:
-      context: directus
     image: ${REGISTRY_PREFIX:-}jaa-directus:latest
     environment:
       DB_CLIENT: pg
@@ -24,8 +22,6 @@ services:
   chatwoot-cache:
     image: redis:6-alpine
   chatwoot-sidekiq:
-    build:
-      context: chatwoot
     image: ${REGISTRY_PREFIX:-}jaa-chatwoot:latest
     environment:
       POSTGRES_HOST: chatwoot-db
@@ -34,8 +30,6 @@ services:
       DISABLE_TELEMETRY: 'true'
     command: [bundle, exec, sidekiq, -C, config/sidekiq.yml]
   chatwoot-rails:
-    build:
-      context: chatwoot
     image: ${REGISTRY_PREFIX:-}jaa-chatwoot:latest
     environment:
       POSTGRES_HOST: chatwoot-db

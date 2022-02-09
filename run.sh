@@ -251,7 +251,7 @@ destroy() {
 
 # Function to build / push images
 do_images() {
-  if [[ -n $REGISTRY_PREFIX ]]; then
+  if [[ $_jaa_env = 'prod' && -n $REGISTRY_PREFIX ]]; then
     info 'Fetching existing images...'
     declare -a images
     readarray -t images < <("${_docker_compose_cmd[@]}" config | sed -n "s/^.*image: \(${REGISTRY_PREFIX//\//\\/}.*\)$/\1/p" | uniq)

@@ -37,6 +37,17 @@ jobs:
               paths:
                 - 'chatwoot/**/*'
 
+      - name: Store paths_result output
+        if: steps.skip_check.outputs.paths_result != '{}'
+        run: echo '${{ steps.skip_check.outputs.paths_result }}' > paths_result
+
+      - name: Upload paths_result result
+        if: steps.skip_check.outputs.paths_result != '{}'
+        uses: actions/upload-artifact@v2
+        with:
+          name: paths_result
+          path: paths_result
+
   map_images:
     name: Map Images
     needs: pre_check
@@ -66,21 +77,46 @@ jobs:
                 context: 'chatwoot'
               },
             };
+            let paths_result;
 
             const skipped_by = ${{ toJSON(needs) }}.pre_check.outputs.skipped_by
             if (context.eventName === 'push' && skipped_by.event && skipped_by.event !== 'push') {
+             try {
+                const { data: { artifacts } } = await github.rest.actions.listWorkflowRunArtifacts({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  run_id: skipped_by.runId
+                });
+                const artifact = artifacts.find((artifact) => artifact.name === 'paths_result')
+                const { data } = await github.rest.actions.downloadArtifact({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  artifact_id: artifact.id,
+                  archive_format: 'zip'
+                });
+                const { appendFileSync } = require('fs');
+                appendFileSync('paths_result.zip', Buffer.from(data));
+                await exec.exec('unzip', ['paths_result.zip']);
+                const paths_result = JSON.parse(fs.readFileSync('paths_result').toString());
+              } catch (error) {
+                core.warn(error)
+              }
+            } else {
+              paths_result = JSON.parse(process.env.PATHS_RESULT);
+            }
+
+            if (paths_result) {
+              for (const filter in paths_result) {
+                if (!paths_result[filter].should_skip && filter in map) {
+                  images.push(map[filter]);
+                }
+              }
+            } else {
               for (const name in map) {
                 images.push(map[name]);
               }
-              return images;
             }
 
-            const paths_result = JSON.parse(process.env.PATHS_RESULT);
-            for (const filter in paths_result) {
-              if (!paths_result[filter].should_skip && filter in map) {
-                images.push(map[filter]);
-              }
-            }
             return images;
 
   lint:

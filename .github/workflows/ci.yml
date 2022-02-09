@@ -36,11 +36,11 @@ jobs:
                 - 'chatwoot/**/*'
 
       - name: Store paths_result output
-        if: steps.skip_check.outputs.paths_result != '{}'
+        if: github.event_name != 'push' && steps.skip_check.outputs.paths_result != '{}'
         run: echo '${{ steps.skip_check.outputs.paths_result }}' > paths_result
 
       - name: Upload paths_result result
-        if: steps.skip_check.outputs.paths_result != '{}'
+        if: github.event_name != 'push' && steps.skip_check.outputs.paths_result != '{}'
         uses: actions/upload-artifact@v2
         with:
           name: paths_result

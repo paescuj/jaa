@@ -47,7 +47,7 @@ jobs:
           path: paths_result
 
       - name: Map images
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         id: map_images
         env:
           SKIPPED_BY: ${{ steps.skip_check.outputs.skipped_by }}

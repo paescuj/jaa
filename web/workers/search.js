@@ -1,36 +1,6 @@
 import { quickScore } from 'quick-score';
 
-// See https://github.com/vercel/next.js/issues/25484
-// import { getIndexRange, getTextItemWithNeighbors } from '../lib/search';
-function getTextItemWithNeighbors(textItems, itemIndex, span = 1) {
-  let previousItem = itemIndex - span;
-  if (
-    itemIndex > 1 &&
-    textItems[previousItem] &&
-    /^\s+$/.test(textItems[previousItem].str)
-  ) {
-    previousItem--;
-  }
-  let nextItem = itemIndex + 1 + span;
-  if (
-    nextItem < textItems.length &&
-    /^\s+$/.test(textItems[nextItem - 1].str)
-  ) {
-    nextItem++;
-  }
-  return textItems
-    .slice(Math.max(0, previousItem), nextItem)
-    .filter(Boolean)
-    .map((item) => item.str)
-    .join('');
-}
-
-function getIndexRange(string, substring) {
-  const indexStart = string.indexOf(substring);
-  const indexEnd = indexStart + substring.length;
-
-  return [indexStart, indexEnd];
-}
+import { getIndexRange, getTextItemWithNeighbors } from '../lib/search';
 
 addEventListener('message', (event) => {
   const { index, query } = event.data;

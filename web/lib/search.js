@@ -1,5 +1,3 @@
-// See https://github.com/vercel/next.js/issues/25484
-/*
 export function getTextItemWithNeighbors(textItems, itemIndex, span = 1) {
   let previousItem = itemIndex - span;
   if (
@@ -29,7 +27,6 @@ export function getIndexRange(string, substring) {
 
   return [indexStart, indexEnd];
 }
-*/
 
 export function highlight(string, matches, style = 'blue') {
   const substrings = [];

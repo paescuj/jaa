@@ -112,7 +112,7 @@ export default function Calendar({ job }) {
         }
       : {};
     try {
-      setEvents((await directus.items('dates').readMany(filter)).data);
+      setEvents((await directus.items('dates').readByQuery(filter)).data);
     } catch {
       //
     }

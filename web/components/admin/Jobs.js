@@ -119,7 +119,7 @@ export default function Jobs({
       });
 
       // Create associated user
-      const role = await directus.roles.readMany({
+      const role = await directus.roles.readByQuery({
         search: 'Companies',
       });
       let code = generatePassword();

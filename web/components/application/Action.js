@@ -109,7 +109,7 @@ export default function Action({ jobId, chatEnabled }) {
   const feedbackFormModal = useFormModal({
     modalOptions: {
       onOpen: async () =>
-        setFeedback((await directus.items('feedback').readMany()).data),
+        setFeedback((await directus.items('feedback').readByQuery()).data),
     },
     onSubmit: onSubmitFeedback,
   });

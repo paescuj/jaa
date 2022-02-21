@@ -138,7 +138,7 @@ export default function Application() {
         }
 
         // Get documents
-        const docs = await directus.items('docs').readMany({
+        const docs = await directus.items('docs').readByQuery({
           // Display job-specific documents first
           sort: ['job'],
         });

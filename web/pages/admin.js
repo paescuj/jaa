@@ -62,12 +62,12 @@ export default function Admin() {
   async function getJobs() {
     const jobs = await directus
       .items('jobs')
-      .readMany({ fields: ['*', 'feedback.*'] });
+      .readByQuery({ fields: ['*', 'feedback.*'] });
     setJobs(jobs.data);
   }
 
   async function getDocs() {
-    const docs = await directus.items('docs').readMany({
+    const docs = await directus.items('docs').readByQuery({
       sort: ['job'],
     });
     setDocs(docs.data);
@@ -90,7 +90,7 @@ export default function Admin() {
         await getJobs();
         await getDocs();
 
-        const dates = await directus.items('dates').readMany();
+        const dates = await directus.items('dates').readByQuery();
         setDates(dates.data);
 
         await getSettings();
@@ -127,7 +127,7 @@ export default function Admin() {
         try {
           const jobs = await directus
             .items('jobs')
-            .readMany({ fields: ['*', 'feedback.*'] });
+            .readByQuery({ fields: ['*', 'feedback.*'] });
           setJobs((prevState) => {
             if (isEqual(prevState, jobs.data)) {
               return prevState;

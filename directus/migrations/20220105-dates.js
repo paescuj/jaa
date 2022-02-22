@@ -30,18 +30,12 @@ module.exports = {
       },
 
       // Create access on "dates"
-      // TODO: Use presets as soon as bug in Directus has been fixed
       {
         role: role,
         collection: 'dates',
         action: 'create',
         validation: JSON.stringify({
           _and: [
-            {
-              job: {
-                _eq: '$CURRENT_USER.job.id',
-              },
-            },
             {
               start: {
                 _gte: '$NOW',
@@ -54,11 +48,10 @@ module.exports = {
             },
           ],
         }),
-        fields: ['job', 'start', 'end', 'remark'].join(),
-        // presets: JSON.stringify({
-        //   job: "$CURRENT_USER.job.id",
-        // }),
-        // fields: ['start', 'end', 'remark'].join(),
+        presets: JSON.stringify({
+          job: '$CURRENT_USER.job.id',
+        }),
+        fields: ['start', 'end', 'remark'].join(),
       },
 
       // Update access on "dates"

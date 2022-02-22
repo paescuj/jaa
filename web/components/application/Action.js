@@ -70,7 +70,7 @@ export function ActionToggle(props) {
   );
 }
 
-export default function Action({ jobId, chatEnabled }) {
+export default function Action({ chatEnabled }) {
   const { colorMode } = useColorMode();
   const screenSize = useBreakpointValue({
     base: 'small',
@@ -117,7 +117,6 @@ export default function Action({ jobId, chatEnabled }) {
     try {
       await directus.items('feedback').createOne({
         text: message,
-        job: jobId,
       });
 
       feedbackFormModal.close();

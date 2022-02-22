@@ -158,21 +158,14 @@ module.exports = {
       },
 
       // Create access on "feedback"
-      // TODO: Use presets as soon as bug in Directus has been fixed
       {
         role: role,
         collection: 'feedback',
         action: 'create',
-        validation: JSON.stringify({
-          job: {
-            _eq: '$CURRENT_USER.job.id',
-          },
+        presets: JSON.stringify({
+          job: '$CURRENT_USER.job.id',
         }),
-        fields: ['text', 'job'].join(),
-        // presets: JSON.stringify({
-        //   job: "$CURRENT_USER.job.id",
-        // }),
-        // fields: 'text',
+        fields: 'text',
       },
 
       // Update access on "users"

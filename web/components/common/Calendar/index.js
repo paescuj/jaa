@@ -194,7 +194,6 @@ export default function Calendar({ job }) {
   async function onSubmitAddEvent({ start, end, remark }) {
     try {
       await directus.items('dates').createOne({
-        job: job ?? user.job,
         start,
         end,
         remark,

@@ -446,7 +446,7 @@ export default function Application() {
         <Footer isSmallScreen={isSmallScreen} />
       </Layout>
 
-      <Action jobId={job.id} chatEnabled={Boolean(chatwoot)} />
+      <Action chatEnabled={Boolean(chatwoot)} />
 
       {chatwoot && (
         <Chat

@@ -118,7 +118,7 @@ jobs:
   build_images:
     name: Build Images
     needs: pre_check
-    uses: ./.github/workflows/build-images.yml@main
+    uses: ./.github/workflows/build-images.yml
     with:
       images: ${{ needs.pre_check.outputs.images }}
       push: ${{ github.event_name == 'push' }}

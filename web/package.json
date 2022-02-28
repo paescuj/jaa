@@ -23,7 +23,7 @@
     "@material-ui/icons": "4.11.2",
     "@material-ui/styles": "4.11.4",
     "@react-page/editor": "4.5.3",
-    "@react-page/plugins-slate": "4.5.3",
+    "@react-page/plugins-slate": "4.7.1",
     "@tippyjs/react": "4.2.6",
     "animate.css": "4.1.1",
     "chakra-react-select": "3.0.4",

@@ -120,7 +120,7 @@ export default function Application() {
         traverse(introduction_text, (context) => {
           const { key, value, meta } = context;
           if (key === 'type' && value === 'jobPopup') {
-            paths.push(meta.currentPath);
+            paths.push(meta.nodePath);
           }
         });
         paths.forEach((path) => {

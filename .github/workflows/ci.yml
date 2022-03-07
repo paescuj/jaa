@@ -41,7 +41,7 @@ jobs:
 
       - name: Upload paths_result result
         if: github.event_name != 'push' && steps.skip_check.outputs.paths_result != '{}'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: paths_result
           path: paths_result

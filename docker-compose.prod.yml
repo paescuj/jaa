@@ -58,6 +58,7 @@ services:
       SECRET_FILE: /run/secrets/jaa_directus_secret
       DB_PASSWORD_FILE: /run/secrets/jaa_directus_db_password
       ADMIN_PASSWORD_FILE: /run/secrets/jaa_directus_admin_password
+      CORS_ORIGIN: https://${PUBLIC_DOMAIN}
     networks:
       - jaa-directus
       - web

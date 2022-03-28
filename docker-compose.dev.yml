@@ -33,6 +33,7 @@ services:
       SECRET: $DIRECTUS_SECRET
       DB_PASSWORD: $DIRECTUS_DB_PASSWORD
       ADMIN_PASSWORD: $DIRECTUS_ADMIN_PASSWORD
+      CORS_ORIGIN: http://localhost:3000
 
   chatwoot-db:
     environment:

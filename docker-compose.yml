@@ -14,6 +14,7 @@ services:
       DB_DATABASE: directus
       DB_USER: directus
       ADMIN_EMAIL: admin@${PUBLIC_DOMAIN}
+      CORS_ENABLED: 'true'
 
   chatwoot-db:
     image: postgres:14-alpine

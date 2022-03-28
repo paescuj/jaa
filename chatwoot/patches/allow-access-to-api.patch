@@ -2,10 +2,10 @@ diff --git a/config/environments/production.rb b/config/environments/production.
 index fb6c124d..28ebab19 100644
 --- a/config/environments/production.rb
 +++ b/config/environments/production.rb
-@@ -121,9 +121,7 @@ Rails.application.configure do
-     allow do
+@@ -122,9 +122,7 @@ Rails.application.configure do
        origins '*'
        resource '/packs/*', headers: :any, methods: [:get, :options]
+       resource '/dashboard/audios/ding.mp3', headers: :any, methods: [:get, :options]
 -      if ActiveModel::Type::Boolean.new.cast(ENV.fetch('CW_API_ONLY_SERVER', false))
 -        resource '*', headers: :any, methods: :any, expose: ['access-token', 'client', 'uid', 'expiry']
 -      end

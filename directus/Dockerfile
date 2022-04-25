@@ -13,7 +13,7 @@ RUN mkdir out && \
   for dir in src/*; do \
   cd "$dir" \
   && npm install \
-  && npm install @rollup/plugin-commonjs@beta --prefix node_modules/@directus/extensions-sdk \
+  && npm install @rollup/plugin-commonjs@latest --prefix node_modules/@directus/extensions-sdk \
   && npm run build \
   && mv dist ../../out/$(basename "$dir") \
   && cd ../.. \

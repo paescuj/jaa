@@ -1,8 +1,8 @@
 diff --git a/app/javascript/widget/i18n/locale/de.json b/app/javascript/widget/i18n/locale/de.json
-index a31a0e17..53a0cf95 100644
+index 5a3588ae..8c567a44 100644
 --- a/app/javascript/widget/i18n/locale/de.json
 +++ b/app/javascript/widget/i18n/locale/de.json
-@@ -9,15 +9,15 @@
+@@ -13,8 +13,8 @@
      }
    },
    "TEAM_AVAILABILITY": {
@@ -13,14 +13,6 @@ index a31a0e17..53a0cf95 100644
    },
    "REPLY_TIME": {
      "IN_A_FEW_MINUTES": "Wir antworten üblicherweise innerhalb weniger Minuten",
-     "IN_A_FEW_HOURS": "Wir antworten üblicherweise innerhalb weniger Stunden",
-     "IN_A_DAY": "Wir antworten üblicherweise innerhalb eines Tages"
-   },
--  "START_CONVERSATION": "Sende uns eine Nachricht",
-+  "START_CONVERSATION": "Chat starten",
-   "START_NEW_CONVERSATION": "Neue Unterhaltung starten",
-   "UNREAD_VIEW": {
-     "VIEW_MESSAGES_BUTTON": "Neue Nachrichten anzeigen",
 diff --git a/config/locales/de.yml b/config/locales/de.yml
 index 9a462ce5..897450cd 100644
 --- a/config/locales/de.yml

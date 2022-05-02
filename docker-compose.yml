@@ -21,7 +21,7 @@ services:
     environment:
       POSTGRES_USER: chatwoot
   chatwoot-cache:
-    image: redis:6-alpine
+    image: redis:7-alpine
   chatwoot-sidekiq:
     image: ${REGISTRY_PREFIX:-}jaa-chatwoot:latest
     environment:

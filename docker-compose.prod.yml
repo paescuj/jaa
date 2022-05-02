@@ -34,7 +34,7 @@ services:
       - jaa-directus
     logging: *default-logging
   directus-cache:
-    image: redis:6-alpine
+    image: redis:7-alpine
     networks:
       - jaa-directus
     logging: *default-logging

@@ -35,6 +35,7 @@ export default function Chat({ hash, identifier, name, token, url }) {
 
   useEffect(() => {
     window.chatwootSettings = {
+      darkMode: 'auto',
       hideMessageBubble: true,
     };
 

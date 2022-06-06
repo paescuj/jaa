@@ -20,7 +20,7 @@ RUN mkdir out && \
   ; done
 
 ### Directus
-FROM directus/directus:9.11.1
+FROM directus/directus:9.12.1
 
 USER root
 RUN apk upgrade --no-cache \

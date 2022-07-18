@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <a href="./LICENSE"><img src="https://img.shields.io/github/license/paescuj/jaa" alt="License"></a>
+  <a href="https://github.com/paescuj/jaa/blob/main/LICENSE"><img src="https://img.shields.io/github/license/paescuj/jaa?label=License" alt="License"></a>
   <a href="https://github.com/paescuj/jaa/actions/workflows/ci.yml"><img src="https://github.com/paescuj/jaa/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
 </p>
 

@@ -4,7 +4,7 @@ import JobPopup from '@/components/common/JobPopup';
 
 export default pluginFactories.createComponentPlugin({
   addHoverButton: true,
-  addToolbarButton: true,
+  addToolbarButton: false,
   type: 'jobPopup',
   object: 'inline',
   icon: <span style={{ fontSize: '0.6em' }}>Job Popup</span>,

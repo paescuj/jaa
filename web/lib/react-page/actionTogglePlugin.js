@@ -5,7 +5,7 @@ import { ActionToggle } from '@/components/application/Action';
 
 export default pluginFactories.createComponentPlugin({
   addHoverButton: true,
-  addToolbarButton: true,
+  addToolbarButton: false,
   type: 'actionToggle',
   object: 'inline',
   icon: <span style={{ fontSize: '0.6em' }}>Action Toggle</span>,

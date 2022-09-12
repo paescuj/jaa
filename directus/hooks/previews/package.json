@@ -16,7 +16,7 @@
     "build": "directus-extension build"
   },
   "devDependencies": {
-    "@directus/extensions-sdk": "9.16.1",
+    "@directus/extensions-sdk": "9.17.4",
     "pdf2pic": "2.1.4",
     "puppeteer": "17.1.3"
   }

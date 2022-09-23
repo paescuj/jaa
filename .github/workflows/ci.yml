@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Check for skippable jobs
         id: skip_check
-        uses: fkirc/skip-duplicate-actions@master
+        uses: fkirc/skip-duplicate-actions@v5
         continue-on-error: true
         with:
           cancel_others: 'true'

@@ -1,7 +1,5 @@
 module.exports = {
-  experimental: {
-    outputStandalone: true,
-  },
+  output: 'standalone',
   webpack: (config) => {
     // Load pdf worker files as URLs by using asset modules
     config.module.rules.unshift({

@@ -9,7 +9,6 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
-import Script from 'next/script';
 import { useEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
 
@@ -78,7 +77,6 @@ function MyApp({ Component, pageProps, router }) {
 
   return (
     <>
-      <Script strategy="beforeInteractive" src="/__ENV.js"></Script>
       <ChakraProvider theme={theme}>
         <AnimatePresence exitBeforeEnter>
           {loading ? (

@@ -18,7 +18,7 @@
     "@dnd-kit/utilities": "3.2.0",
     "@emotion/react": "11.10.4",
     "@emotion/styled": "11.10.4",
-    "@fontsource/quicksand": "4.5.10",
+    "@fontsource/quicksand": "4.5.11",
     "@react-page/editor": "5.1.5",
     "@react-page/plugins-slate": "5.1.5",
     "@tippyjs/react": "4.2.6",

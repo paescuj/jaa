@@ -39,7 +39,7 @@ export default function Header({ title }) {
                 : formatMessage({ id: 'dark_mode' })
             }
             icon={
-              <AnimatePresence initial={false} exitBeforeEnter>
+              <AnimatePresence initial={false} mode="wait">
                 <MotionBox
                   key={colorMode}
                   initial={{ y: '110%', opacity: 0 }}

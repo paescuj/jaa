@@ -17,7 +17,7 @@ export default function Loader({ text, displayText }) {
           label={text}
           size="xl"
         />
-        <AnimatePresence exitBeforeEnter>
+        <AnimatePresence mode="wait">
           {displayText && (
             <MotionBox
               key={text}

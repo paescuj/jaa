@@ -78,7 +78,7 @@ function MyApp({ Component, pageProps, router }) {
   return (
     <>
       <ChakraProvider theme={theme}>
-        <AnimatePresence exitBeforeEnter>
+        <AnimatePresence mode="wait">
           {loading ? (
             <Layout justify="center" align="center">
               <Loader />

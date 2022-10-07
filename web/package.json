@@ -44,7 +44,7 @@
     "react-intl": "6.1.2",
     "react-measure": "2.5.2",
     "react-pdf": "5.7.2",
-    "swiper": "8.4.2"
+    "swiper": "8.4.3"
   },
   "devDependencies": {
     "eslint": "8.24.0",

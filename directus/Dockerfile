@@ -1,5 +1,5 @@
 ### Builder
-FROM node:16-alpine AS build
+FROM node:19-alpine AS build
 
 RUN addgroup -g 1001 app \
   && adduser -u 1001 -G app -s /bin/sh -D app

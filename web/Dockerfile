@@ -1,5 +1,5 @@
 ### Builder
-FROM node:16-alpine AS build
+FROM node:19-alpine AS build
 
 RUN apk upgrade --no-cache
 RUN addgroup -g 1001 app \
@@ -15,7 +15,7 @@ ENV NODE_ENV=production \
 RUN npm run build
 
 ### Production
-FROM node:16-alpine AS production
+FROM node:19-alpine AS production
 
 RUN apk upgrade --no-cache
 RUN addgroup -g 1001 app \

@@ -8,12 +8,10 @@ USER app
 WORKDIR /home/app
 COPY --chown=app:app hooks src
 
-# See https://github.com/rollup/rollup/issues/3805
 RUN mkdir out && \
   for dir in src/*; do \
   cd "$dir" \
   && npm install \
-  && npm install @rollup/plugin-commonjs@latest --prefix node_modules/@directus/extensions-sdk \
   && npm run build \
   && mv dist ../../out/$(basename "$dir") \
   && cd ../.. \

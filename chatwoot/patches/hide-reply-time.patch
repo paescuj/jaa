@@ -7,7 +7,7 @@ index 41c389ae..db363c47 100644
            }}
          </div>
 -        <div class="text-xs leading-4 mt-1">
--          {{ replyWaitMeessage }}
+-          {{ replyWaitMessage }}
 -        </div>
        </div>
        <available-agents v-if="isOnline" :agents="availableAgents" />

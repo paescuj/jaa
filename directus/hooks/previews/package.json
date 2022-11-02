@@ -18,6 +18,6 @@
   "devDependencies": {
     "@directus/extensions-sdk": "9.20.2",
     "pdf2pic": "2.1.4",
-    "puppeteer": "19.2.0"
+    "puppeteer": "19.2.1"
   }
 }

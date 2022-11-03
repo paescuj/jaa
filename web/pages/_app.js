@@ -78,22 +78,22 @@ function MyApp({ Component, pageProps, router }) {
   return (
     <>
       <ChakraProvider theme={theme}>
-        <AnimatePresence mode="wait">
-          {loading ? (
-            <Layout justify="center" align="center">
-              <Loader />
-            </Layout>
-          ) : (
-            <IntlProvider
-              otherKey={locale}
-              locale={locale}
-              defaultLocale={defaultLocale}
-              messages={messages}
-            >
+        <IntlProvider
+          otherKey={locale}
+          locale={locale}
+          defaultLocale={defaultLocale}
+          messages={messages}
+        >
+          <AnimatePresence mode="wait">
+            {loading ? (
+              <Layout justify="center" align="center">
+                <Loader />
+              </Layout>
+            ) : (
               <Component {...pageProps} key={router.route} />
-            </IntlProvider>
-          )}
-        </AnimatePresence>
+            )}
+          </AnimatePresence>
+        </IntlProvider>
       </ChakraProvider>
     </>
   );

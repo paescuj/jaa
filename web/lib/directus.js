@@ -22,12 +22,12 @@ export async function checkSession() {
 // Get current auth token
 export const getBearer = async () => {
   // Refresh token if required
-  if (!directus.auth.token) {
+  if (!(await directus.auth.token)) {
     try {
-      await directus.auth.refresh();
+      directus.auth.refresh();
     } catch {
       // Ignore error
     }
   }
-  return `Bearer ${directus.auth.token}`;
+  return `Bearer ${await directus.auth.token}`;
 };

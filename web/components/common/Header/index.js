@@ -1,7 +1,7 @@
 import { Box, Flex, IconButton, Tooltip, useColorMode } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { LogOut, MoonSat, SunLight } from 'iconoir-react';
-import { useRouter } from 'next/router';
+import NextLink from 'next/link';
 import { useIntl } from 'react-intl';
 
 import LocaleMenu from './LocaleMenu';
@@ -9,7 +9,6 @@ import LocaleMenu from './LocaleMenu';
 const MotionBox = motion(Box);
 
 export default function Header({ title }) {
-  const router = useRouter();
   const { colorMode, toggleColorMode } = useColorMode();
   const { formatMessage } = useIntl();
 
@@ -55,12 +54,8 @@ export default function Header({ title }) {
 
         <Tooltip hasArrow label={formatMessage({ id: 'logout' })}>
           <IconButton
-            as="a"
+            as={NextLink}
             href="/logout"
-            onClick={(e) => {
-              e.preventDefault();
-              router.push(e.currentTarget.href);
-            }}
             variant="ghost"
             colorScheme={colorMode === 'light' ? 'blackAlpha' : 'gray'}
             color={colorMode === 'light' ? 'gray.600' : 'gray.400'}

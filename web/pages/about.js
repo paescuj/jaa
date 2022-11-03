@@ -2,7 +2,7 @@ import { Box, Flex, IconButton, Tooltip, useColorMode } from '@chakra-ui/react';
 import Editor from '@react-page/editor';
 import { ArrowLeft } from 'iconoir-react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+import NextLink from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -13,7 +13,6 @@ import { directus } from '@/lib/directus';
 import { customSlateAbout } from '@/lib/react-page/plugins';
 
 export default function About() {
-  const router = useRouter();
   const { colorMode } = useColorMode();
   const { formatMessage, locale } = useIntl();
   const [loading, setLoading] = useState(true);
@@ -63,12 +62,8 @@ export default function About() {
           <Logo />
           <Tooltip hasArrow label={formatMessage({ id: 'to_start_page' })}>
             <IconButton
-              as="a"
+              as={NextLink}
               href="/"
-              onClick={(e) => {
-                e.preventDefault();
-                router.push(e.currentTarget.href);
-              }}
               variant="ghost"
               colorScheme={colorMode === 'light' ? 'blackAlpha' : 'gray'}
               color={colorMode === 'light' ? 'gray.600' : 'gray.400'}

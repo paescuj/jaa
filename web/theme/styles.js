@@ -3,11 +3,11 @@ import { mode } from '@chakra-ui/theme-tools';
 // Apply tooltip theme to tippy
 const tippy = (props) => ({
   '.tippy-box[data-theme~="chakra"]': {
-    ...props.theme.components.Tooltip.baseStyle(props),
+    ...props.theme.components.Tooltip.baseStyle,
   },
   '.tippy-box[data-theme~="chakra"][data-placement^="bottom"] > .tippy-arrow::before':
     {
-      borderBottomColor: props.theme.components.Tooltip.baseStyle(props).bg,
+      borderBottomColor: props.theme.components.Tooltip.baseStyle.bg,
     },
 });
 

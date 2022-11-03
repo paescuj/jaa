@@ -1,18 +1,19 @@
 ### Builder
 FROM node:16-alpine AS build
 
-RUN apk upgrade --no-cache
+RUN apk upgrade --no-cache \
+  && npm install -g pnpm
 RUN addgroup -g 1001 app \
   && adduser -u 1001 -G app -s /bin/sh -D app
 USER app
 WORKDIR /home/app
-COPY --chown=app:app package*.json ./
-RUN npm install \
-  && npm install sharp
+COPY --chown=app:app package.json pnpm-lock.yaml ./
+RUN pnpm --frozen-lockfile install \
+  && pnpm install sharp
 COPY --chown=app:app . .
 ENV NODE_ENV=production \
   NEXT_TELEMETRY_DISABLED=1
-RUN npm run build
+RUN pnpm run build
 
 ### Production
 FROM node:16-alpine AS production

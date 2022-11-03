@@ -302,8 +302,8 @@ start() {
     "${_docker_compose_cmd[@]}" up -d
 
     info "Starting web app..."
-    npm install --prefix "${_dir}/web"
-    exec npm run --prefix "${_dir}/web" dev
+    pnpm install --dir "${_dir}/web"
+    exec pnpm run --dir "${_dir}/web" dev
   else
     info 'Deploying stack...'
     docker_stack_deploy_cmd=('docker' 'stack' 'deploy')

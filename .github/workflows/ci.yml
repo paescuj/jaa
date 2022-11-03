@@ -10,15 +10,15 @@ on:
       - main
 
 jobs:
-  pre_check:
+  pre-check:
     name: Pre-Check
     continue-on-error: true
     runs-on: ubuntu-latest
     outputs:
-      images: ${{ steps.map_images.outputs.result }}
+      images: ${{ steps.map-images.outputs.result }}
     steps:
       - name: Check for skippable jobs
-        id: skip_check
+        id: skip-check
         uses: fkirc/skip-duplicate-actions@v5
         continue-on-error: true
         with:
@@ -36,11 +36,11 @@ jobs:
                 - 'chatwoot/**/*'
 
       - name: Store paths_result output
-        if: github.event_name != 'push' && steps.skip_check.outputs.paths_result != '{}'
-        run: echo '${{ steps.skip_check.outputs.paths_result }}' > paths_result
+        if: github.event_name != 'push' && steps.skip-check.outputs.paths_result != '{}'
+        run: echo '${{ steps.skip-check.outputs.paths_result }}' > paths_result
 
       - name: Upload paths_result result
-        if: github.event_name != 'push' && steps.skip_check.outputs.paths_result != '{}'
+        if: github.event_name != 'push' && steps.skip-check.outputs.paths_result != '{}'
         uses: actions/upload-artifact@v3
         with:
           name: paths_result
@@ -48,10 +48,10 @@ jobs:
 
       - name: Map images
         uses: actions/github-script@v6
-        id: map_images
+        id: map-images
         env:
-          SKIPPED_BY: ${{ steps.skip_check.outputs.skipped_by }}
-          PATHS_RESULT: ${{ steps.skip_check.outputs.paths_result }}
+          SKIPPED_BY: ${{ steps.skip-check.outputs.skipped_by }}
+          PATHS_RESULT: ${{ steps.skip-check.outputs.paths_result }}
         with:
           script: |
             const images = [];
@@ -115,12 +115,12 @@ jobs:
 
             return images;
 
-  build_images:
+  build-images:
     name: Build Images
-    needs: pre_check
+    needs: pre-check
     uses: ./.github/workflows/build-images.yml
     with:
-      images: ${{ needs.pre_check.outputs.images }}
+      images: ${{ needs.pre-check.outputs.images }}
       push: ${{ github.event_name == 'push' }}
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}

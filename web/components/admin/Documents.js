@@ -61,7 +61,7 @@ export default function Documents({ docs, refreshDocs }) {
             {formatMessage({ id: 'no_general_documents_yet' })}
           </Text>
         ) : (
-          <Accordion flex="1" allowToggle allowMultiple>
+          <Accordion flex="1" allowMultiple>
             {docs
               .filter((doc) => doc.global === true)
               .map((doc) => (

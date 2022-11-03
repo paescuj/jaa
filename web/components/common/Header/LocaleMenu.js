@@ -18,8 +18,14 @@ import { LocaleStore } from '@/stores/LocaleStore';
 export default function LocaleMenu() {
   const { formatMessage } = useIntl();
   const locale = LocaleStore.useState((s) => s.locale);
+  const [delayedLocale, setDelayedLocale] = useState();
   const { colorMode } = useColorMode();
   const [icons, setIcons] = useState({});
+
+  // Delay locale change in popup (should close first)
+  useEffect(() => {
+    setTimeout(() => setDelayedLocale(locale), 150);
+  }, [locale]);
 
   useEffect(() => {
     async function getIcons() {
@@ -63,8 +69,9 @@ export default function LocaleMenu() {
                     : 'grayscale(60%) opacity(0.8)'
                 }
                 borderRadius="full"
-                layout="responsive"
                 src={icons[locale]}
+                width="1.5em"
+                height="1.5em"
                 alt={locales[locale].title}
                 title={locales[locale].title}
               />
@@ -78,7 +85,7 @@ export default function LocaleMenu() {
           >
             <VStack spacing={1.5}>
               {Object.keys(locales)
-                .filter((l) => l !== locale)
+                .filter((l) => l !== delayedLocale)
                 .map((l) => (
                   <Button
                     key={l}
@@ -107,9 +114,10 @@ export default function LocaleMenu() {
                     <Image
                       as={NextImage}
                       borderRadius="full"
-                      layout="fill"
+                      width="2.5em"
+                      height="2.5em"
                       src={icons[l]}
-                      alt={locales[l].title}
+                      alt={locales[l].region}
                     />
                   </Button>
                 ))}

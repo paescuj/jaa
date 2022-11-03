@@ -295,7 +295,7 @@ export default function Jobs({
         {jobs.length === 0 ? (
           <Text flex="1">{formatMessage({ id: 'no_jobs_yet' })}</Text>
         ) : (
-          <Accordion flex="1" allowToggle allowMultiple>
+          <Accordion flex="1" allowMultiple>
             {jobs.map((job) => (
               <AccordionItem key={job.id}>
                 <h2>

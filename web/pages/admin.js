@@ -11,6 +11,7 @@ import {
 import isEqual from 'lodash.isequal';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
@@ -179,11 +180,7 @@ export default function Admin() {
               },
               {
                 text: formatMessage({ id: 'logout' }),
-                props: { as: 'a', href: '/logout', colorScheme: 'red' },
-                action: (e) => {
-                  e.preventDefault();
-                  router.push(e.currentTarget.href);
-                },
+                props: { as: NextLink, href: '/logout', colorScheme: 'red' },
               },
             ]}
           />

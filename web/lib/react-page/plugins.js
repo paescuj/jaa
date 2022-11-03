@@ -15,11 +15,15 @@ const components = (config) => ({
     link: config.plugins.link.link((def) => ({
       ...def,
       Component: ({ href, openInNewWindow, color, children }) => (
-        <NextLink href={href} passHref>
-          <Link isExternal={openInNewWindow} color={color} fontWeight="bold">
-            {children}
-          </Link>
-        </NextLink>
+        <Link
+          as={NextLink}
+          href={href}
+          isExternal={openInNewWindow}
+          color={color}
+          fontWeight="bold"
+        >
+          {children}
+        </Link>
       ),
       controls: {
         ...def.controls,

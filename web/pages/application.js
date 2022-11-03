@@ -31,6 +31,7 @@ import {
 import Editor from '@react-page/editor';
 import { EyeEmpty, List, ViewGrid } from 'iconoir-react';
 import Head from 'next/head';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import objectPath from 'object-path';
 import { traverse } from 'object-traversal';
@@ -260,11 +261,7 @@ export default function Application() {
               },
               {
                 text: formatMessage({ id: 'logout' }),
-                props: { as: 'a', href: '/logout', colorScheme: 'red' },
-                action: (e) => {
-                  e.preventDefault();
-                  router.push(e.currentTarget.href);
-                },
+                props: { as: NextLink, href: '/logout', colorScheme: 'red' },
               },
             ]}
           />

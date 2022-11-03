@@ -116,7 +116,7 @@ export default function Settings({
 
   return (
     <>
-      <Accordion flex="1" defaultIndex={[0, 1]} allowToggle allowMultiple>
+      <Accordion flex="1" defaultIndex={[0, 1]} allowMultiple>
         <AccordionItem>
           <h2>
             <AccordionButton>

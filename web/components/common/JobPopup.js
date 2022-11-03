@@ -66,7 +66,7 @@ export default function JobPopup({
         content={
           <>
             <Link
-              d="inline-flex"
+              display="inline-flex"
               alignContent="center"
               mb="1"
               href={link}
@@ -78,7 +78,7 @@ export default function JobPopup({
               )}
               <Box
                 as="span"
-                d="inline-flex"
+                display="inline-flex"
                 sx={{ alignItems: 'center' }}
                 ml="1"
               >

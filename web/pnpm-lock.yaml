@@ -39,7 +39,7 @@ specifiers:
   react-datepicker: 4.8.0
   react-dom: 18.2.0
   react-flip-toolkit: 7.0.17
-  react-hook-form: 7.39.1
+  react-hook-form: 7.39.2
   react-intl: 6.2.1
   react-measure: 2.5.2
   react-pdf: 5.7.2
@@ -76,7 +76,7 @@ dependencies:
   react-datepicker: 4.8.0_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
   react-flip-toolkit: 7.0.17_biqbaboplfbrettd7655fr4n2y
-  react-hook-form: 7.39.1_react@18.2.0
+  react-hook-form: 7.39.2_react@18.2.0
   react-intl: 6.2.1_react@18.2.0
   react-measure: 2.5.2_biqbaboplfbrettd7655fr4n2y
   react-pdf: 5.7.2_biqbaboplfbrettd7655fr4n2y
@@ -4347,8 +4347,8 @@ packages:
       use-sidecar: 1.1.2_react@18.2.0
     dev: false
 
-  /react-hook-form/7.39.1_react@18.2.0:
-    resolution: {integrity: sha512-MiF9PCILN5KulhSGbnjohMiTOrB47GerDTichMNP0y2cPUu1GTRFqbunOxCE9N1499YTLMV/ne4gFzqCp1rxrQ==}
+  /react-hook-form/7.39.2_react@18.2.0:
+    resolution: {integrity: sha512-rCeCa1+sIcgI9PjgGmev9bVqHCwYwhjkbsXitr+giQ/P0mf/AGwUBtCdKC1lRu7egrxbLwqO9cWNWpXW4FrsHA==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18

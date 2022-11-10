@@ -35,7 +35,7 @@ specifiers:
   pullstate: 1.24.0
   quick-score: 0.2.0
   react: 18.2.0
-  react-big-calendar: 1.5.0
+  react-big-calendar: 1.5.1
   react-datepicker: 4.8.0
   react-dom: 18.2.0
   react-flip-toolkit: 7.0.17
@@ -72,7 +72,7 @@ dependencies:
   pullstate: 1.24.0_react@18.2.0
   quick-score: 0.2.0
   react: 18.2.0
-  react-big-calendar: 1.5.0_biqbaboplfbrettd7655fr4n2y
+  react-big-calendar: 1.5.1_biqbaboplfbrettd7655fr4n2y
   react-datepicker: 4.8.0_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
   react-flip-toolkit: 7.0.17_biqbaboplfbrettd7655fr4n2y
@@ -4196,8 +4196,8 @@ packages:
     resolution: {integrity: sha512-y9PW9rl7BhjTykkGYi4wh0FsXWrWFv3IJVxtAI9FMargSOhqzRN3OjO2itpw63PoSu1FY07i8B2aCwpolQucOQ==}
     dev: false
 
-  /react-big-calendar/1.5.0_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-/BAJqufxtIf4oR51+7LBtPnqTrghzszzYCGlLaaLlxvVxXBVvTWRcKuyR6KMSuo0zQ/8b94JMG75hiPRe3DWlw==}
+  /react-big-calendar/1.5.1_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-6sHIzJMQVz2X+WavwZovmgRwY4LZAuHXogKLgDQCDGjro4jc85PG4Ty8AO0l05U73PFauWYTnvun9ASncVCqcA==}
     peerDependencies:
       react: ^16.14.0 || ^17 || ^18
       react-dom: ^16.14.0 || ^17 || ^18

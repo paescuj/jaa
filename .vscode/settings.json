@@ -1,3 +1,9 @@
 {
-  "eslint.workingDirectories": ["web"]
+  "eslint.workingDirectories": ["web"],
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.formatOnSave": false
+  },
 }

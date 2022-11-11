@@ -16,6 +16,8 @@ export default pluginFactories.createComponentPlugin({
       fontSize="inherit"
       variant="link"
       colorScheme="black"
+      fontWeight="bold"
+      verticalAlign="inherit"
     >
       {children}
     </ActionToggle>

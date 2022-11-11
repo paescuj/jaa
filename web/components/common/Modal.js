@@ -99,53 +99,50 @@ export default function Modal({
         <ModalHeader>{t}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>{c}</ModalBody>
-        {(a || secondaryActions) && (
-          <ModalFooter>
-            {secondaryActions && (
-              <Box flex="1">
-                {secondaryActions.map((action, index) => (
-                  <Button
-                    key={index}
-                    variant="link"
-                    isFullWidth={false}
-                    onClick={(e) => {
-                      if (action.action) {
-                        action.action(e);
-                      }
-                      if (action.close) {
-                        props.onClose();
-                      }
-                    }}
-                    {...action.props}
-                  >
-                    {action.text}
-                  </Button>
-                ))}
-              </Box>
-            )}
-            {a && (
-              <ButtonGroup spacing="2">
-                {a.map((action, index) => (
-                  <Button
-                    key={index}
-                    ref={action.initialFocus && ref}
-                    onClick={(e) => {
-                      if (action.action) {
-                        action.action(e);
-                      }
-                      if (action.close) {
-                        props.onClose();
-                      }
-                    }}
-                    {...action.props}
-                  >
-                    {action.text}
-                  </Button>
-                ))}
-              </ButtonGroup>
-            )}
-          </ModalFooter>
-        )}
+        <ModalFooter>
+          {secondaryActions && (
+            <Box flex="1">
+              {secondaryActions.map((action, index) => (
+                <Button
+                  key={index}
+                  variant="link"
+                  onClick={(e) => {
+                    if (action.action) {
+                      action.action(e);
+                    }
+                    if (action.close) {
+                      props.onClose();
+                    }
+                  }}
+                  {...action.props}
+                >
+                  {action.text}
+                </Button>
+              ))}
+            </Box>
+          )}
+          {a && (
+            <ButtonGroup spacing="2">
+              {a.map((action, index) => (
+                <Button
+                  key={index}
+                  ref={action.initialFocus && ref}
+                  onClick={(e) => {
+                    if (action.action) {
+                      action.action(e);
+                    }
+                    if (action.close) {
+                      props.onClose();
+                    }
+                  }}
+                  {...action.props}
+                >
+                  {action.text}
+                </Button>
+              ))}
+            </ButtonGroup>
+          )}
+        </ModalFooter>
       </ModalContent>
     </ChakraModal>
   );

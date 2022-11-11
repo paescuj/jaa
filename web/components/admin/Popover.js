@@ -58,7 +58,9 @@ export default function Popover({
         <>
           <PopoverTrigger>{children}</PopoverTrigger>
           <PopoverContent>
-            <PopoverHeader fontWeight="semibold">{header}</PopoverHeader>
+            <PopoverHeader fontWeight="semibold" noOfLines={1}>
+              {header}
+            </PopoverHeader>
             <PopoverArrow />
             <PopoverCloseButton />
             <PopoverBody>{body}</PopoverBody>

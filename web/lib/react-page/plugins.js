@@ -14,10 +14,10 @@ const components = (config) => ({
     ...config.plugins.link,
     link: config.plugins.link.link((def) => ({
       ...def,
-      Component: ({ href, openInNewWindow, color, children }) => (
+      Component: ({ href, openInNewWindow, color, children, readOnly }) => (
         <Link
           as={NextLink}
-          href={href}
+          href={readOnly ? href : ''}
           isExternal={openInNewWindow}
           color={color}
           fontWeight="bold"

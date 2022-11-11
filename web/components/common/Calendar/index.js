@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import format from 'date-fns/format';
 import getDay from 'date-fns/getDay';
+import isToday from 'date-fns/isToday';
 import parse from 'date-fns/parse';
 import startOfWeek from 'date-fns/startOfWeek';
 import { Cancel, Check, Trash } from 'iconoir-react';
@@ -101,7 +102,7 @@ export default function Calendar({ job }) {
   const [events, setEvents] = useState([]);
   const user = AuthStore.useState((s) => s.user);
 
-  const refreshEvents = async (job) => {
+  const refreshEvents = async () => {
     const filter = job
       ? {
           filter: {
@@ -119,8 +120,9 @@ export default function Calendar({ job }) {
   };
 
   useEffect(() => {
-    refreshEvents(job);
-  }, [job]);
+    refreshEvents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const locale = LocaleStore.useState((s) => s.locale);
   useEffect(() => {
@@ -172,6 +174,13 @@ export default function Calendar({ job }) {
   };
 
   const dayPropGetter = (date) => {
+    if (isToday(date) && colorMode === 'dark') {
+      return {
+        style: {
+          backgroundColor: 'var(--chakra-colors-gray-500)',
+        },
+      };
+    }
     if (
       (date.getMonth() === currentDate.getMonth() ||
         currentView === 'work_week') &&
@@ -183,7 +192,7 @@ export default function Calendar({ job }) {
           backgroundColor:
             colorMode === 'light'
               ? 'var(--chakra-colors-red-50)'
-              : 'var(--chakra-colors-red-400)',
+              : 'var(--chakra-colors-red-300)',
         },
       };
     }
@@ -194,6 +203,7 @@ export default function Calendar({ job }) {
   async function onSubmitAddEvent({ start, end, remark }) {
     try {
       await directus.items('dates').createOne({
+        job,
         start,
         end,
         remark,
@@ -285,6 +295,7 @@ export default function Calendar({ job }) {
       />
 
       <FormModal
+        blockScrollOnMount={false}
         state={addEventFormModal}
         id="add-event"
         title={formatMessage({ id: 'submit_date_proposal' })}
@@ -321,6 +332,7 @@ export default function Calendar({ job }) {
       />
 
       <Modal
+        blockScrollOnMount={false}
         state={eventDetailModal}
         title={(data) => (
           <>
@@ -331,8 +343,8 @@ export default function Calendar({ job }) {
                   data?.user_created === user.id
                     ? 'created_by_you'
                     : job
-                    ? 'created_by_company'
-                    : 'created_by_applicant',
+                    ? 'created_by_applicant'
+                    : 'created_by_company',
               })}
             </Badge>
           </>

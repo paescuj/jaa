@@ -240,7 +240,7 @@ export default function Card({
                   shouldFlip={shouldFlip}
                   delayUntil={flipId}
                 >
-                  <Heading as="h4" size="sm" isTruncated title={title}>
+                  <Heading as="h4" size="sm" noOfLines={1} title={title}>
                     {renderTitle(title)}
                   </Heading>
                 </Flipped>

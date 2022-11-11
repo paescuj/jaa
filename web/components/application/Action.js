@@ -234,6 +234,7 @@ export default function Action({ chatEnabled }) {
       />
 
       <Modal
+        blockScrollOnMount={false}
         state={feedbackHistoryModal}
         title={formatMessage({ id: 'previous_feedback' })}
         content={

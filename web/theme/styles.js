@@ -4,6 +4,8 @@ import { mode } from '@chakra-ui/theme-tools';
 const tippy = (props) => ({
   '.tippy-box[data-theme~="chakra"]': {
     ...props.theme.components.Tooltip.baseStyle,
+    ...(props.colorMode === 'dark' &&
+      props.theme.components.Tooltip.baseStyle._dark),
   },
   '.tippy-box[data-theme~="chakra"][data-placement^="bottom"] > .tippy-arrow::before':
     {
@@ -66,10 +68,6 @@ const calendar = (props) => ({
   // Fix agenda date cell background
   '.rbc-agenda-date-cell': {
     backgroundColor: mode('gray.200', 'gray.500')(props),
-  },
-  // Fix today color in dark mode
-  '.rbc-today': {
-    backgroundColor: mode('', 'gray.500')(props),
   },
 });
 

@@ -1,0 +1,16 @@
+diff --git a/config/initializers/cors.rb b/config/initializers/cors.rb
+index 1d516370f..4b1a8f40c 100644
+--- a/config/initializers/cors.rb
++++ b/config/initializers/cors.rb
+@@ -10,10 +10,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
+     resource '/audio/*', headers: :any, methods: [:get, :options]
+     # Make the public endpoints accessible to the frontend
+     resource '/public/api/*', headers: :any, methods: :any
+-
+-    if ActiveModel::Type::Boolean.new.cast(ENV.fetch('CW_API_ONLY_SERVER', false)) || Rails.env.development?
+-      resource '*', headers: :any, methods: :any, expose: %w[access-token client uid expiry]
+-    end
++    resource '*', headers: :any, methods: :any, expose: %w[access-token client uid expiry]
+   end
+ end
+ 

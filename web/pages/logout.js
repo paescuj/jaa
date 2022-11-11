@@ -33,6 +33,8 @@ export default function Logout() {
         s.user = false;
       });
 
+      window.$chatwoot?.reset();
+
       try {
         // Try to logout
         await directus.auth.logout();

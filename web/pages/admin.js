@@ -113,7 +113,7 @@ export default function Admin() {
       });
     } else if (!user.email?.startsWith('admin@')) {
       // Go to home page if logged in user is not admin
-      router.push('/home');
+      router.push('/application');
     } else {
       load();
     }

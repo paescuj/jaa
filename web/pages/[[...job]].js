@@ -36,8 +36,8 @@ export default function Job() {
               job: query.job[1],
             },
           });
-        } else {
-          // Show instructions otherwise
+        } else if (!query.company || !query.job) {
+          // Show instructions when no params are present
           setLoading(false);
         }
       }

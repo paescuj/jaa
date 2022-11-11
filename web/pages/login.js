@@ -51,7 +51,8 @@ export default function Login() {
         }
       }
     }
-  }, [user, router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { formState, handleSubmit, register, setError } = useForm();
   const { isOpen: codeIsRevealed, onToggle: onToggleCode } = useDisclosure();

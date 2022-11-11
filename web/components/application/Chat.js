@@ -1,5 +1,6 @@
 import { Box } from '@chakra-ui/react';
-import { useEffect, useRef, useState } from 'react';
+import Script from 'next/script';
+import { useEffect, useRef } from 'react';
 import { useIntl } from 'react-intl';
 
 export function ChatToggle(props) {
@@ -13,12 +14,15 @@ export function ChatToggle(props) {
         button.addEventListener('click', () => window.$chatwoot.toggle());
       };
 
-      window.addEventListener('chatwoot:ready', toggle);
-
-      return () => {
-        window.removeEventListener('chatwoot:ready', toggle);
-        button.removeEventListener('click', () => window.$chatwoot.toggle());
-      };
+      if (window.$chatwoot?.hasLoaded) {
+        toggle();
+      } else {
+        window.addEventListener('chatwoot:ready', toggle);
+        return () => {
+          window.removeEventListener('chatwoot:ready', toggle);
+          button.removeEventListener('click', () => window.$chatwoot.toggle());
+        };
+      }
     }
   }, [ref]);
 
@@ -31,7 +35,6 @@ export function ChatToggle(props) {
 
 export default function Chat({ hash, identifier, name, token, url }) {
   const { locale } = useIntl();
-  const [chatLoaded, setChatLoaded] = useState(false);
 
   useEffect(() => {
     window.chatwootSettings = {
@@ -39,25 +42,7 @@ export default function Chat({ hash, identifier, name, token, url }) {
       hideMessageBubble: true,
     };
 
-    (function (d, t) {
-      var BASE_URL = url;
-      var g = d.createElement(t),
-        s = d.getElementsByTagName(t)[0];
-      g.id = 'woot-script';
-      g.src = BASE_URL + '/packs/js/sdk.js';
-      g.defer = true;
-      g.async = true;
-      s.parentNode.insertBefore(g, s);
-      g.onload = function () {
-        window.chatwootSDK.run({
-          websiteToken: token,
-          baseUrl: BASE_URL,
-        });
-      };
-    })(document, 'script');
-
     const setup = () => {
-      setChatLoaded(true);
       window.$chatwoot.setUser(identifier, {
         name: name,
         identifier_hash: hash,
@@ -71,21 +56,28 @@ export default function Chat({ hash, identifier, name, token, url }) {
 
     return () => {
       window.removeEventListener('chatwoot:ready', setup);
-      window.$chatwoot.reset();
-      document
-        .querySelectorAll(
-          '#woot-script, .woot--bubble-holder, .woot-widget-holder'
-        )
-        .forEach((el) => el.remove());
+      window.$chatwoot.toggle('close');
     };
   }, [hash, identifier, name, token, url]);
 
   useEffect(() => {
-    if (chatLoaded) {
-      window.$chatwoot.setLocale(locale);
+    if (window.$chatwoot?.hasLoaded) {
       // See https://github.com/chatwoot/chatwoot/issues/1374
+      window.$chatwoot.setLocale(locale);
     }
-  }, [chatLoaded, locale]);
+  }, [locale]);
 
-  return null;
+  return (
+    <>
+      <Script
+        src={url + '/packs/js/sdk.js'}
+        onLoad={() => {
+          window.chatwootSDK.run({
+            websiteToken: token,
+            baseUrl: url,
+          });
+        }}
+      />
+    </>
+  );
 }

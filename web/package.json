@@ -30,7 +30,7 @@
     "iconoir-react": "5.4.0",
     "language-icons": "0.3.0",
     "lodash.isequal": "4.5.0",
-    "next": "13.0.2",
+    "next": "13.0.3",
     "object-path": "0.11.8",
     "object-traversal": "1.0.1",
     "omgopass": "3.2.1",
@@ -51,7 +51,7 @@
   "devDependencies": {
     "@types/react": "^18.0.25",
     "eslint": "8.27.0",
-    "eslint-config-next": "13.0.2",
+    "eslint-config-next": "13.0.3",
     "eslint-config-prettier": "8.5.0",
     "eslint-import-resolver-alias": "1.1.2",
     "eslint-plugin-import": "2.26.0",

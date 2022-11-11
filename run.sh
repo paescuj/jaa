@@ -12,13 +12,9 @@ _docker_compose_cmd=('docker-compose' '--env-file' "$_env_file")
 for compose_file in "${_compose_files[@]}"; do
   _docker_compose_cmd+=('--file' "$compose_file")
 done
-_chatwoot_enabled=${CHATWOOT_ENABLED:-true}
-if [[ $_chatwoot_enabled == 'true' ]]; then
-  _docker_compose_cmd+=('--profile' 'chatwoot')
-fi
-readonly _dir _jaa_env _stack_name _env_file _compose_files _docker_compose_cmd
+readonly _dir _jaa_env _stack_name _env_file _compose_files
 
-# Function to print a message
+# Print a message
 print() {
   declare color="$1" message="$2"
   local color_reset='\x1b[0m'
@@ -33,36 +29,31 @@ print() {
   done <<< "$message"
 }
 
-# Function to print info message
+# Print info message
 info() {
   print '\x1b[32m' "$*"
 }
 
-# Function to print error message and exit
+# Print error message and exit
 error() {
   print '\x1b[31m' "$*" >&2
   exit 1
 }
 
-# Function to get config
+# Get config
 get_config() {
   if [[ -n $1 ]]; then
-    declare -n _config="$1"
-  else
-    declare -A _config
-  fi
-  if [[ -n $2 ]]; then
-    declare -n _envs="$2"
+    declare -n _envs="$1"
   else
     declare -a _envs
   fi
-  if [[ -n $3 ]]; then
-    declare -n _secrets="$3"
+  if [[ -n $2 ]]; then
+    declare -n _secrets="$2"
   else
     declare -a _secrets
   fi
 
-  getUuid() {
+  get_uuid() {
     {
       uuidgen | awk '{print tolower($0)}' ||
         cat /proc/sys/kernel/random/uuid ||
@@ -71,7 +62,7 @@ get_config() {
     } 2>/dev/null
   }
 
-  getPassword() {
+  get_password() {
     declare len="$1"
     {
       pwgen -y -N1 "$len" ||
@@ -90,76 +81,47 @@ get_config() {
     } 2>/dev/null
   }
 
-  # Default registry
-  REGISTRY_PREFIX=${REGISTRY_PREFIX:-paescuj}
-
-  _config+=(
-    [PUBLIC_DOMAIN]="${PUBLIC_DOMAIN:-jaa.example.org}"
-    [DIRECTUS_KEY]="${DIRECTUS_KEY:-$(getUuid)}"
-    [DIRECTUS_SECRET]="${DIRECTUS_SECRET:-$(getUuid)}"
-    [DIRECTUS_DB_PASSWORD]="${DIRECTUS_DB_PASSWORD:-$(getPassword 24)}"
-    [DIRECTUS_ADMIN_PASSWORD]="${DIRECTUS_ADMIN_PASSWORD:-$(getPassword 12)}"
-    [CHATWOOT_SECRET_KEY_BASE]="${CHATWOOT_SECRET_KEY_BASE:-$(getPassword 64)}"
-    [CHATWOOT_DB_PASSWORD]="${CHATWOOT_DB_PASSWORD:-$(getPassword 24)}"
-    [REGISTRY_PREFIX]="${REGISTRY_PREFIX/%//}"
-  )
+  # Base envs
   _envs+=(
-    'PUBLIC_DOMAIN'
-    'REGISTRY_PREFIX'
+    [PUBLIC_DOMAIN]="${PUBLIC_DOMAIN:-jaa.example.org}"
+    [REGISTRY_PREFIX]=$(printf '%s' "${REGISTRY_PREFIX:-paescuj}" | sed '/\/$/!s/$/\/&/')
+    [CHATWOOT_ENABLED]="${CHATWOOT_ENABLED:-true}"
   )
 
-  if [[ $_jaa_env = 'dev' ]]; then
+  # Base secrets
+  _secrets+=(
+    [DIRECTUS_KEY]="${DIRECTUS_KEY:-$(get_uuid)}"
+    [DIRECTUS_SECRET]="${DIRECTUS_SECRET:-$(get_uuid)}"
+    [DIRECTUS_DB_PASSWORD]="${DIRECTUS_DB_PASSWORD:-$(get_password 24)}"
+    [DIRECTUS_ADMIN_PASSWORD]="${DIRECTUS_ADMIN_PASSWORD:-$(get_password 12)}"
+    [CHATWOOT_SECRET_KEY_BASE]="${CHATWOOT_SECRET_KEY_BASE:-$(get_password 64)}"
+    [CHATWOOT_DB_PASSWORD]="${CHATWOOT_DB_PASSWORD:-$(get_password 24)}"
+  )
+
+  if [[ $_jaa_env = 'prod' ]]; then
     _envs+=(
-      'DIRECTUS_KEY'
-      'DIRECTUS_SECRET'
-      'DIRECTUS_DB_PASSWORD'
-      'DIRECTUS_ADMIN_PASSWORD'
-      'CHATWOOT_SECRET_KEY_BASE'
-      'CHATWOOT_DB_PASSWORD'
-    )
-  else
-    _config+=(
-      [CHATWOOT_SMTP_ADDRESS]="${CHATWOOT_SMTP_ADDRESS:-mail.${_config[PUBLIC_DOMAIN]}}"
+      [CHATWOOT_SMTP_ADDRESS]="${CHATWOOT_SMTP_ADDRESS:-mail.${_envs[PUBLIC_DOMAIN]}}"
       [CHATWOOT_SMTP_AUTHENTICATION]="${CHATWOOT_SMTP_AUTHENTICATION:-plain}"
       [CHATWOOT_SMTP_DOMAIN]="$CHATWOOT_SMTP_DOMAIN"
       [CHATWOOT_SMTP_ENABLE_STARTTLS_AUTO]="${CHATWOOT_SMTP_ENABLE_STARTTLS_AUTO:-true}"
       [CHATWOOT_SMTP_PORT]="${CHATWOOT_SMTP_PORT:-587}"
-      [CHATWOOT_SMTP_USERNAME]="${CHATWOOT_SMTP_USERNAME:-chatwoot@${_config[PUBLIC_DOMAIN]}}"
-      [CHATWOOT_SMTP_PASSWORD]="${CHATWOOT_SMTP_PASSWORD:-$(getPassword 12)}"
+      [CHATWOOT_SMTP_USERNAME]="${CHATWOOT_SMTP_USERNAME:-chatwoot@${_envs[PUBLIC_DOMAIN]}}"
       [TRAEFIK_NETWORK]="${TRAEFIK_NETWORK:-web}"
       [TRAEFIK_ENTRYPOINTS]="${TRAEFIK_ENTRYPOINTS:-websecure}"
       [TRAEFIK_CERTRESOLVER]="${TRAEFIK_CERTRESOLVER:-le}"
       [DOCKER_HOST]="$DOCKER_HOST"
     )
-    _config+=(
-      [CHATWOOT_MAILER_SENDER_EMAIL]="${CHATWOOT_MAILER_SENDER_EMAIL:-${_config[CHATWOOT_SMTP_USERNAME]}}"
-    )
     _envs+=(
-      'CHATWOOT_MAILER_SENDER_EMAIL'
-      'CHATWOOT_SMTP_ADDRESS'
-      'CHATWOOT_SMTP_AUTHENTICATION'
-      'CHATWOOT_SMTP_DOMAIN'
-      'CHATWOOT_SMTP_ENABLE_STARTTLS_AUTO'
-      'CHATWOOT_SMTP_PORT'
-      'CHATWOOT_SMTP_USERNAME'
-      'DOCKER_HOST'
-      'TRAEFIK_NETWORK'
-      'TRAEFIK_ENTRYPOINTS'
-      'TRAEFIK_CERTRESOLVER'
+      [CHATWOOT_MAILER_SENDER_EMAIL]="${CHATWOOT_MAILER_SENDER_EMAIL:-${_envs[CHATWOOT_SMTP_USERNAME]}}"
     )
+
     _secrets+=(
-      'DIRECTUS_KEY'
-      'DIRECTUS_SECRET'
-      'DIRECTUS_DB_PASSWORD'
-      'DIRECTUS_ADMIN_PASSWORD'
-      'CHATWOOT_SECRET_KEY_BASE'
-      'CHATWOOT_DB_PASSWORD'
-      'CHATWOOT_SMTP_PASSWORD'
+      [CHATWOOT_SMTP_PASSWORD]="${CHATWOOT_SMTP_PASSWORD:-$(get_password 12)}"
     )
   fi
 }
 
-# Function to create env file / secrets
+# Create env file / secrets
 init() {
   if [[ -f "$_env_file" ]]; then
     read -r -p "The file '$(basename "$_env_file")' already exists. Do you want to overwrite it? [y/N] " response
@@ -169,58 +131,58 @@ init() {
     rm "$_env_file"
   fi
 
-  declare -A config
-  declare -a envs secrets
-  get_config 'config' 'envs' 'secrets'
-
-  info "Creating file '$(basename "$_env_file")'..."
-  for env in "${envs[@]}"; do
-    printf '%s=%s\n' "$env" "${config[$env]}" >>"$_env_file"
-  done
+  declare -A envs secrets
+  get_config 'envs' 'secrets'
 
   if [[ $_jaa_env = 'dev' ]]; then
     local web_url="http://localhost:3000"
     local directus_url="http://localhost:8055"
     local chatwoot_url="http://localhost:3001"
+
+    for key in "${!secrets[@]}"; do
+      envs[$key]="${secrets[$key]}"
+    done
   else
-    local web_url="https://${config[PUBLIC_DOMAIN]}"
-    local directus_url="https://directus.${config[PUBLIC_DOMAIN]}"
-    local chatwoot_url="https:/chatwoot.${config[PUBLIC_DOMAIN]}"
+    local web_url="https://${envs[PUBLIC_DOMAIN]}"
+    local directus_url="https://directus.${envs[PUBLIC_DOMAIN]}"
+    local chatwoot_url="https:/chatwoot.${envs[PUBLIC_DOMAIN]}"
 
     info 'Creating Docker secrets...'
-    for secret in "${secrets[@]}"; do
-      printf '%s' "${config[$secret]}" | docker secret create "${_stack_name}_${secret,,}" - >/dev/null
+    for key in "${!secrets[@]}"; do
+      printf '%s' "${secrets[$key]}" | docker secret create "${_stack_name}_${key,,}" - >/dev/null
     done
   fi
+
+  info "Creating file '$(basename "$_env_file")'..."
+  for env in "${!envs[@]}"; do
+    local safe_value=$(printf '%s' "${envs[$env]}" | sed -e 's/\$/$$/g' -e 's/"/\\"/g')
+    printf '%s="%s"\n' "$env" "$safe_value" >>"$_env_file"
+  done
 
   info "Access data:
   Web:
     URL:  ${web_url}/admin"
   if [[ -z $DIRECTUS_ADMIN_PASSWORD ]]; then
-    info "    Code: ${config[DIRECTUS_ADMIN_PASSWORD]}"
+    info "    Code: ${secrets[DIRECTUS_ADMIN_PASSWORD]}"
   fi
   info "
   Directus:
     URL:      ${directus_url}
-    User:     admin@${config[PUBLIC_DOMAIN]}"
+    User:     admin@${envs[PUBLIC_DOMAIN]}"
   if [[ -z $DIRECTUS_ADMIN_PASSWORD ]]; then
-    info "    Password: ${config[DIRECTUS_ADMIN_PASSWORD]}"
+    info "    Password: ${secrets[DIRECTUS_ADMIN_PASSWORD]}"
   fi
-  if [[ $_chatwoot_enabled == 'true' ]]; then
+  if [[ ${envs[CHATWOOT_ENABLED]} = 'true' ]]; then
     info "
     Chatwoot:
       URL: ${chatwoot_url}"
-    if [[ -n ${config[CHATWOOT_SMTP_PASSWORD]} ]] && [[ -z $CHATWOOT_SMTP_PASSWORD ]]; then
-      info "    SMTP Password: ${config[CHATWOOT_SMTP_PASSWORD]}"
+    if [[ -n ${secrets[CHATWOOT_SMTP_PASSWORD]} ]] && [[ -z $CHATWOOT_SMTP_PASSWORD ]]; then
+      info "    SMTP Password: ${secrets[CHATWOOT_SMTP_PASSWORD]}"
     fi
   fi
-
-  for var in "${!config[@]}"; do
-    unset "$var"
-  done
 }
 
-# Function to delete all data
+# Delete all data
 destroy() {
   read -r -p "All data will be deleted! Do you want to continue? [y/N] " response
   if [[ ${response,,} =~ ^y(es)?$ ]]; then
@@ -233,11 +195,12 @@ destroy() {
       docker stack rm "$_stack_name"
       sleep 10
       info 'Removing secrets...'
-      declare -a secrets
-      get_config '' '' 'secrets'
-      secrets=("${secrets[@],,}")
-      secrets=("${secrets[@]/#/jaa_}")
-      docker secret rm "${secrets[@]}" >/dev/null
+      declare -A secrets
+      get_config '' 'secrets'
+      secrets_keys=("${!secrets[@]}")
+      secrets_keys=("${_secrets[@],,}")
+      secrets_keys=("${_secrets[@]/#/${_stack_name}_}")
+      docker secret rm "${secrets_keys[@]}" >/dev/null
       info 'Removing volumes...'
       for volume in $("${_docker_compose_cmd[@]}" config --volumes 2>/dev/null); do
         docker volume rm "${_stack_name}_${volume}" >/dev/null
@@ -249,7 +212,7 @@ destroy() {
   fi
 }
 
-# Function to build / push images
+# Build / push images
 do_images() {
   if [[ $_jaa_env = 'prod' && -n $REGISTRY_PREFIX ]]; then
     info 'Fetching existing images...'
@@ -295,7 +258,7 @@ do_images() {
   fi
 }
 
-# Function to start the project
+# Start the project
 start() {
   if [[ $_jaa_env = 'dev' ]]; then
     info 'Starting containers...'
@@ -315,7 +278,7 @@ start() {
   fi
 }
 
-# Function to execute command in Docker context
+# Execute command in Docker context
 cmd() {
   if [[ $_jaa_env = 'dev' ]]; then
     exec "${_docker_compose_cmd[@]}" "$@"
@@ -334,11 +297,15 @@ main() {
     # Check env file
     if [[ ! -f "$_env_file" ]]; then
       error "Missing file '$(basename "$_env_file")'"
+    fi
+
     # Load env file
-    else
-      set -a
-      source <(sed -e '/^#/d;/^\s*$/d' -e "s/'/'\\\''/g" -e "s/=\(.*\)/='\1'/g" "$_env_file")
-      set +a
+    set -a
+    source <(sed -e '/^#/d;/^\s*$/d' -e 's/`/\\`/g' -e 's/\$\$/\\$/g' "$_env_file")
+    set +a
+
+    if [[ $CHATWOOT_ENABLED = 'true' ]]; then
+      _docker_compose_cmd+=('--profile' 'chatwoot')
     fi
   fi
 

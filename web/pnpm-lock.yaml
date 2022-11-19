@@ -26,7 +26,7 @@ specifiers:
   eslint-plugin-prettier: 4.2.1
   eslint-plugin-simple-import-sort: 8.0.0
   framer-motion: 7.6.7
-  iconoir-react: 5.4.0
+  iconoir-react: 5.4.1
   language-icons: 0.3.0
   lodash.isequal: 4.5.0
   next: 13.0.4
@@ -66,7 +66,7 @@ dependencies:
   chakra-react-select: 4.4.0_lixokbjvsf34hfwdrnggk3v6ge
   date-fns: 2.29.3
   framer-motion: 7.6.7_biqbaboplfbrettd7655fr4n2y
-  iconoir-react: 5.4.0_react@18.2.0
+  iconoir-react: 5.4.1_react@18.2.0
   language-icons: 0.3.0
   lodash.isequal: 4.5.0
   next: 13.0.4_biqbaboplfbrettd7655fr4n2y
@@ -3664,8 +3664,8 @@ packages:
     resolution: {integrity: sha512-ygGZLjmXfPHj+ZWh6LwbC37l43MhfztxetbFCoYTM2VjkIUpeHgSNn7QIyVFj7YQ1Wl9Cbw5sholVJPzWvC2MQ==}
     dev: false
 
-  /iconoir-react/5.4.0_react@18.2.0:
-    resolution: {integrity: sha512-+qRulIySkTCjcUj4uZCQv0AqqfM8dpI18IZm6JQizBObHe5xN/I0r9t/PQH1u5l3nxatMgrGmK1SrDqqrc1ORw==}
+  /iconoir-react/5.4.1_react@18.2.0:
+    resolution: {integrity: sha512-V6lqNPZyg2sadA5HYnU+XYflnKP55lJJW3GmGepCY18ANL0vY8k2EuEwosHVFCKPGaxa+ZEGLOcyGhgfJHJ0Og==}
     peerDependencies:
       react: ^16.8.6 || ^17 || ^18
     dependencies:

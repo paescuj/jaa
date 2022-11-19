@@ -4,7 +4,7 @@ specifiers:
   '@beam-australia/react-env': 3.1.1
   '@chakra-ui/react': 2.3.7
   '@chakra-ui/theme-tools': ^2.0.12
-  '@directus/sdk': 10.1.5
+  '@directus/sdk': 10.3.0
   '@dnd-kit/core': 6.0.5
   '@dnd-kit/sortable': 7.0.1
   '@dnd-kit/utilities': 3.2.0
@@ -52,7 +52,7 @@ dependencies:
   '@beam-australia/react-env': 3.1.1
   '@chakra-ui/react': 2.3.7_fqfjrcf4r5ejjaxw4ez4knwbra
   '@chakra-ui/theme-tools': 2.0.12
-  '@directus/sdk': 10.1.5
+  '@directus/sdk': 10.3.0
   '@dnd-kit/core': 6.0.5_biqbaboplfbrettd7655fr4n2y
   '@dnd-kit/sortable': 7.0.1_vvd3dzag27tc7rclyb2whqqnpe
   '@dnd-kit/utilities': 3.2.0_react@18.2.0
@@ -1322,8 +1322,8 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /@directus/sdk/10.1.5:
-    resolution: {integrity: sha512-/q+Cm8NQjkJV7xIk3UJjUAFmE1ZJ1KnF2uyV2+AnmYinj75Y/aHnU7td6n74pBKBMwRPJPBIidksiWUiH20EHw==}
+  /@directus/sdk/10.3.0:
+    resolution: {integrity: sha512-FRmzr00zkNUZPaEcaGEy5XM3LoiwxJw8BWr+39+jt4MuKA2GqnK/Rdrv7YGsCnu9LNs860Ccqj90L2ehfT8xdw==}
     dependencies:
       axios: 0.27.2
     transitivePeerDependencies:

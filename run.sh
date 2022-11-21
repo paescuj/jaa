@@ -123,6 +123,8 @@ get_config() {
 
 # Create env file / secrets
 init() {
+  declare -n _access_data="$1"
+
   if [[ -f "$_env_file" ]]; then
     read -r -p "The file '$(basename "$_env_file")' already exists. Do you want to overwrite it? [y/N] " response
     if [[ ! ${response,,} =~ ^y(es)?$ ]]; then
@@ -159,25 +161,31 @@ init() {
     printf '%s="%s"\n' "$env" "$safe_value" >>"$_env_file"
   done
 
-  info "Access data:
-  Web:
-    URL:  ${web_url}/admin"
+  add_line() {
+    declare content="$1"
+    _access_data+="$content"$'\n'
+  }
+
+  add_line
+  add_line $'\033[1m'"Access Data"$'\033[0m'
+  add_line "  Web:"
+  add_line "    URL:  ${web_url}/admin"
   if [[ -z $DIRECTUS_ADMIN_PASSWORD ]]; then
-    info "    Code: ${secrets[DIRECTUS_ADMIN_PASSWORD]}"
+    add_line "    Code: ${secrets[DIRECTUS_ADMIN_PASSWORD]}"
   fi
-  info "
-  Directus:
-    URL:      ${directus_url}
-    User:     admin@${envs[PUBLIC_DOMAIN]}"
+  add_line
+  add_line "  Directus:"
+  add_line "    URL:      ${directus_url}"
+  add_line "    User:     admin@${envs[PUBLIC_DOMAIN]}"
   if [[ -z $DIRECTUS_ADMIN_PASSWORD ]]; then
-    info "    Password: ${secrets[DIRECTUS_ADMIN_PASSWORD]}"
+    add_line "    Password: ${secrets[DIRECTUS_ADMIN_PASSWORD]}"
   fi
   if [[ ${envs[CHATWOOT_ENABLED]} = 'true' ]]; then
-    info "
-    Chatwoot:
-      URL: ${chatwoot_url}"
+    add_line
+    add_line "  Chatwoot:"
+    add_line "    URL: ${chatwoot_url}"
     if [[ -n ${secrets[CHATWOOT_SMTP_PASSWORD]} ]] && [[ -z $CHATWOOT_SMTP_PASSWORD ]]; then
-      info "    SMTP Password: ${secrets[CHATWOOT_SMTP_PASSWORD]}"
+      add_line "    SMTP Password: ${secrets[CHATWOOT_SMTP_PASSWORD]}"
     fi
   fi
 }
@@ -264,9 +272,17 @@ start() {
     info 'Starting containers...'
     "${_docker_compose_cmd[@]}" up -d
 
-    info "Starting web app..."
+    shutdown() {
+      info 'Stopping containers...'
+      "${_docker_compose_cmd[@]}" stop
+    }
+    trap shutdown SIGINT
+
+    info "Installing / refreshing web dependencies..."
     pnpm install --dir "${_dir}/web"
-    exec pnpm run --dir "${_dir}/web" dev
+
+    info "Starting web app..."
+    pnpm run --dir "${_dir}/web" dev
   else
     info 'Deploying stack...'
     docker_stack_deploy_cmd=('docker' 'stack' 'deploy')
@@ -311,10 +327,14 @@ main() {
 
   case "$1" in
   'init')
-    init
+    local access_data
+    init 'access_data'
     if [[ $2 != '--no-start' ]]; then
       main 'do-images'
+      info "$access_data"
       start
+    else
+      info "$access_data"
     fi
     ;;
   'do-images')

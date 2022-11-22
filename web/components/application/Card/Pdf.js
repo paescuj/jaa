@@ -8,6 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import ReactDOMServer from 'react-dom/server';
 import { useIntl } from 'react-intl';
 import Measure from 'react-measure';
 import { Document, Page, pdfjs } from 'react-pdf';
@@ -130,7 +131,11 @@ export default function Pdf({
   // Custom text rendered for text highlighting
   const textRenderer = (textItem, itemIndex, pageIndex) => {
     if (results.pages[pageIndex].items[itemIndex]) {
-      return highlight(textItem, results.pages[pageIndex].items[itemIndex]);
+      const highlightedTextItem = highlight(
+        textItem,
+        results.pages[pageIndex].items[itemIndex]
+      );
+      return ReactDOMServer.renderToStaticMarkup(highlightedTextItem);
     }
     return textItem;
   };

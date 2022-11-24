@@ -157,7 +157,8 @@ init() {
 
   info "Creating file '$(basename "$_env_file")'..."
   for env in "${!envs[@]}"; do
-    local safe_value=$(printf '%s' "${envs[$env]}" | sed -e 's/\$/$$/g' -e 's/"/\\"/g')
+    local safe_value
+    safe_value=$(printf '%s' "${envs[$env]}" | sed -e 's/\$/$$/g' -e 's/"/\\"/g')
     printf '%s="%s"\n' "$env" "$safe_value" >>"$_env_file"
   done
 
@@ -247,7 +248,7 @@ do_images() {
       for image in "${images[@]}"; do
         local digest
         digest=$(DOCKER_HOST="$DOCKER_BUILD_HOST" docker image inspect --format '{{.RepoDigests}}' "${image}")
-        # Empty repo digest indicates that image has changed
+        # Empty repo digest indicates that image has changed
         if [[ $digest = '[]' ]]; then
           images_up_to_date=false
           DOCKER_HOST="$DOCKER_BUILD_HOST" docker push "$image" &

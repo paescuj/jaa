@@ -16,7 +16,7 @@ specifiers:
   '@tippyjs/react': 4.2.6
   '@types/react': ^18.0.25
   animate.css: 4.1.1
-  chakra-react-select: 4.4.0
+  chakra-react-select: 4.4.1
   date-fns: 2.29.3
   eslint: 8.28.0
   eslint-config-next: 13.0.5
@@ -63,7 +63,7 @@ dependencies:
   '@react-page/plugins-slate': 5.2.0_thp4wrxo45nyllusrnt46mid4u
   '@tippyjs/react': 4.2.6_biqbaboplfbrettd7655fr4n2y
   animate.css: 4.1.1
-  chakra-react-select: 4.4.0_lixokbjvsf34hfwdrnggk3v6ge
+  chakra-react-select: 4.4.1_lixokbjvsf34hfwdrnggk3v6ge
   date-fns: 2.29.3
   framer-motion: 7.6.12_biqbaboplfbrettd7655fr4n2y
   iconoir-react: 5.4.1_react@18.2.0
@@ -2541,8 +2541,8 @@ packages:
     resolution: {integrity: sha512-06wzzdAkCPZO+Qm4e/eNghZBDfVNDsCgw33T27OwBH9unE9S478OYw//Q2L7Npf/zBzs7rjZOszIFQkwQKAEqA==}
     dev: false
 
-  /chakra-react-select/4.4.0_lixokbjvsf34hfwdrnggk3v6ge:
-    resolution: {integrity: sha512-7lPPsaxDoaPEH0aPZazDc0mTzsUQq46nB2EAQtp2IWj2p2+ngmp/xHieT3NEGD1kMy9hGcS/y3kcGVcUabL1UQ==}
+  /chakra-react-select/4.4.1_lixokbjvsf34hfwdrnggk3v6ge:
+    resolution: {integrity: sha512-BRPlWGnsoruNSoh/41qlp/sgCpTGu6EOC6CPZMNFQaIXH/D6Kfr2dSLgw4wU1jWOX+TLDrbl2Sy/STotyfLLsw==}
     peerDependencies:
       '@chakra-ui/form-control': ^2.0.0
       '@chakra-ui/icon': ^3.0.0
@@ -4777,7 +4777,7 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@babel/runtime': 7.19.0
+      '@babel/runtime': 7.20.1
       '@emotion/cache': 11.10.5
       '@emotion/react': 11.10.5_fan5qbzahqtxlm5dzefqlqx5ia
       '@floating-ui/dom': 1.0.2

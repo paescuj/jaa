@@ -28,16 +28,18 @@ export default function Logout() {
 
   useEffect(() => {
     async function logout() {
-      // Update store
-      AuthStore.update((s) => {
-        s.user = false;
-      });
-
-      window.$chatwoot?.reset();
-
       try {
         // Try to logout
         await directus.auth.logout();
+
+        // Update store
+        AuthStore.update((s) => {
+          s.user = false;
+        });
+
+        // Reset Chatwoot
+        window.$chatwoot?.reset();
+
         // Display logout message
         setLoading(false);
       } catch {
@@ -51,7 +53,7 @@ export default function Logout() {
     // Redirect to start page after timeout
     setTimeout(() => {
       router.push('/');
-    }, 6000);
+    }, 5000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

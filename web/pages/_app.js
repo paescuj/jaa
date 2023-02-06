@@ -1,4 +1,4 @@
-// Unfortunately we have to import some css files here to prevent having unstyled elements during page transitions
+// Unfortunately, critical css files need to be imported here to prevent having unstyled elements during page transitions
 // (see https://github.com/vercel/next.js/issues/17464)
 import '@fontsource/quicksand/latin-400.css';
 import '@fontsource/quicksand/latin-500.css';
@@ -20,6 +20,18 @@ import locales, { defaultLocale } from '@/locales';
 import { AuthStore } from '@/stores/AuthStore';
 import { LocaleStore } from '@/stores/LocaleStore';
 import theme from '@/theme';
+
+if (typeof window !== 'undefined') {
+  const styles = [
+    'font-size: 16px',
+    'background: #2F4858',
+    'display: inline-block',
+    'color: #F7F9F9',
+    'padding: 12px 16px',
+  ].join(';');
+  // eslint-disable-next-line no-console
+  console.log('%c✨ Great to see you here! Have a good time! ✨', styles);
+}
 
 function MyApp({ Component, pageProps, router }) {
   const [checks, setChecks] = useState([]);

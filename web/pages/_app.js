@@ -25,8 +25,13 @@ function MyApp({ Component, pageProps, router }) {
   const [checks, setChecks] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Load user
+  // Initialize
   useEffect(() => {
+    // Only persist color mode when manually changed by user
+    if (!localStorage.getItem('chakra-ui-custom-color-mode')) {
+      localStorage.removeItem('chakra-ui-color-mode');
+    }
+
     const loadUser = async () => {
       const user = await checkSession();
       let language;

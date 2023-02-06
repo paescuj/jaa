@@ -12,6 +12,12 @@ export default function Header({ title }) {
   const { colorMode, toggleColorMode } = useColorMode();
   const { formatMessage } = useIntl();
 
+  // See '_app.js'
+  const onToggleColorMode = () => {
+    localStorage.setItem('chakra-ui-custom-color-mode', 'true');
+    toggleColorMode();
+  };
+
   return (
     <Flex as="header" justify="space-between" align="center">
       {title}
@@ -27,7 +33,7 @@ export default function Header({ title }) {
           }
         >
           <IconButton
-            onClick={toggleColorMode}
+            onClick={onToggleColorMode}
             variant="ghost"
             overflow="hidden"
             colorScheme={colorMode === 'light' ? 'blackAlpha' : 'gray'}

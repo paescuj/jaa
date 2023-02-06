@@ -2,32 +2,28 @@ import env from '@beam-australia/react-env';
 import { Directus } from '@directus/sdk';
 
 export const url = env('API_URL') || 'http://localhost:8055';
-export const directus = new Directus(url);
+export const directus = new Directus(url, { storage: { prefix: 'jaa_' } });
 
-// Returns user object if session is valid, otherwise false
-export async function checkSession() {
+/**
+ * Get current user from API.
+ * @returns User object if session is valid, otherwise 'false'.
+ */
+export async function getUser() {
   try {
-    // Force request new auth token
-    await directus.auth.refresh();
-
-    // Fetch and return user (also to check if session is indeed valid)
-    const user = await directus.users.me.read();
-    return user;
+    // Fetch and return user (also to check if session is valid)
+    return await directus.users.me.read();
   } catch {
     // Something is wrong
     return false;
   }
 }
 
-// Get current auth token
+/** Get current auth token. */
 export const getBearer = async () => {
-  // Refresh token if required
-  if (!(await directus.auth.token)) {
-    try {
-      directus.auth.refresh();
-    } catch {
-      // Ignore error
-    }
+  try {
+    await directus.auth.refreshIfExpired();
+  } catch {
+    // Ignore error
   }
   return `Bearer ${await directus.auth.token}`;
 };

@@ -11,12 +11,23 @@ import Loader from '@/components/common/Loader';
 import Logo from '@/components/common/Logo';
 import { directus } from '@/lib/directus';
 import { customSlateAbout } from '@/lib/react-page/plugins';
+import { AuthStore } from '@/stores/AuthStore';
+
+const getPath = (user) => {
+  return user
+    ? user.email?.startsWith('admin@')
+      ? '/admin'
+      : '/application'
+    : '/';
+};
 
 export default function About() {
   const { colorMode } = useColorMode();
   const { formatMessage, locale } = useIntl();
   const [loading, setLoading] = useState(true);
   const [aboutText, setAboutText] = useState();
+
+  const user = AuthStore.useState((s) => s.user);
 
   useEffect(() => {
     const loadText = async () => {
@@ -26,7 +37,7 @@ export default function About() {
           .read({ fields: ['about_text'] });
         setAboutText(settings?.about_text);
       } catch {
-        //
+        // TODO
       }
       setLoading(false);
     };
@@ -63,7 +74,7 @@ export default function About() {
           <Tooltip hasArrow label={formatMessage({ id: 'to_start_page' })}>
             <IconButton
               as={NextLink}
-              href="/"
+              href={getPath(user)}
               variant="ghost"
               colorScheme={colorMode === 'light' ? 'blackAlpha' : 'gray'}
               color={colorMode === 'light' ? 'gray.600' : 'gray.400'}

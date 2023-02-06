@@ -15,7 +15,7 @@ import { IntlProvider } from 'react-intl';
 
 import Layout from '@/components/common/Layout';
 import Loader from '@/components/common/Loader';
-import { checkSession } from '@/lib/directus';
+import { getUser } from '@/lib/directus';
 import locales, { defaultLocale } from '@/locales';
 import { AuthStore } from '@/stores/AuthStore';
 import { LocaleStore } from '@/stores/LocaleStore';
@@ -33,7 +33,7 @@ function MyApp({ Component, pageProps, router }) {
     }
 
     const loadUser = async () => {
-      const user = await checkSession();
+      const user = await getUser();
       let language;
       if (user) {
         // Update store

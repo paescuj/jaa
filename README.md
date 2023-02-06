@@ -53,7 +53,7 @@ Start dev environment when already initialized:
 
 Run arbitrary `docker-compose` command:
 ```bash
-./run.sh ps
+./run.sh cmd ps
 ```
 
 Destroy the dev environment:
@@ -107,7 +107,7 @@ JAA_ENV='prod' ./run.sh
 
 Run arbitrary `docker` command:
 ```bash
-JAA_ENV='prod' ./run.sh stack ps jaa
+JAA_ENV='prod' ./run.sh cmd stack ps jaa
 ```
 
 Undeploy and delete everything (⚠️):

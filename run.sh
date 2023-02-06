@@ -273,17 +273,24 @@ start() {
     info 'Starting containers...'
     "${_docker_compose_cmd[@]}" up -d
 
-    shutdown() {
-      info 'Stopping containers...'
-      "${_docker_compose_cmd[@]}" stop
-    }
-    trap shutdown SIGINT
-
     info "Installing / refreshing web dependencies..."
     pnpm install --dir "${_dir}/web"
 
-    info "Starting web app..."
-    pnpm run --dir "${_dir}/web" dev
+    local web_cmd=('pnpm' 'run' '--dir' "${_dir}/web" 'dev')
+    local trap_cmd=("${_docker_compose_cmd[@]}" 'stop')
+    if [[ $DETACH ]]; then
+      info "Starting web app in background..."
+      screen -d -m -S 'jaa-web' bash -c "trap '${trap_cmd[*]}' SIGINT; ${web_cmd[*]}"
+    else
+      shutdown() {
+        info 'Stopping containers...'
+        "${trap_cmd[@]}"
+      }
+      trap shutdown SIGINT
+
+      info "Starting web app..."
+      "${web_cmd[@]}"
+    fi
   else
     info 'Deploying stack...'
     docker_stack_deploy_cmd=('docker' 'stack' 'deploy')
@@ -344,11 +351,18 @@ main() {
   'destroy')
     destroy
     ;;
-  '')
+  'cmd')
+    shift
+    cmd "$@"
+    ;;
+  ''|'start')
     start
     ;;
+  'attach')
+    exec screen -r 'jaa-web'
+    ;;
   *)
-    cmd "$@"
+    error 'Unknown command'
     ;;
   esac
 }

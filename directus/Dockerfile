@@ -18,7 +18,7 @@ RUN mkdir out && \
   ; done
 
 ### Directus
-FROM directus/directus:9.21.2
+FROM directus/directus:9.22.4
 
 USER root
 RUN apk upgrade --no-cache \
@@ -37,7 +37,7 @@ COPY --chown=node:node migrations extensions/migrations
 
 CMD npx directus database install \
   && npx directus database migrate:latest \
-  && role=$(npx directus roles create --role Administrator --admin true | grep -v '✨') \
+  && role=$(LOG_LEVEL=silent npx directus roles create --role Administrator --admin true) \
   && password=${ADMIN_PASSWORD_FILE:+$(cat "$ADMIN_PASSWORD_FILE")} \
   && password=${password:-$ADMIN_PASSWORD} \
   && npx directus users create --email "$ADMIN_EMAIL" --password "$password" --role "$role" > /dev/null \

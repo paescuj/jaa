@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   directus-db:
-    image: postgres:14-alpine
+    image: postgres:15-alpine
     environment:
       POSTGRES_USER: directus
   directus:
@@ -17,7 +17,7 @@ services:
       CORS_ENABLED: 'true'
 
   chatwoot-db:
-    image: postgres:14-alpine
+    image: postgres:15-alpine
     environment:
       POSTGRES_USER: chatwoot
   chatwoot-cache:

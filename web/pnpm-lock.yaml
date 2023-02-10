@@ -44,7 +44,7 @@ specifiers:
   react-intl: 6.2.8
   react-measure: 2.5.2
   react-pdf: 6.2.2
-  swiper: 9.0.3
+  swiper: 9.0.4
   tippy.js: ^6.3.7
 
 dependencies:
@@ -82,7 +82,7 @@ dependencies:
   react-intl: 6.2.8_react@18.2.0
   react-measure: 2.5.2_biqbaboplfbrettd7655fr4n2y
   react-pdf: 6.2.2_biqbaboplfbrettd7655fr4n2y
-  swiper: 9.0.3
+  swiper: 9.0.4
   tippy.js: 6.3.7
 
 devDependencies:
@@ -5386,8 +5386,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  /swiper/9.0.3:
-    resolution: {integrity: sha512-hHYI6CeUHcDyv6IakzAQrUv6nS5BMRn6KOkui16nhtdgYBlWgUdlaMbcdT0o4RJxpwSktCTLgpBtCm+WwwVYRw==}
+  /swiper/9.0.4:
+    resolution: {integrity: sha512-YH4sUh68DYw7vcoBZQ+DeBV6/wLZIRf8dZ4CzkvRTcvDPkIF6oweBdOjKnsXtoPCSUQbtqbZcLRghkfOtd5UYA==}
     engines: {node: '>= 4.7.0'}
     dependencies:
       ssr-window: 4.0.2

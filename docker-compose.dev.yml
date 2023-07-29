@@ -1,19 +1,6 @@
 version: '3.9'
 
 services:
-  web:
-    image: node:18-alpine
-    volumes:
-      - ./web:/usr/src/app
-    working_dir: /usr/src/app
-    environment:
-      PUBLIC_DOMAIN: $PUBLIC_DOMAIN
-    ports:
-      - 3000:3000
-    command: [sh, -c, 'npm ci && npm run dev']
-    profiles:
-      - web
-
   directus-db:
     environment:
       POSTGRES_PASSWORD: $DIRECTUS_DB_PASSWORD

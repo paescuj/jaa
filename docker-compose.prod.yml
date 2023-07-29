@@ -9,7 +9,7 @@ x-logging: &default-logging
 services:
   web:
     build:
-      context: web
+      context: .
     image: ${REGISTRY_PREFIX:-}jaa-web:latest
     init: true
     networks:

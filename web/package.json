@@ -49,27 +49,7 @@
 	},
 	"devDependencies": {
 		"@types/react": "18.0.28",
-		"eslint": "8.34.0",
 		"eslint-config-next": "13.1.6",
-		"eslint-config-prettier": "8.6.0",
-		"eslint-import-resolver-alias": "1.1.2",
-		"eslint-plugin-import": "2.27.5",
-		"eslint-plugin-prettier": "4.2.1",
-		"eslint-plugin-simple-import-sort": "10.0.0",
-		"prettier": "2.8.4"
-	},
-	"pnpm": {
-		"peerDependencyRules": {
-			"ignoreMissing": [
-				"@babel/core",
-				"typescript",
-				"@chakra-ui/*",
-				"@mui/material",
-				"slate-react-presentation"
-			],
-			"allowedVersions": {
-				"react": "18"
-			}
-		}
+		"eslint-import-resolver-alias": "1.1.2"
 	}
 }

@@ -3,9 +3,17 @@
 	"private": "true",
 	"scripts": {
 		"format": "prettier --cache --check .",
-		"format:fix": "prettier --cache --write ."
+		"format:fix": "prettier --cache --write .",
+		"lint": "eslint --cache .",
+		"lint:fix": "eslint --cache --fix ."
 	},
 	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "6.2.0",
+		"@typescript-eslint/parser": "6.2.0",
+		"eslint": "8.46.0",
+		"eslint-config-prettier": "8.6.0",
+		"eslint-plugin-import": "2.27.5",
+		"eslint-plugin-simple-import-sort": "10.0.0",
 		"prettier": "3.0.0"
 	}
 }

@@ -1,6 +1,7 @@
+import { Readable } from 'node:stream';
+
 import { defineHook } from '@directus/extensions-sdk';
 import type { FilterHandler } from '@directus/types';
-import { Readable } from 'node:stream';
 import { fromBuffer } from 'pdf2pic';
 import puppeteer from 'puppeteer';
 
@@ -68,8 +69,8 @@ export default defineHook(({ filter }, { services, logger, getSchema }) => {
 					transformationParams: {},
 				});
 
-				const chunks = [];
-				for await (let chunk of stream) {
+				const chunks: Uint8Array[] = [];
+				for await (const chunk of stream) {
 					chunks.push(chunk);
 				}
 
@@ -88,7 +89,7 @@ export default defineHook(({ filter }, { services, logger, getSchema }) => {
 							filename_download: `${name}.png`,
 							type: 'image/png',
 							storage: 'local',
-						}
+						},
 					);
 
 					input.preview = [file];

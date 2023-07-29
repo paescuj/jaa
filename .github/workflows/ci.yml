@@ -63,13 +63,11 @@ jobs:
               },
               directus: {
                 name: 'jaa-directus',
-                context: 'directus',
-                file: 'Dockerfile'
+                context: 'directus'
               },
               chatwoot: {
                 name: 'jaa-chatwoot',
-                context: 'chatwoot',
-                file: 'Dockerfile'
+                context: 'chatwoot'
               },
             };
             let paths_result;

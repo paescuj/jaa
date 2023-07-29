@@ -10,7 +10,7 @@ WORKDIR /home/app
 COPY --chown=app:app package.json pnpm-lock.yaml ./
 RUN pnpm --frozen-lockfile install \
   && pnpm install sharp
-COPY --chown=app:app . .
+COPY --chown=app:app web .
 ENV NODE_ENV=production \
   NEXT_TELEMETRY_DISABLED=1
 RUN pnpm run build

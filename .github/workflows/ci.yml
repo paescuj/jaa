@@ -58,7 +58,7 @@ jobs:
             const map = {
               web: {
                 name: 'jaa-web',
-                context: 'web'
+                context: '.'
               },
               directus: {
                 name: 'jaa-directus',

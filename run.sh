@@ -199,6 +199,8 @@ destroy() {
     if [[ $_jaa_env = 'dev' ]]; then
       info 'Removing containers...'
       "${_docker_compose_cmd[@]}" down --volumes
+
+      screen -S jaa-web -p 0 -X stuff $'\003' >/dev/null
     else
       info 'Removing stack...'
       docker stack rm "$_stack_name"

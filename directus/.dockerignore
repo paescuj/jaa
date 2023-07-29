@@ -1,2 +1,5 @@
-hooks/*/node_modules
-hooks/*/dist
+**/.dockerignore
+**/.DS_Store
+**/node_modules
+**/dist
+

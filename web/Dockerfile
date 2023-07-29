@@ -1,13 +1,14 @@
 ### Builder
-FROM node:16-alpine AS build
+FROM node:16-alpine AS builder
 
-RUN apk upgrade --no-cache \
-  && npm install -g pnpm
-RUN addgroup -g 1001 app \
-  && adduser -u 1001 -G app -s /bin/sh -D app
-USER app
-WORKDIR /home/app
-COPY --chown=app:app package.json pnpm-lock.yaml pnpm-workspace.yaml .
+RUN npm install -g pnpm
+
+WORKDIR /builder
+
+COPY pnpm-lock.yaml .
+RUN pnpm fetch --prod
+
+
 RUN pnpm --frozen-lockfile install \
   && pnpm --filter web install sharp
 COPY --chown=app:app web .

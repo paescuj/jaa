@@ -7,10 +7,9 @@ RUN addgroup -g 1001 app \
   && adduser -u 1001 -G app -s /bin/sh -D app
 USER app
 WORKDIR /home/app
-COPY --chown=app:app pnpm-lock.yaml ./
+COPY --chown=app:app package.json pnpm-lock.yaml pnpm-workspace.yaml .
 RUN pnpm --frozen-lockfile install \
   && pnpm install sharp
-  COPY --chown=app:app package.json pnpm-workspace.yaml .
 COPY --chown=app:app web .
 ENV NODE_ENV=production \
   NEXT_TELEMETRY_DISABLED=1

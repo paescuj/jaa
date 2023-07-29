@@ -12,16 +12,16 @@ index 41c389ae..db363c47 100644
        </div>
        <available-agents v-if="isOnline" :agents="availableAgents" />
      </div>
-diff --git a/app/javascript/widget/components/ChatHeader.vue b/app/javascript/widget/components/ChatHeader.vue
-index c075222d..30a45bb1 100644
---- a/app/javascript/widget/components/ChatHeader.vue
-+++ b/app/javascript/widget/components/ChatHeader.vue
-@@ -71,7 +71,7 @@ export default {
-     },
-     replyWaitMeessage() {
+diff --git a/app/javascript/widget/mixins/availability.js b/app/javascript/widget/mixins/availability.js
+index 746a5e095..6ffe688a4 100644
+--- a/app/javascript/widget/mixins/availability.js
++++ b/app/javascript/widget/mixins/availability.js
+@@ -29,7 +29,7 @@ export default {
+           : `${this.$t('REPLY_TIME.BACK_IN')} ${this.timeLeftToBackInOnline}`;
+       }
        return this.isOnline
 -        ? this.replyTimeStatus
 +        ? this.$t('TEAM_AVAILABILITY.ONLINE')
          : this.$t('TEAM_AVAILABILITY.OFFLINE');
      },
-   },
+     outOfOfficeMessage() {

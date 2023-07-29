@@ -64,12 +64,12 @@ jobs:
               directus: {
                 name: 'jaa-directus',
                 context: 'directus',
-                file: 'directus/Dockerfile'
+                file: 'Dockerfile'
               },
               chatwoot: {
                 name: 'jaa-chatwoot',
                 context: 'chatwoot',
-                file: 'chatwoot/Dockerfile'
+                file: 'Dockerfile'
               },
             };
             let paths_result;

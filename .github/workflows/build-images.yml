@@ -37,6 +37,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: '{{defaultContext}}:${{ matrix.context }}'
+          file: '${{ matrix.file }}'
           push: ${{ inputs.push }}
           tags: paescuj/${{ matrix.name }}:latest
           cache-from: type=gha,scope=${{ matrix.name }}

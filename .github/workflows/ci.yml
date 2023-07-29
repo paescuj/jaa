@@ -58,15 +58,18 @@ jobs:
             const map = {
               web: {
                 name: 'jaa-web',
-                context: '.'
+                context: '.',
+                file: 'web/Dockerfile'
               },
               directus: {
                 name: 'jaa-directus',
-                context: 'directus'
+                context: 'directus',
+                file: 'directus/Dockerfile'
               },
               chatwoot: {
                 name: 'jaa-chatwoot',
-                context: 'chatwoot'
+                context: 'chatwoot',
+                file: 'chatwoot/Dockerfile'
               },
             };
             let paths_result;

@@ -22,14 +22,9 @@ const domain =
 	env('DOMAIN') || (typeof window !== 'undefined' && window.location.host);
 const chatwootUrl = env('CHATWOOT_URL');
 
-export default function Settings({
-	jobs,
-	settings,
-	refreshSettings,
-	directusInfo,
-}) {
+export default function Settings({ jobs, settings, refreshSettings }) {
 	const theme = useTheme();
-	const { formatMessage, formatRelativeTime } = useIntl();
+	const { formatMessage } = useIntl();
 
 	const chatwootIsSetup =
 		settings.chatwoot_website_token && settings.chatwoot_hmac_token;
@@ -178,34 +173,6 @@ export default function Settings({
 								<Link color="blue.500" href={directusUrl} isExternal>
 									{directusUrl}
 								</Link>
-							</Box>
-							<Box>
-								<Text fontWeight="bold">
-									{formatMessage({ id: 'version' })}
-								</Text>
-								<Text>{directusInfo.directus.version}</Text>
-							</Box>
-							<Box>
-								<Text fontWeight="bold">
-									{formatMessage({ id: 'launched' })}
-								</Text>
-								<Text
-									sx={{
-										'::first-letter': {
-											textTransform: 'uppercase',
-										},
-									}}
-								>
-									{formatRelativeTime(
-										Math.floor(directusInfo.node.uptime / 3600) > 24
-											? -Math.floor(directusInfo.node.uptime / (3600 * 24))
-											: -Math.floor(directusInfo.node.uptime / 3600),
-										Math.floor(directusInfo.node.uptime / 3600) > 24
-											? 'days'
-											: 'hours',
-										{ numeric: 'auto' },
-									)}
-								</Text>
 							</Box>
 						</Stack>
 					</AccordionPanel>

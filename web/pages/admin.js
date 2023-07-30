@@ -57,7 +57,6 @@ export default function Admin() {
 	const [docs, setDocs] = useState({});
 	const [dates, setDates] = useState([]);
 	const [settings, setSettings] = useState({});
-	const [directusInfo, setDirectusInfo] = useState({});
 	const user = AuthStore.useState((s) => s.user);
 
 	async function getJobs() {
@@ -95,9 +94,6 @@ export default function Admin() {
 				setDates(dates.data);
 
 				await getSettings();
-
-				setDirectusInfo(await directus.server.info());
-
 				setLoading({ state: false });
 			} catch (error) {
 				setLoading({ state: true, error: error });
@@ -231,7 +227,6 @@ export default function Admin() {
 							<TabPanel>
 								<Settings
 									jobs={jobs}
-									directusInfo={directusInfo}
 									settings={settings}
 									refreshSettings={getSettings}
 								/>

@@ -15,6 +15,7 @@
   <a href="#key-features">Key Features</a> •
   <a href="#usage">Usage</a> •
   <a href="#built-with">Built With</a> •
+	<a href="#disclaimer">Disclaimer</a> •
   <a href="#license">License</a>
 </p>
 
@@ -136,6 +137,10 @@ Jaa is built with the following great open source components:
 - [Chatwoot](https://www.chatwoot.com) - Open-source, self-hosted customer communication platform
 - [Docker](https://www.docker.com/community/open-source) - Containerization technology
 - ... and many more
+
+## Disclaimer
+
+This is a fun project, intended as a playground to experiment with different technologies. Therefore the project is not actively maintained.
 
 ## License
 

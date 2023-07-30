@@ -1,0 +1,8 @@
+.git/
+**/.gitignore
+**/.DS_Store
+**/.dockerignore
+**/Dockerfile
+**/node_modules/
+**/.next/
+web/public/__ENV.js

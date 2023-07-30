@@ -141,7 +141,11 @@ Jaa is built with the following great open source components:
 
 ## Disclaimer
 
-This project was created for fun and as a playground to experiment with different technologies. It's not actively maintained.
+This project was created for fun and as a playground to experiment with different technologies.
+When it comes to frontend libraries, I definitely prefer Vue, but I wanted to create my own application with React and Next.js to get some experience.
+The project also serves as a showcase of how to use various features of Directus.
+
+No active maintenance is to be expected.
 
 ## License
 

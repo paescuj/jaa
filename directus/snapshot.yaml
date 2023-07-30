@@ -1,234 +1,329 @@
 version: 1
-directus: 9.4.3
+directus: 12.1.2
+vendor: postgres
 collections:
   - collection: dates
     meta:
-      collection: dates
-      icon: null
-      note: null
-      display_template: null
-      hidden: false
-      singleton: false
-      translations: null
-      archive_field: null
-      archive_app_filter: true
-      archive_value: null
-      unarchive_value: null
-      sort_field: null
       accountability: all
-      color: null
-      item_duplication_fields: null
-      sort: null
-      group: null
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
       collapse: open
+      collection: dates
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: null
+      translations: null
+      unarchive_value: null
     schema:
       name: dates
-      schema: public
-      comment: null
   - collection: docs
     meta:
-      collection: docs
-      icon: null
-      note: null
-      display_template: null
-      hidden: false
-      singleton: false
-      translations: null
-      archive_field: null
-      archive_app_filter: true
-      archive_value: null
-      unarchive_value: null
-      sort_field: null
       accountability: all
-      color: null
-      item_duplication_fields: null
-      sort: null
-      group: null
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
       collapse: open
+      collection: docs
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: null
+      translations: null
+      unarchive_value: null
     schema:
       name: docs
-      schema: public
-      comment: null
   - collection: feedback
     meta:
-      collection: feedback
-      icon: null
-      note: null
-      display_template: null
-      hidden: false
-      singleton: false
-      translations: null
-      archive_field: null
-      archive_app_filter: true
-      archive_value: null
-      unarchive_value: null
-      sort_field: null
       accountability: all
-      color: null
-      item_duplication_fields: null
-      sort: null
-      group: null
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
       collapse: open
+      collection: feedback
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: null
+      translations: null
+      unarchive_value: null
     schema:
       name: feedback
-      schema: public
-      comment: null
   - collection: jobs
     meta:
-      collection: jobs
-      icon: null
-      note: null
-      display_template: null
-      hidden: false
-      singleton: false
-      translations: null
-      archive_field: null
-      archive_app_filter: true
-      archive_value: null
-      unarchive_value: null
-      sort_field: null
       accountability: all
-      color: null
-      item_duplication_fields: null
-      sort: null
-      group: null
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
       collapse: open
+      collection: jobs
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: null
+      translations: null
+      unarchive_value: null
     schema:
       name: jobs
-      schema: public
-      comment: null
   - collection: settings
     meta:
-      collection: settings
-      icon: null
-      note: null
-      display_template: null
-      hidden: false
-      singleton: true
-      translations: null
-      archive_field: null
-      archive_app_filter: true
-      archive_value: null
-      unarchive_value: null
-      sort_field: null
       accountability: all
-      color: null
-      item_duplication_fields: null
-      sort: null
-      group: null
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
       collapse: open
+      collection: settings
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: true
+      sort: null
+      sort_field: null
+      translations: null
+      unarchive_value: null
     schema:
       name: settings
-      schema: public
-      comment: null
 fields:
+  - collection: dates
+    field: end
+    type: timestamp
+    meta:
+      collection: dates
+      conditions: null
+      display: datetime
+      display_options: null
+      field: end
+      group: null
+      hidden: false
+      interface: datetime
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 6
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: end
+      table: dates
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
   - collection: dates
     field: id
     type: integer
+    meta:
+      collection: dates
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
     schema:
       name: id
       table: dates
       data_type: integer
       default_value: nextval('dates_id_seq'::regclass)
-      generation_expression: null
       max_length: null
       numeric_precision: 32
       numeric_scale: 0
-      is_generated: false
       is_nullable: false
       is_unique: true
       is_primary_key: true
+      is_generated: false
+      generation_expression: null
       has_auto_increment: true
-      comment: null
-      schema: public
-      foreign_key_schema: null
       foreign_key_table: null
       foreign_key_column: null
+  - collection: dates
+    field: job
+    type: integer
     meta:
       collection: dates
-      field: id
-      special: null
-      interface: input
-      options: null
-      display: null
-      display_options: null
-      readonly: true
-      hidden: true
-      sort: 1
-      width: full
-      translations: null
-      note: null
       conditions: null
-      required: false
+      display: related-values
+      display_options:
+        template: '{{company}}-{{position}}'
+      field: job
       group: null
-  - collection: dates
-    field: user_created
-    type: uuid
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{company}}-{{position}}'
+      readonly: false
+      required: false
+      sort: 3
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
     schema:
-      name: user_created
+      name: job
       table: dates
-      data_type: uuid
+      data_type: integer
       default_value: null
-      generation_expression: null
       max_length: null
-      numeric_precision: null
-      numeric_scale: null
-      is_generated: false
+      numeric_precision: 32
+      numeric_scale: 0
       is_nullable: true
       is_unique: false
       is_primary_key: false
+      is_generated: false
+      generation_expression: null
       has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: public
-      foreign_key_table: directus_users
+      foreign_key_table: jobs
       foreign_key_column: id
+  - collection: dates
+    field: remark
+    type: text
     meta:
       collection: dates
-      field: user_created
-      special:
-        - user-created
-      interface: select-dropdown-m2o
-      options:
-        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
-      display: user
-      display_options: null
-      readonly: true
-      hidden: true
-      sort: 2
-      width: half
-      translations: null
-      note: null
       conditions: null
-      required: false
+      display: raw
+      display_options: null
+      field: remark
       group: null
+      hidden: false
+      interface: input-multiline
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 7
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: remark
+      table: dates
+      data_type: text
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: dates
+    field: start
+    type: timestamp
+    meta:
+      collection: dates
+      conditions: null
+      display: datetime
+      display_options: null
+      field: start
+      group: null
+      hidden: false
+      interface: datetime
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: start
+      table: dates
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
   - collection: dates
     field: status
     type: string
-    schema:
-      name: status
-      table: dates
-      data_type: character varying
-      default_value: proposal
-      generation_expression: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_generated: false
-      is_nullable: false
-      is_unique: false
-      is_primary_key: false
-      has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
-      foreign_key_table: null
-      foreign_key_column: null
     meta:
       collection: dates
+      conditions: null
+      display: raw
+      display_options: null
       field: status
-      special: null
+      group: null
+      hidden: false
       interface: select-dropdown
+      note: null
       options:
         choices:
           - text: Proposal
@@ -237,1250 +332,1056 @@ fields:
             value: booked
           - text: Declined
             value: declined
-      display: raw
-      display_options: null
       readonly: false
-      hidden: false
+      required: false
       sort: 4
-      width: full
+      special: null
       translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
-  - collection: dates
-    field: start
-    type: timestamp
+      validation: null
+      validation_message: null
+      width: full
     schema:
-      name: start
+      name: status
       table: dates
-      data_type: timestamp with time zone
-      default_value: null
-      generation_expression: null
-      max_length: null
+      data_type: character varying
+      default_value: proposal
+      max_length: 255
       numeric_precision: null
       numeric_scale: null
-      is_generated: false
-      is_nullable: true
+      is_nullable: false
       is_unique: false
       is_primary_key: false
+      is_generated: false
+      generation_expression: null
       has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
       foreign_key_table: null
       foreign_key_column: null
-    meta:
-      collection: dates
-      field: start
-      special: null
-      interface: datetime
-      options: null
-      display: datetime
-      display_options: null
-      readonly: false
-      hidden: false
-      sort: 5
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
   - collection: dates
-    field: end
-    type: timestamp
-    schema:
-      name: end
-      table: dates
-      data_type: timestamp with time zone
-      default_value: null
-      generation_expression: null
-      max_length: null
-      numeric_precision: null
-      numeric_scale: null
-      is_generated: false
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
-      foreign_key_table: null
-      foreign_key_column: null
+    field: user_created
+    type: uuid
     meta:
       collection: dates
-      field: end
-      special: null
-      interface: datetime
-      options: null
-      display: datetime
-      display_options: null
-      readonly: false
-      hidden: false
-      sort: 6
-      width: full
-      translations: null
-      note: null
       conditions: null
-      required: false
-      group: null
-  - collection: dates
-    field: remark
-    type: text
-    schema:
-      name: remark
-      table: dates
-      data_type: text
-      default_value: null
-      generation_expression: null
-      max_length: null
-      numeric_precision: null
-      numeric_scale: null
-      is_generated: false
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
-      foreign_key_table: null
-      foreign_key_column: null
-    meta:
-      collection: dates
-      field: remark
-      special: null
-      interface: input-multiline
-      options: null
-      display: raw
+      display: user
       display_options: null
-      readonly: false
-      hidden: false
-      sort: 7
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
+      field: user_created
       group: null
-  - collection: dates
-    field: job
-    type: integer
-    schema:
-      name: job
-      table: dates
-      data_type: integer
-      default_value: null
-      generation_expression: null
-      max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
-      is_generated: false
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: public
-      foreign_key_table: jobs
-      foreign_key_column: id
-    meta:
-      collection: dates
-      field: job
-      special:
-        - m2o
-      interface: select-dropdown-m2o
-      options:
-        template: '{{company}}-{{position}}'
-      display: related-values
-      display_options:
-        template: '{{company}}-{{position}}'
-      readonly: false
-      hidden: false
-      sort: 3
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
-  - collection: directus_files
-    field: job
-    type: integer
-    schema:
-      name: job
-      table: directus_files
-      data_type: integer
-      default_value: null
-      generation_expression: null
-      max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
-      is_generated: false
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: public
-      foreign_key_table: jobs
-      foreign_key_column: id
-    meta:
-      collection: directus_files
-      field: job
-      special: null
-      interface: select-dropdown-m2o
-      options: null
-      display: null
-      display_options: null
-      readonly: false
       hidden: true
-      sort: null
-      width: full
-      translations: null
+      interface: select-dropdown-m2o
       note: null
-      conditions: null
+      options:
+        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
+      readonly: true
       required: false
-      group: null
+      sort: 2
+      special:
+        - user-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: user_created
+      table: dates
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_users
+      foreign_key_column: id
   - collection: directus_files
     field: doc
     type: uuid
+    meta:
+      collection: directus_files
+      conditions: null
+      display: null
+      display_options: null
+      field: doc
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
     schema:
       name: doc
       table: directus_files
       data_type: uuid
       default_value: null
-      generation_expression: null
       max_length: null
       numeric_precision: null
       numeric_scale: null
-      is_generated: false
       is_nullable: true
       is_unique: false
       is_primary_key: false
+      is_generated: false
+      generation_expression: null
       has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: public
       foreign_key_table: docs
       foreign_key_column: id
-    meta:
-      collection: directus_files
-      field: doc
-      special: null
-      interface: select-dropdown-m2o
-      options: null
-      display: null
-      display_options: null
-      readonly: false
-      hidden: true
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
   - collection: directus_files
     field: doc_dark
     type: uuid
+    meta:
+      collection: directus_files
+      conditions: null
+      display: null
+      display_options: null
+      field: doc_dark
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
     schema:
       name: doc_dark
       table: directus_files
       data_type: uuid
       default_value: null
-      generation_expression: null
       max_length: null
       numeric_precision: null
       numeric_scale: null
-      is_generated: false
       is_nullable: true
       is_unique: false
       is_primary_key: false
+      is_generated: false
+      generation_expression: null
       has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: public
       foreign_key_table: docs
       foreign_key_column: id
-    meta:
-      collection: directus_files
-      field: doc_dark
-      special: null
-      interface: select-dropdown-m2o
-      options: null
-      display: null
-      display_options: null
-      readonly: false
-      hidden: true
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
   - collection: directus_files
     field: doc_preview
     type: uuid
+    meta:
+      collection: directus_files
+      conditions: null
+      display: null
+      display_options: null
+      field: doc_preview
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
     schema:
       name: doc_preview
       table: directus_files
       data_type: uuid
       default_value: null
-      generation_expression: null
       max_length: null
       numeric_precision: null
       numeric_scale: null
-      is_generated: false
       is_nullable: true
       is_unique: false
       is_primary_key: false
+      is_generated: false
+      generation_expression: null
       has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: public
       foreign_key_table: docs
       foreign_key_column: id
+  - collection: directus_files
+    field: job
+    type: integer
     meta:
       collection: directus_files
-      field: doc_preview
-      special: null
-      interface: select-dropdown-m2o
-      options: null
+      conditions: null
       display: null
       display_options: null
-      readonly: false
-      hidden: true
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
+      field: job
       group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: job
+      table: directus_files
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: jobs
+      foreign_key_column: id
   - collection: directus_users
     field: job
     type: integer
+    meta:
+      collection: directus_users
+      conditions: null
+      display: null
+      display_options: null
+      field: job
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
     schema:
       name: job
       table: directus_users
       data_type: integer
       default_value: null
-      generation_expression: null
       max_length: null
       numeric_precision: 32
       numeric_scale: 0
-      is_generated: false
       is_nullable: true
       is_unique: false
       is_primary_key: false
+      is_generated: false
+      generation_expression: null
       has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: public
       foreign_key_table: jobs
       foreign_key_column: id
-    meta:
-      collection: directus_users
-      field: job
-      special: null
-      interface: select-dropdown-m2o
-      options: null
-      display: null
-      display_options: null
-      readonly: false
-      hidden: true
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
   - collection: docs
-    field: id
-    type: uuid
-    schema:
-      name: id
-      table: docs
-      data_type: uuid
-      default_value: null
-      generation_expression: null
-      max_length: null
-      numeric_precision: null
-      numeric_scale: null
-      is_generated: false
-      is_nullable: false
-      is_unique: true
-      is_primary_key: true
-      has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
-      foreign_key_table: null
-      foreign_key_column: null
+    field: file
+    type: alias
     meta:
       collection: docs
-      field: id
-      special:
-        - uuid
-      interface: input
-      options: null
-      display: null
-      display_options: null
-      readonly: true
-      hidden: true
-      sort: null
-      width: full
-      translations: null
-      note: null
       conditions: null
-      required: false
-      group: null
-  - collection: docs
-    field: title
-    type: string
-    schema:
-      name: title
-      table: docs
-      data_type: character varying
-      default_value: null
-      generation_expression: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_generated: false
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
-      foreign_key_table: null
-      foreign_key_column: null
-    meta:
-      collection: docs
-      field: title
-      special: null
-      interface: input
-      options: null
-      display: raw
-      display_options: null
-      readonly: false
-      hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
-  - collection: docs
-    field: job
-    type: integer
-    schema:
-      name: job
-      table: docs
-      data_type: integer
-      default_value: null
-      generation_expression: null
-      max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
-      is_generated: false
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: public
-      foreign_key_table: jobs
-      foreign_key_column: id
-    meta:
-      collection: docs
-      field: job
-      special:
-        - m2o
-      interface: select-dropdown-m2o
-      options:
-        template: '{{company}}-{{position}}'
       display: related-values
       display_options:
-        template: '{{company}}-{{position}}'
-      readonly: false
-      hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
+        template: '{{title}}'
+      field: file
       group: null
+      hidden: false
+      interface: list-o2m
+      note: null
+      options:
+        template: '{{title}}'
+      readonly: false
+      required: false
+      sort: null
+      special:
+        - o2m
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+  - collection: docs
+    field: file_dark
+    type: alias
+    meta:
+      collection: docs
+      conditions: null
+      display: related-values
+      display_options:
+        template: '{{title}}'
+      field: file_dark
+      group: null
+      hidden: false
+      interface: list-o2m
+      note: null
+      options:
+        template: '{{title}}'
+      readonly: false
+      required: false
+      sort: null
+      special:
+        - o2m
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
   - collection: docs
     field: global
     type: boolean
+    meta:
+      collection: docs
+      conditions: null
+      display: boolean
+      display_options: null
+      field: global
+      group: null
+      hidden: false
+      interface: boolean
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special:
+        - boolean
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
     schema:
       name: global
       table: docs
       data_type: boolean
       default_value: null
-      generation_expression: null
       max_length: null
       numeric_precision: null
       numeric_scale: null
-      is_generated: false
       is_nullable: true
       is_unique: false
       is_primary_key: false
+      is_generated: false
+      generation_expression: null
       has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
       foreign_key_table: null
       foreign_key_column: null
+  - collection: docs
+    field: id
+    type: uuid
     meta:
       collection: docs
-      field: global
-      special:
-        - boolean
-      interface: boolean
-      options: null
-      display: boolean
-      display_options: null
-      readonly: false
-      hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
       conditions: null
-      required: false
+      display: null
+      display_options: null
+      field: id
       group: null
-  - collection: feedback
-    field: id
-    type: integer
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: null
+      special:
+        - uuid
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
     schema:
       name: id
-      table: feedback
-      data_type: integer
-      default_value: nextval('feedback_id_seq'::regclass)
-      generation_expression: null
+      table: docs
+      data_type: uuid
+      default_value: null
       max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
-      is_generated: false
+      numeric_precision: null
+      numeric_scale: null
       is_nullable: false
       is_unique: true
       is_primary_key: true
-      has_auto_increment: true
-      comment: null
-      schema: public
-      foreign_key_schema: null
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
+  - collection: docs
+    field: job
+    type: integer
     meta:
-      collection: feedback
-      field: id
-      special: null
-      interface: input
-      options: null
-      display: null
-      display_options: null
-      readonly: true
-      hidden: true
-      sort: null
-      width: full
-      translations: null
-      note: null
+      collection: docs
       conditions: null
-      required: false
+      display: related-values
+      display_options:
+        template: '{{company}}-{{position}}'
+      field: job
       group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{company}}-{{position}}'
+      readonly: false
+      required: false
+      sort: null
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: job
+      table: docs
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: jobs
+      foreign_key_column: id
+  - collection: docs
+    field: preview
+    type: alias
+    meta:
+      collection: docs
+      conditions: null
+      display: related-values
+      display_options:
+        template: '{{title}}'
+      field: preview
+      group: null
+      hidden: false
+      interface: list-o2m
+      note: null
+      options:
+        template: '{{title}}'
+      readonly: false
+      required: false
+      sort: null
+      special:
+        - o2m
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+  - collection: docs
+    field: title
+    type: string
+    meta:
+      collection: docs
+      conditions: null
+      display: raw
+      display_options: null
+      field: title
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: title
+      table: docs
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
   - collection: feedback
     field: date_created
     type: timestamp
+    meta:
+      collection: feedback
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: null
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
     schema:
       name: date_created
       table: feedback
       data_type: timestamp with time zone
       default_value: null
-      generation_expression: null
       max_length: null
       numeric_precision: null
       numeric_scale: null
-      is_generated: false
       is_nullable: true
       is_unique: false
       is_primary_key: false
+      is_generated: false
+      generation_expression: null
       has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
       foreign_key_table: null
       foreign_key_column: null
-    meta:
-      collection: feedback
-      field: date_created
-      special:
-        - date-created
-      interface: datetime
-      options: null
-      display: datetime
-      display_options:
-        relative: true
-      readonly: true
-      hidden: true
-      sort: null
-      width: half
-      translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
   - collection: feedback
-    field: text
-    type: text
-    schema:
-      name: text
-      table: feedback
-      data_type: text
-      default_value: null
-      generation_expression: null
-      max_length: null
-      numeric_precision: null
-      numeric_scale: null
-      is_generated: false
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
-      foreign_key_table: null
-      foreign_key_column: null
+    field: id
+    type: integer
     meta:
       collection: feedback
-      field: text
-      special: null
-      interface: input-multiline
-      options: null
-      display: raw
-      display_options: null
-      readonly: false
-      hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
       conditions: null
-      required: false
+      display: null
+      display_options: null
+      field: id
       group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: feedback
+      data_type: integer
+      default_value: nextval('feedback_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
   - collection: feedback
     field: job
     type: integer
+    meta:
+      collection: feedback
+      conditions: null
+      display: related-values
+      display_options:
+        template: "{{company}} -\_{{position}}"
+      field: job
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: "{{company}} -\_{{position}}"
+      readonly: false
+      required: false
+      sort: null
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
     schema:
       name: job
       table: feedback
       data_type: integer
       default_value: null
-      generation_expression: null
       max_length: null
       numeric_precision: 32
       numeric_scale: 0
-      is_generated: false
       is_nullable: true
       is_unique: false
       is_primary_key: false
+      is_generated: false
+      generation_expression: null
       has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: public
       foreign_key_table: jobs
       foreign_key_column: id
+  - collection: feedback
+    field: text
+    type: text
     meta:
       collection: feedback
-      field: job
-      special:
-        - m2o
-      interface: select-dropdown-m2o
-      options:
-        template: "{{company}} -\_{{position}}"
-      display: related-values
-      display_options:
-        template: "{{company}} -\_{{position}}"
-      readonly: false
-      hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
       conditions: null
-      required: false
-      group: null
-  - collection: jobs
-    field: id
-    type: integer
-    schema:
-      name: id
-      table: jobs
-      data_type: integer
-      default_value: nextval('jobs_id_seq'::regclass)
-      generation_expression: null
-      max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
-      is_generated: false
-      is_nullable: false
-      is_unique: true
-      is_primary_key: true
-      has_auto_increment: true
-      comment: null
-      schema: public
-      foreign_key_schema: null
-      foreign_key_table: null
-      foreign_key_column: null
-    meta:
-      collection: jobs
-      field: id
-      special: null
-      interface: input
-      options: null
-      display: null
+      display: raw
       display_options: null
-      readonly: true
-      hidden: true
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
+      field: text
       group: null
-  - collection: jobs
-    field: date_created
-    type: dateTime
+      hidden: false
+      interface: input-multiline
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
     schema:
-      name: date_created
-      table: jobs
-      data_type: timestamp without time zone
+      name: text
+      table: feedback
+      data_type: text
       default_value: null
-      generation_expression: null
       max_length: null
       numeric_precision: null
       numeric_scale: null
-      is_generated: false
       is_nullable: true
       is_unique: false
       is_primary_key: false
+      is_generated: false
+      generation_expression: null
       has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
       foreign_key_table: null
       foreign_key_column: null
-    meta:
-      collection: jobs
-      field: date_created
-      special:
-        - date-created
-      interface: datetime
-      options: null
-      display: datetime
-      display_options:
-        relative: true
-      readonly: true
-      hidden: true
-      sort: null
-      width: half
-      translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
   - collection: jobs
     field: company
     type: string
+    meta:
+      collection: jobs
+      conditions: null
+      display: null
+      display_options: null
+      field: company
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
     schema:
       name: company
       table: jobs
       data_type: character varying
       default_value: null
-      generation_expression: null
       max_length: 255
       numeric_precision: null
       numeric_scale: null
-      is_generated: false
       is_nullable: true
       is_unique: false
       is_primary_key: false
-      has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
-      foreign_key_table: null
-      foreign_key_column: null
-    meta:
-      collection: jobs
-      field: company
-      special: null
-      interface: input
-      options: null
-      display: null
-      display_options: null
-      readonly: false
-      hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
-  - collection: jobs
-    field: position
-    type: string
-    schema:
-      name: position
-      table: jobs
-      data_type: character varying
-      default_value: null
+      is_generated: false
       generation_expression: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_generated: false
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
       has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
       foreign_key_table: null
       foreign_key_column: null
-    meta:
-      collection: jobs
-      field: position
-      special: null
-      interface: input
-      options: null
-      display: null
-      display_options: null
-      readonly: false
-      hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
   - collection: jobs
-    field: link
-    type: string
-    schema:
-      name: link
-      table: jobs
-      data_type: character varying
-      default_value: null
-      generation_expression: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_generated: false
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
-      foreign_key_table: null
-      foreign_key_column: null
-    meta:
-      collection: jobs
-      field: link
-      special: null
-      interface: input
-      options: null
-      display: null
-      display_options: null
-      readonly: false
-      hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
-  - collection: jobs
-    field: sent
+    field: date_created
     type: dateTime
+    meta:
+      collection: jobs
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: null
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
     schema:
-      name: sent
+      name: date_created
       table: jobs
       data_type: timestamp without time zone
       default_value: null
-      generation_expression: null
       max_length: null
       numeric_precision: null
       numeric_scale: null
-      is_generated: false
       is_nullable: true
       is_unique: false
       is_primary_key: false
+      is_generated: false
+      generation_expression: null
       has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
       foreign_key_table: null
       foreign_key_column: null
-    meta:
-      collection: jobs
-      field: sent
-      special: null
-      interface: datetime
-      options: null
-      display: null
-      display_options: null
-      readonly: false
-      hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
   - collection: jobs
-    field: notes
-    type: text
-    schema:
-      name: notes
-      table: jobs
-      data_type: text
-      default_value: null
-      generation_expression: null
-      max_length: null
-      numeric_precision: null
-      numeric_scale: null
-      is_generated: false
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
-      foreign_key_table: null
-      foreign_key_column: null
+    field: feedback
+    type: alias
     meta:
       collection: jobs
-      field: notes
-      special: null
-      interface: input-multiline
-      options: null
+      conditions: null
       display: null
       display_options: null
-      readonly: false
-      hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
+      field: feedback
       group: null
+      hidden: false
+      interface: list-o2m
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special:
+        - o2m
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+  - collection: jobs
+    field: id
+    type: integer
+    meta:
+      collection: jobs
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: jobs
+      data_type: integer
+      default_value: nextval('jobs_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
   - collection: jobs
     field: identity_hash
     type: string
+    meta:
+      collection: jobs
+      conditions: null
+      display: null
+      display_options: null
+      field: identity_hash
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
     schema:
       name: identity_hash
       table: jobs
       data_type: character varying
       default_value: null
-      generation_expression: null
       max_length: 255
       numeric_precision: null
       numeric_scale: null
-      is_generated: false
       is_nullable: true
       is_unique: false
       is_primary_key: false
+      is_generated: false
+      generation_expression: null
       has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
       foreign_key_table: null
       foreign_key_column: null
+  - collection: jobs
+    field: link
+    type: string
     meta:
       collection: jobs
-      field: identity_hash
-      special: null
-      interface: input
-      options: null
+      conditions: null
       display: null
       display_options: null
-      readonly: false
+      field: link
+      group: null
       hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
-  - collection: settings
-    field: id
-    type: integer
-    schema:
-      name: id
-      table: settings
-      data_type: integer
-      default_value: nextval('settings_id_seq'::regclass)
-      generation_expression: null
-      max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
-      is_generated: false
-      is_nullable: false
-      is_unique: true
-      is_primary_key: true
-      has_auto_increment: true
-      comment: null
-      schema: public
-      foreign_key_schema: null
-      foreign_key_table: null
-      foreign_key_column: null
-    meta:
-      collection: settings
-      field: id
-      special: null
       interface: input
-      options: null
-      display: null
-      display_options: null
-      readonly: true
-      hidden: true
-      sort: null
-      width: full
-      translations: null
       note: null
-      conditions: null
+      options: null
+      readonly: false
       required: false
-      group: null
-  - collection: settings
-    field: chatwoot_website_token
-    type: string
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
     schema:
-      name: chatwoot_website_token
-      table: settings
+      name: link
+      table: jobs
       data_type: character varying
       default_value: null
-      generation_expression: null
       max_length: 255
       numeric_precision: null
       numeric_scale: null
-      is_generated: false
       is_nullable: true
       is_unique: false
       is_primary_key: false
+      is_generated: false
+      generation_expression: null
       has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
       foreign_key_table: null
       foreign_key_column: null
+  - collection: jobs
+    field: notes
+    type: text
     meta:
-      collection: settings
-      field: chatwoot_website_token
-      special: null
-      interface: input
-      options: null
-      display: raw
-      display_options: null
-      readonly: false
-      hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
+      collection: jobs
       conditions: null
-      required: false
+      display: null
+      display_options: null
+      field: notes
       group: null
-  - collection: settings
-    field: chatwoot_hmac_token
-    type: string
+      hidden: false
+      interface: input-multiline
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
     schema:
-      name: chatwoot_hmac_token
-      table: settings
-      data_type: character varying
+      name: notes
+      table: jobs
+      data_type: text
       default_value: null
-      generation_expression: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_generated: false
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
-      foreign_key_table: null
-      foreign_key_column: null
-    meta:
-      collection: settings
-      field: chatwoot_hmac_token
-      special: null
-      interface: input
-      options: null
-      display: raw
-      display_options: null
-      readonly: false
-      hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
-  - collection: settings
-    field: introduction_text
-    type: json
-    schema:
-      name: introduction_text
-      table: settings
-      data_type: json
-      default_value:
-        id: q06s02
-        version: 1
-        rows:
-          - id: sl1mzi
-            cells:
-              - id: niaxxj
-                size: 12
-                plugin:
-                  id: ory/editor/core/content/slate
-                  version: 1
-                dataI18n:
-                  en:
-                    slate:
-                      - type: PARAGRAPH/PARAGRAPH
-                        children:
-                          - text: >-
-                              I am very pleased to present you my application
-                              documents for the position of 
-                          - type: jobPopup
-                            children:
-                              - text: '{Position}'
-                                EMPHASIZE/STRONG: true
-                            data: null
-                          - text: .
-                      - type: PARAGRAPH/PARAGRAPH
-                        children:
-                          - text: >-
-                              Here you have the possibility to view the
-                              documents interactively, to 
-                          - type: actionToggle
-                            children:
-                              - text: contact me
-                            data: null
-                          - text: ' or to learn more '
-                          - type: LINK/LINK
-                            children:
-                              - text: about this application
-                            data:
-                              href: /about
-                          - text: .
-                  de:
-                    slate:
-                      - type: PARAGRAPH/PARAGRAPH
-                        children:
-                          - text: >-
-                              Es freut mich, Ihnen meine Bewerbungsunterlagen
-                              für die Stelle als
-                          - type: jobPopup
-                            children:
-                              - text: ''
-                            data: null
-                          - text: ' '
-                          - type: jobPopup
-                            children:
-                              - text: '{Position}'
-                                EMPHASIZE/STRONG: true
-                            data: null
-                          - text: ' auf diesem Wege präsentieren zu dürfen.'
-                      - type: PARAGRAPH/PARAGRAPH
-                        children:
-                          - text: >-
-                              Sie haben hier die Möglichkeit, die Unterlagen
-                              interaktiv zu begutachten, mit mir in 
-                          - type: actionToggle
-                            children:
-                              - text: Kontakt
-                            data: null
-                          - text: ' zu treten oder auch mehr '
-                          - type: LINK/LINK
-                            children:
-                              - text: über diese Applikation
-                            data:
-                              href: /about
-                          - text: ' zu erfahren.'
-                rows: []
-                inline: null
-      generation_expression: null
       max_length: null
       numeric_precision: null
       numeric_scale: null
-      is_generated: false
       is_nullable: true
       is_unique: false
       is_primary_key: false
+      is_generated: false
+      generation_expression: null
       has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
       foreign_key_table: null
       foreign_key_column: null
+  - collection: jobs
+    field: position
+    type: string
     meta:
-      collection: settings
-      field: introduction_text
+      collection: jobs
+      conditions: null
+      display: null
+      display_options: null
+      field: position
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: position
+      table: jobs
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: jobs
+    field: preview
+    type: alias
+    meta:
+      collection: jobs
+      conditions: null
+      display: related-values
+      display_options:
+        template: '{{$thumbnail}}'
+      field: preview
+      group: null
+      hidden: false
+      interface: list-o2m
+      note: null
+      options:
+        template: '{{$thumbnail}}'
+      readonly: false
+      required: false
+      sort: null
       special:
-        - json
-      interface: input-code
-      options: null
-      display: formatted-json-value
-      display_options: null
-      readonly: false
-      hidden: false
-      sort: null
-      width: full
+        - o2m
       translations: null
-      note: null
+      validation: null
+      validation_message: null
+      width: full
+  - collection: jobs
+    field: sent
+    type: dateTime
+    meta:
+      collection: jobs
       conditions: null
-      required: false
+      display: null
+      display_options: null
+      field: sent
       group: null
+      hidden: false
+      interface: datetime
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: sent
+      table: jobs
+      data_type: timestamp without time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: jobs
+    field: user
+    type: alias
+    meta:
+      collection: jobs
+      conditions: null
+      display: null
+      display_options: null
+      field: user
+      group: null
+      hidden: false
+      interface: list-o2m
+      note: null
+      options:
+        template: '{{email}}'
+      readonly: false
+      required: false
+      sort: null
+      special:
+        - o2m
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
   - collection: settings
     field: about_text
     type: json
+    meta:
+      collection: settings
+      conditions: null
+      display: formatted-json-value
+      display_options: null
+      field: about_text
+      group: null
+      hidden: false
+      interface: input-code
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special:
+        - json
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
     schema:
       name: about_text
       table: settings
       data_type: json
       default_value:
         id: grpq4t
-        version: 1
         rows:
           - id: coszg1
             cells:
@@ -1787,375 +1688,434 @@ fields:
                         data: null
                 rows: []
                 inline: null
-      generation_expression: null
+        version: 1
       max_length: null
       numeric_precision: null
       numeric_scale: null
-      is_generated: false
       is_nullable: true
       is_unique: false
       is_primary_key: false
+      is_generated: false
+      generation_expression: null
       has_auto_increment: false
-      comment: null
-      schema: public
-      foreign_key_schema: null
       foreign_key_table: null
       foreign_key_column: null
+  - collection: settings
+    field: chatwoot_hmac_token
+    type: string
     meta:
       collection: settings
-      field: about_text
-      special:
-        - json
-      interface: input-code
+      conditions: null
+      display: raw
+      display_options: null
+      field: chatwoot_hmac_token
+      group: null
+      hidden: false
+      interface: input
+      note: null
       options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: chatwoot_hmac_token
+      table: settings
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: settings
+    field: chatwoot_website_token
+    type: string
+    meta:
+      collection: settings
+      conditions: null
+      display: raw
+      display_options: null
+      field: chatwoot_website_token
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: chatwoot_website_token
+      table: settings
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: settings
+    field: id
+    type: integer
+    meta:
+      collection: settings
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: settings
+      data_type: integer
+      default_value: nextval('settings_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: settings
+    field: introduction_text
+    type: json
+    meta:
+      collection: settings
+      conditions: null
       display: formatted-json-value
       display_options: null
-      readonly: false
-      hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
+      field: introduction_text
       group: null
-  - collection: docs
-    field: file
-    type: alias
-    schema: null
-    meta:
-      collection: docs
-      field: file
-      special:
-        - o2m
-      interface: list-o2m
-      options:
-        template: '{{title}}'
-      display: related-values
-      display_options:
-        template: '{{title}}'
-      readonly: false
       hidden: false
-      sort: null
-      width: full
-      translations: null
+      interface: input-code
       note: null
-      conditions: null
-      required: false
-      group: null
-  - collection: docs
-    field: file_dark
-    type: alias
-    schema: null
-    meta:
-      collection: docs
-      field: file_dark
-      special:
-        - o2m
-      interface: list-o2m
-      options:
-        template: '{{title}}'
-      display: related-values
-      display_options:
-        template: '{{title}}'
-      readonly: false
-      hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
-  - collection: docs
-    field: preview
-    type: alias
-    schema: null
-    meta:
-      collection: docs
-      field: preview
-      special:
-        - o2m
-      interface: list-o2m
-      options:
-        template: '{{title}}'
-      display: related-values
-      display_options:
-        template: '{{title}}'
-      readonly: false
-      hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
-  - collection: jobs
-    field: preview
-    type: alias
-    schema: null
-    meta:
-      collection: jobs
-      field: preview
-      special:
-        - o2m
-      interface: list-o2m
-      options:
-        template: '{{$thumbnail}}'
-      display: related-values
-      display_options:
-        template: '{{$thumbnail}}'
-      readonly: false
-      hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
-  - collection: jobs
-    field: user
-    type: alias
-    schema: null
-    meta:
-      collection: jobs
-      field: user
-      special:
-        - o2m
-      interface: list-o2m
-      options:
-        template: '{{email}}'
-      display: null
-      display_options: null
-      readonly: false
-      hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
-      required: false
-      group: null
-  - collection: jobs
-    field: feedback
-    type: alias
-    schema: null
-    meta:
-      collection: jobs
-      field: feedback
-      special:
-        - o2m
-      interface: list-o2m
       options: null
-      display: null
-      display_options: null
       readonly: false
-      hidden: false
-      sort: null
-      width: full
-      translations: null
-      note: null
-      conditions: null
       required: false
-      group: null
+      sort: null
+      special:
+        - json
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: introduction_text
+      table: settings
+      data_type: json
+      default_value:
+        id: q06s02
+        rows:
+          - id: sl1mzi
+            cells:
+              - id: niaxxj
+                size: 12
+                plugin:
+                  id: ory/editor/core/content/slate
+                  version: 1
+                dataI18n:
+                  en:
+                    slate:
+                      - type: PARAGRAPH/PARAGRAPH
+                        children:
+                          - text: >-
+                              I am very pleased to present you my application
+                              documents for the position of 
+                          - type: jobPopup
+                            children:
+                              - text: '{Position}'
+                                EMPHASIZE/STRONG: true
+                            data: null
+                          - text: .
+                      - type: PARAGRAPH/PARAGRAPH
+                        children:
+                          - text: >-
+                              Here you have the possibility to view the
+                              documents interactively, to 
+                          - type: actionToggle
+                            children:
+                              - text: contact me
+                            data: null
+                          - text: ' or to learn more '
+                          - type: LINK/LINK
+                            children:
+                              - text: about this application
+                            data:
+                              href: /about
+                          - text: .
+                  de:
+                    slate:
+                      - type: PARAGRAPH/PARAGRAPH
+                        children:
+                          - text: >-
+                              Es freut mich, Ihnen meine Bewerbungsunterlagen
+                              für die Stelle als
+                          - type: jobPopup
+                            children:
+                              - text: ''
+                            data: null
+                          - text: ' '
+                          - type: jobPopup
+                            children:
+                              - text: '{Position}'
+                                EMPHASIZE/STRONG: true
+                            data: null
+                          - text: ' auf diesem Wege präsentieren zu dürfen.'
+                      - type: PARAGRAPH/PARAGRAPH
+                        children:
+                          - text: >-
+                              Sie haben hier die Möglichkeit, die Unterlagen
+                              interaktiv zu begutachten, mit mir in 
+                          - type: actionToggle
+                            children:
+                              - text: Kontakt
+                            data: null
+                          - text: ' zu treten oder auch mehr '
+                          - type: LINK/LINK
+                            children:
+                              - text: über diese Applikation
+                            data:
+                              href: /about
+                          - text: ' zu erfahren.'
+                rows: []
+                inline: null
+        version: 1
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
 relations:
   - collection: dates
     field: job
     related_collection: jobs
+    meta:
+      junction_field: null
+      many_collection: dates
+      many_field: job
+      one_allowed_collections: null
+      one_collection: jobs
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
     schema:
       table: dates
       column: job
       foreign_key_table: jobs
       foreign_key_column: id
-      foreign_key_schema: public
       constraint_name: dates_job_foreign
       on_update: NO ACTION
       on_delete: CASCADE
-    meta:
-      many_collection: dates
-      many_field: job
-      one_collection: jobs
-      one_field: null
-      one_collection_field: null
-      one_allowed_collections: null
-      junction_field: null
-      sort_field: null
-      one_deselect_action: nullify
   - collection: dates
     field: user_created
     related_collection: directus_users
+    meta:
+      junction_field: null
+      many_collection: dates
+      many_field: user_created
+      one_allowed_collections: null
+      one_collection: directus_users
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
     schema:
       table: dates
       column: user_created
       foreign_key_table: directus_users
       foreign_key_column: id
-      foreign_key_schema: public
       constraint_name: dates_user_created_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-    meta:
-      many_collection: dates
-      many_field: user_created
-      one_collection: directus_users
-      one_field: null
-      one_collection_field: null
-      one_allowed_collections: null
-      junction_field: null
-      sort_field: null
-      one_deselect_action: nullify
-  - collection: directus_files
-    field: job
-    related_collection: jobs
-    schema:
-      table: directus_files
-      column: job
-      foreign_key_table: jobs
-      foreign_key_column: id
-      foreign_key_schema: public
-      constraint_name: directus_files_job_foreign
-      on_update: NO ACTION
-      on_delete: CASCADE
-    meta:
-      many_collection: directus_files
-      many_field: job
-      one_collection: jobs
-      one_field: preview
-      one_collection_field: null
-      one_allowed_collections: null
-      junction_field: null
-      sort_field: null
-      one_deselect_action: nullify
   - collection: directus_files
     field: doc
     related_collection: docs
+    meta:
+      junction_field: null
+      many_collection: directus_files
+      many_field: doc
+      one_allowed_collections: null
+      one_collection: docs
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: file
+      sort_field: null
     schema:
       table: directus_files
       column: doc
       foreign_key_table: docs
       foreign_key_column: id
-      foreign_key_schema: public
       constraint_name: directus_files_doc_foreign
       on_update: NO ACTION
       on_delete: CASCADE
-    meta:
-      many_collection: directus_files
-      many_field: doc
-      one_collection: docs
-      one_field: file
-      one_collection_field: null
-      one_allowed_collections: null
-      junction_field: null
-      sort_field: null
-      one_deselect_action: nullify
   - collection: directus_files
     field: doc_dark
     related_collection: docs
+    meta:
+      junction_field: null
+      many_collection: directus_files
+      many_field: doc_dark
+      one_allowed_collections: null
+      one_collection: docs
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: file_dark
+      sort_field: null
     schema:
       table: directus_files
       column: doc_dark
       foreign_key_table: docs
       foreign_key_column: id
-      foreign_key_schema: public
       constraint_name: directus_files_doc_dark_foreign
       on_update: NO ACTION
       on_delete: CASCADE
-    meta:
-      many_collection: directus_files
-      many_field: doc_dark
-      one_collection: docs
-      one_field: file_dark
-      one_collection_field: null
-      one_allowed_collections: null
-      junction_field: null
-      sort_field: null
-      one_deselect_action: nullify
   - collection: directus_files
     field: doc_preview
     related_collection: docs
+    meta:
+      junction_field: null
+      many_collection: directus_files
+      many_field: doc_preview
+      one_allowed_collections: null
+      one_collection: docs
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: preview
+      sort_field: null
     schema:
       table: directus_files
       column: doc_preview
       foreign_key_table: docs
       foreign_key_column: id
-      foreign_key_schema: public
       constraint_name: directus_files_doc_preview_foreign
       on_update: NO ACTION
       on_delete: CASCADE
+  - collection: directus_files
+    field: job
+    related_collection: jobs
     meta:
-      many_collection: directus_files
-      many_field: doc_preview
-      one_collection: docs
-      one_field: preview
-      one_collection_field: null
-      one_allowed_collections: null
       junction_field: null
-      sort_field: null
+      many_collection: directus_files
+      many_field: job
+      one_allowed_collections: null
+      one_collection: jobs
+      one_collection_field: null
       one_deselect_action: nullify
+      one_field: preview
+      sort_field: null
+    schema:
+      table: directus_files
+      column: job
+      foreign_key_table: jobs
+      foreign_key_column: id
+      constraint_name: directus_files_job_foreign
+      on_update: NO ACTION
+      on_delete: CASCADE
   - collection: directus_users
     field: job
     related_collection: jobs
+    meta:
+      junction_field: null
+      many_collection: directus_users
+      many_field: job
+      one_allowed_collections: null
+      one_collection: jobs
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: user
+      sort_field: null
     schema:
       table: directus_users
       column: job
       foreign_key_table: jobs
       foreign_key_column: id
-      foreign_key_schema: public
       constraint_name: directus_users_job_foreign
       on_update: NO ACTION
       on_delete: CASCADE
-    meta:
-      many_collection: directus_users
-      many_field: job
-      one_collection: jobs
-      one_field: user
-      one_collection_field: null
-      one_allowed_collections: null
-      junction_field: null
-      sort_field: null
-      one_deselect_action: nullify
   - collection: docs
     field: job
     related_collection: jobs
+    meta:
+      junction_field: null
+      many_collection: docs
+      many_field: job
+      one_allowed_collections: null
+      one_collection: jobs
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
     schema:
       table: docs
       column: job
       foreign_key_table: jobs
       foreign_key_column: id
-      foreign_key_schema: public
       constraint_name: docs_job_foreign
       on_update: NO ACTION
       on_delete: CASCADE
-    meta:
-      many_collection: docs
-      many_field: job
-      one_collection: jobs
-      one_field: null
-      one_collection_field: null
-      one_allowed_collections: null
-      junction_field: null
-      sort_field: null
-      one_deselect_action: nullify
   - collection: feedback
     field: job
     related_collection: jobs
+    meta:
+      junction_field: null
+      many_collection: feedback
+      many_field: job
+      one_allowed_collections: null
+      one_collection: jobs
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: feedback
+      sort_field: null
     schema:
       table: feedback
       column: job
       foreign_key_table: jobs
       foreign_key_column: id
-      foreign_key_schema: public
       constraint_name: feedback_job_foreign
       on_update: NO ACTION
       on_delete: CASCADE
-    meta:
-      many_collection: feedback
-      many_field: job
-      one_collection: jobs
-      one_field: feedback
-      one_collection_field: null
-      one_allowed_collections: null
-      junction_field: null
-      sort_field: null
-      one_deselect_action: nullify

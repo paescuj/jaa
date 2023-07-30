@@ -10,6 +10,7 @@ services:
   web:
     build:
       context: .
+      dockerfile: web/Dockerfile
     image: ${REGISTRY_PREFIX:-}jaa-web:latest
     init: true
     networks:

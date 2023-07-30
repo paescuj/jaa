@@ -140,7 +140,7 @@ Jaa is built with the following great open source components:
 
 ## Disclaimer
 
-This is a fun project, intended as a playground to experiment with different technologies. Therefore the project is not actively maintained.
+This project was created for fun and as a playground to experiment with different technologies. It's not actively maintained.
 
 ## License
 

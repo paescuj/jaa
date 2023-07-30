@@ -1,7 +1,6 @@
 import {
 	Box,
 	Center,
-	Collapse,
 	Flex,
 	useBreakpointValue,
 	useColorMode,
@@ -12,7 +11,13 @@ import ReactDOMServer from 'react-dom/server';
 import { useIntl } from 'react-intl';
 import Measure from 'react-measure';
 import { Document, Page, pdfjs } from 'react-pdf';
-import { A11y, Controller, Keyboard, Navigation, Pagination } from 'swiper';
+import {
+	A11y,
+	Controller,
+	Keyboard,
+	Navigation,
+	Pagination,
+} from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import Loader from '@/components/common/Loader';
@@ -198,7 +203,13 @@ export default function Pdf({
 					w="100%"
 					ref={measureRef}
 				>
-					<Collapse in={documentLoaded}>
+					<motion.div
+						animate={documentLoaded ? 'open' : 'collapsed'}
+						variants={{
+							open: { opacity: 1, height: 'auto' },
+							collapsed: { opacity: 0, height: 0 },
+						}}
+					>
 						<Document
 							file={transformedFile}
 							loading=""
@@ -312,7 +323,7 @@ export default function Pdf({
 								</Swiper>
 							</Box>
 						</Document>
-					</Collapse>
+					</motion.div>
 				</Box>
 			)}
 		</Measure>

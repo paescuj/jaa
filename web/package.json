@@ -8,7 +8,6 @@
 	},
 	"dependencies": {
 		"@beam-australia/react-env": "3.1.1",
-		"@chakra-ui/layout": "2.3.0",
 		"@chakra-ui/react": "2.8.0",
 		"@directus/sdk": "10.3.5",
 		"@dnd-kit/core": "6.0.8",
@@ -16,14 +15,14 @@
 		"@dnd-kit/utilities": "3.2.1",
 		"@emotion/react": "11.11.1",
 		"@emotion/styled": "11.11.0",
-		"@fontsource/quicksand": "4.5.12",
+		"@fontsource/quicksand": "5.0.5",
 		"@react-page/editor": "5.4.4",
 		"@react-page/plugins-slate": "5.4.4",
 		"@tippyjs/react": "4.2.6",
 		"animate.css": "4.1.1",
 		"chakra-react-select": "4.7.0",
 		"date-fns": "2.30.0",
-		"framer-motion": "9.1.7",
+		"framer-motion": "10.15.0",
 		"iconoir-react": "6.10.0",
 		"language-icons": "0.3.0",
 		"lodash.isequal": "4.5.0",
@@ -42,8 +41,8 @@
 		"react-intl": "6.4.4",
 		"react-measure": "2.5.2",
 		"react-pdf": "6.2.2",
-		"swiper": "9.4.1",
-		"tippy.js": "^6.3.7"
+		"swiper": "10.0.4",
+		"tippy.js": "6.3.7"
 	},
 	"devDependencies": {
 		"@types/react": "18.2.17",

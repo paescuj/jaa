@@ -9,7 +9,7 @@ export async function up(knex) {
 				admin_access: false,
 				app_access: false,
 			},
-			['id']
+			['id'],
 		)
 	)[0].id;
 

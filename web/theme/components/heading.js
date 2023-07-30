@@ -1,7 +1,7 @@
 const baseStyle = {
-  fontWeight: '500',
+	fontWeight: '500',
 };
 
 export default {
-  baseStyle,
+	baseStyle,
 };

@@ -7,19 +7,19 @@ import typography from './foundations/typography';
 import styles from './styles';
 
 const config = {
-  initialColorMode: 'system',
-  useSystemColorMode: true,
+	initialColorMode: 'system',
+	useSystemColorMode: true,
 };
 
 const theme = {
-  ...typography,
-  components: {
-    Drawer,
-    Heading,
-    Modal,
-  },
-  styles,
-  config,
+	...typography,
+	components: {
+		Drawer,
+		Heading,
+		Modal,
+	},
+	styles,
+	config,
 };
 
 export default extendTheme(theme);

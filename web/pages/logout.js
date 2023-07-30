@@ -22,80 +22,80 @@ const dots = keyframes`
 `;
 
 export default function Logout() {
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const { formatMessage } = useIntl();
+	const router = useRouter();
+	const [loading, setLoading] = useState(true);
+	const { formatMessage } = useIntl();
 
-  useEffect(() => {
-    async function logout() {
-      try {
-        // Try to logout
-        await directus.auth.logout();
+	useEffect(() => {
+		async function logout() {
+			try {
+				// Try to logout
+				await directus.auth.logout();
 
-        // Update store
-        AuthStore.update((s) => {
-          s.user = false;
-        });
+				// Update store
+				AuthStore.update((s) => {
+					s.user = false;
+				});
 
-        // Reset Chatwoot
-        window.$chatwoot?.reset();
+				// Reset Chatwoot
+				window.$chatwoot?.reset();
 
-        // Display logout message
-        setLoading(false);
-      } catch {
-        // Most likely there was no valid session - skip logout message in this case
-        await router.push('/');
-      }
-    }
-    // Call logout function
-    logout();
+				// Display logout message
+				setLoading(false);
+			} catch {
+				// Most likely there was no valid session - skip logout message in this case
+				await router.push('/');
+			}
+		}
+		// Call logout function
+		logout();
 
-    // Redirect to start page after timeout
-    setTimeout(() => {
-      router.push('/');
-    }, 5000);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+		// Redirect to start page after timeout
+		setTimeout(() => {
+			router.push('/');
+		}, 5000);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
-  return (
-    <>
-      <Head>
-        <title>
-          {formatMessage({ id: 'logout' })} - Job Application Assistant
-        </title>
-      </Head>
-      <Layout justify="center" align="center">
-        {loading ? (
-          <Loader text={formatMessage({ id: 'loading_page' })} />
-        ) : (
-          <main>
-            <Heading as="h1" size="xl" textAlign="center">
-              {formatMessage({ id: 'logout_success_title' })}
-            </Heading>
-            <Heading
-              as="h2"
-              size="md"
-              fontWeight="normal"
-              textAlign="center"
-              pt={4}
-            >
-              {formatMessage({
-                id: 'logout_success_message',
-              })}
-              <Box
-                as="span"
-                _after={{
-                  display: 'inline-block',
-                  textAlign: 'left',
-                  width: '3ch',
-                  content: '"."',
-                  animation: `${dots} 1.5s infinite`,
-                }}
-              />
-            </Heading>
-          </main>
-        )}
-      </Layout>
-    </>
-  );
+	return (
+		<>
+			<Head>
+				<title>
+					{formatMessage({ id: 'logout' })} - Job Application Assistant
+				</title>
+			</Head>
+			<Layout justify="center" align="center">
+				{loading ? (
+					<Loader text={formatMessage({ id: 'loading_page' })} />
+				) : (
+					<main>
+						<Heading as="h1" size="xl" textAlign="center">
+							{formatMessage({ id: 'logout_success_title' })}
+						</Heading>
+						<Heading
+							as="h2"
+							size="md"
+							fontWeight="normal"
+							textAlign="center"
+							pt={4}
+						>
+							{formatMessage({
+								id: 'logout_success_message',
+							})}
+							<Box
+								as="span"
+								_after={{
+									display: 'inline-block',
+									textAlign: 'left',
+									width: '3ch',
+									content: '"."',
+									animation: `${dots} 1.5s infinite`,
+								}}
+							/>
+						</Heading>
+					</main>
+				)}
+			</Layout>
+		</>
+	);
 }

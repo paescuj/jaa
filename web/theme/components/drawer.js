@@ -1,9 +1,9 @@
 const baseStyle = {
-  dialog: {
-    bg: 'none',
-  },
+	dialog: {
+		bg: 'none',
+	},
 };
 
 export default {
-  baseStyle,
+	baseStyle,
 };

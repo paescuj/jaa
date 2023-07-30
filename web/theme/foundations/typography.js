@@ -1,8 +1,8 @@
 const typography = {
-  fonts: {
-    heading: 'Quicksand',
-    body: 'Quicksand',
-  },
+	fonts: {
+		heading: 'Quicksand',
+		body: 'Quicksand',
+	},
 };
 
 export default typography;

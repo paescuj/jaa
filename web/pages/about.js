@@ -14,100 +14,100 @@ import { customSlateAbout } from '@/lib/react-page/plugins';
 import { AuthStore } from '@/stores/AuthStore';
 
 const getPath = (user) => {
-  return user
-    ? user.email?.startsWith('admin@')
-      ? '/admin'
-      : '/application'
-    : '/';
+	return user
+		? user.email?.startsWith('admin@')
+			? '/admin'
+			: '/application'
+		: '/';
 };
 
 export default function About() {
-  const { colorMode } = useColorMode();
-  const { formatMessage, locale } = useIntl();
-  const [loading, setLoading] = useState(true);
-  const [aboutText, setAboutText] = useState();
+	const { colorMode } = useColorMode();
+	const { formatMessage, locale } = useIntl();
+	const [loading, setLoading] = useState(true);
+	const [aboutText, setAboutText] = useState();
 
-  const user = AuthStore.useState((s) => s.user);
+	const user = AuthStore.useState((s) => s.user);
 
-  useEffect(() => {
-    const loadText = async () => {
-      try {
-        const settings = await directus
-          .singleton('settings')
-          .read({ fields: ['about_text'] });
-        setAboutText(settings?.about_text);
-      } catch {
-        // TODO
-      }
-      setLoading(false);
-    };
-    loadText();
-  }, []);
+	useEffect(() => {
+		const loadText = async () => {
+			try {
+				const settings = await directus
+					.singleton('settings')
+					.read({ fields: ['about_text'] });
+				setAboutText(settings?.about_text);
+			} catch {
+				// TODO
+			}
+			setLoading(false);
+		};
+		loadText();
+	}, []);
 
-  if (loading) {
-    return (
-      <>
-        <Head>
-          <title>
-            {formatMessage({ id: 'about_application' })} - Job Application
-            Assistant
-          </title>
-        </Head>
-        <Layout justify="center" align="center">
-          <Loader />
-        </Layout>
-      </>
-    );
-  }
+	if (loading) {
+		return (
+			<>
+				<Head>
+					<title>
+						{formatMessage({ id: 'about_application' })} - Job Application
+						Assistant
+					</title>
+				</Head>
+				<Layout justify="center" align="center">
+					<Loader />
+				</Layout>
+			</>
+		);
+	}
 
-  return (
-    <>
-      <Head>
-        <title>
-          {formatMessage({ id: 'about_application' })} - Job Application
-          Assistant
-        </title>
-      </Head>
-      <Layout>
-        <Flex as="header" justify="space-between" align="center">
-          <Logo />
-          <Tooltip hasArrow label={formatMessage({ id: 'to_start_page' })}>
-            <IconButton
-              as={NextLink}
-              href={getPath(user)}
-              variant="ghost"
-              colorScheme={colorMode === 'light' ? 'blackAlpha' : 'gray'}
-              color={colorMode === 'light' ? 'gray.600' : 'gray.400'}
-              aria-label={formatMessage({ id: 'to_start_page' })}
-              icon={<ArrowLeft />}
-            />
-          </Tooltip>
-        </Flex>
-        <Box
-          as="main"
-          mt={6}
-          maxW="800"
-          fontSize={{ md: 18 }}
-          sx={{
-            'ul,ol': {
-              marginTop: 'var(--chakra-space-2)',
-            },
-            li: {
-              marginInlineStart: '1em',
-            },
-            'li:not(:last-child)': {
-              marginBottom: 'var(--chakra-space-2)',
-            },
-          }}
-        >
-          <Editor
-            cellPlugins={[customSlateAbout]}
-            value={aboutText}
-            readOnly
-            lang={locale}
-          />
-        </Box>
-      </Layout>
-    </>
-  );
+	return (
+		<>
+			<Head>
+				<title>
+					{formatMessage({ id: 'about_application' })} - Job Application
+					Assistant
+				</title>
+			</Head>
+			<Layout>
+				<Flex as="header" justify="space-between" align="center">
+					<Logo />
+					<Tooltip hasArrow label={formatMessage({ id: 'to_start_page' })}>
+						<IconButton
+							as={NextLink}
+							href={getPath(user)}
+							variant="ghost"
+							colorScheme={colorMode === 'light' ? 'blackAlpha' : 'gray'}
+							color={colorMode === 'light' ? 'gray.600' : 'gray.400'}
+							aria-label={formatMessage({ id: 'to_start_page' })}
+							icon={<ArrowLeft />}
+						/>
+					</Tooltip>
+				</Flex>
+				<Box
+					as="main"
+					mt={6}
+					maxW="800"
+					fontSize={{ md: 18 }}
+					sx={{
+						'ul,ol': {
+							marginTop: 'var(--chakra-space-2)',
+						},
+						li: {
+							marginInlineStart: '1em',
+						},
+						'li:not(:last-child)': {
+							marginBottom: 'var(--chakra-space-2)',
+						},
+					}}
+				>
+					<Editor
+						cellPlugins={[customSlateAbout]}
+						value={aboutText}
+						readOnly
+						lang={locale}
+					/>
+				</Box>
+			</Layout>
+		</>
+	);
 }

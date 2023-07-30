@@ -28,8 +28,9 @@
   - Automatically generates and stores screenshots of job ads and documents
 - Dedicated access for each company:
   - Web page with introduction text, application documents and chat widget
-  - Companies will be able to filter, search, drag'n'drop and download application documents and chat with you
-- About page
+  - Companies will be able to filter, search, drag'n'drop and download application documents and contact you
+- Customizable "Intro" text and "About" page
+- Support for multilingualism
 - Light & dark mode
 - Responsive & accessible
 

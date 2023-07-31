@@ -8,7 +8,6 @@ import {
 	Tabs,
 	Text,
 } from '@chakra-ui/react';
-import isEqual from 'lodash.isequal';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import NextLink from 'next/link';
@@ -22,7 +21,7 @@ import Header from '@/components/common/Header';
 import Layout from '@/components/common/Layout';
 import Loader from '@/components/common/Loader';
 import Logo from '@/components/common/Logo';
-import { directus } from '@/lib/directus';
+import { directus, subscribe, unsubscribe } from '@/lib/directus';
 import { AuthStore } from '@/stores/AuthStore';
 
 const Jobs = dynamic(() => import('@/components/admin/Jobs'));
@@ -116,29 +115,60 @@ export default function Admin() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [user]);
 
-	// Fetch jobs all 5 seconds
-	// TODO: Replace with better solution, e.g. websockets
+	// Subscribe to updates
 	useEffect(() => {
 		if (!loading.state) {
-			const timer = setInterval(async () => {
-				try {
-					const jobs = await directus
-						.items('jobs')
-						.readByQuery({ fields: ['*', 'feedback.*'] });
-					setJobs((prevState) => {
-						if (isEqual(prevState, jobs.data)) {
-							return prevState;
-						} else {
-							return jobs.data;
+			subscribe(
+				'admin-feedback-create',
+				{ collection: 'feedback', event: 'create' },
+				([feedback]) =>
+					setJobs((prevJobs) => {
+						const jobs = [...prevJobs];
+						const job = jobs.find((job) => job.id === feedback.job);
+						job.feedback = [...job.feedback, feedback];
+						return jobs;
+					}),
+			);
+
+			subscribe(
+				'admin-dates-create',
+				{ collection: 'dates', event: 'create' },
+				(date) =>
+					setDates((prevDates) => {
+						return [...prevDates, ...date];
+					}),
+			);
+
+			subscribe(
+				'admin-dates-update',
+				{ collection: 'dates', event: 'update' },
+				(updatedDates) =>
+					setDates((prevDates) => {
+						const dates = [...prevDates];
+						for (const updatedDate of updatedDates) {
+							const index = dates.findIndex(
+								(date) => date.id === updatedDate.id,
+							);
+							dates[index] = updatedDate;
 						}
-					});
-				} catch {
-					// Ignore error
-				}
-			}, 5000);
+						return dates;
+					}),
+			);
+
+			subscribe(
+				'admin-dates-delete',
+				{ collection: 'dates', event: 'delete' },
+				(deletedDates) =>
+					setDates((prevDates) => {
+						return prevDates.filter((date) => !deletedDates.includes(date.id));
+					}),
+			);
 
 			return () => {
-				clearInterval(timer);
+				unsubscribe('admin-feedback-create');
+				unsubscribe('admin-dates-create');
+				unsubscribe('admin-dates-update');
+				unsubscribe('admin-dates-delete');
 			};
 		}
 	}, [loading]);

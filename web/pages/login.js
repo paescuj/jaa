@@ -20,10 +20,8 @@ import { useIntl } from 'react-intl';
 
 import Layout from '@/components/common/Layout';
 import Loader from '@/components/common/Loader';
-import { directus } from '@/lib/directus';
-import locales from '@/locales';
+import { login } from '@/lib/directus';
 import { AuthStore } from '@/stores/AuthStore';
-import { LocaleStore } from '@/stores/LocaleStore';
 
 export default function Login() {
 	const [loading, setLoading] = useState(true);
@@ -79,45 +77,28 @@ export default function Login() {
 	// Try to login with submitted code
 	async function onSubmit({ code }) {
 		const { company, job, admin } = router.query;
-		// Use configured domain from env (with fallback of current domain) for users email address
-		const host = env('DOMAIN') || window.location.host;
+		// Use configured domain from env for users email address
+		const host = env('DOMAIN');
 
-		await directus.auth
-			.login({
-				email: admin ? `admin@${host}` : `${company}-${job}@${host}`,
-				password: code,
-			})
-			.then(async () => {
-				// Update stores
-				const user = await directus.users.me.read();
-				AuthStore.update((s) => {
-					s.user = user;
-				});
-				// Redirect
-				await router.push({
-					pathname: admin ? '/admin' : '/application',
-				});
-
-				const language = user.language?.split(/[-_]/)[0];
-				if (language in locales) {
-					LocaleStore.update((s) => {
-						s.locale = language;
-					});
-				}
-			})
-			.catch((error) => {
-				const messages = {
-					'Network Error': formatMessage({ id: 'no_connection' }),
-					'Invalid user credentials.': formatMessage({
-						id: 'access_code_or_url_invalid',
-					}),
-					default: formatMessage({ id: 'unknown_error' }),
-				};
-				setError('code', {
-					type: 'manual',
-					message: messages[error.message] || messages['default'],
-				});
+		try {
+			await login(admin ? `admin@${host}` : `${company}-${job}@${host}`, code);
+			// Redirect
+			await router.push({
+				pathname: admin ? '/admin' : '/application',
 			});
+		} catch (error) {
+			const messages = {
+				'Network Error': formatMessage({ id: 'no_connection' }),
+				'Invalid user credentials.': formatMessage({
+					id: 'access_code_or_url_invalid',
+				}),
+				default: formatMessage({ id: 'unknown_error' }),
+			};
+			setError('code', {
+				type: 'manual',
+				message: messages[error.message] || messages['default'],
+			});
+		}
 	}
 
 	return (

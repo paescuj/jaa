@@ -25,7 +25,6 @@
 		"framer-motion": "10.15.0",
 		"iconoir-react": "6.10.0",
 		"language-icons": "0.3.0",
-		"lodash.isequal": "4.5.0",
 		"next": "13.4.12",
 		"object-path": "0.11.8",
 		"object-traversal": "1.0.1",

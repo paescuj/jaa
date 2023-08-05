@@ -52,8 +52,8 @@ export default function Admin() {
 		);
 	}
 
-	const [jobs, setJobs] = useState({});
-	const [docs, setDocs] = useState({});
+	const [jobs, setJobs] = useState([]);
+	const [docs, setDocs] = useState([]);
 	const [dates, setDates] = useState([]);
 	const [settings, setSettings] = useState({});
 	const user = AuthStore.useState((s) => s.user);
@@ -117,7 +117,7 @@ export default function Admin() {
 
 	// Subscribe to updates
 	useEffect(() => {
-		if (!loading.state) {
+		if (!loading.state && !loading.error) {
 			subscribe(
 				'admin-feedback-create',
 				{ collection: 'feedback', event: 'create' },

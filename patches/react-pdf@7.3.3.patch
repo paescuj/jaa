@@ -1,0 +1,16 @@
+diff --git a/dist/esm/Page/TextLayer.js b/dist/esm/Page/TextLayer.js
+index 689efbf7cb838c3d5d028546a84daeed81211215..25edc7f83acc1a12787f74e8e883bb52c3414a43 100644
+--- a/dist/esm/Page/TextLayer.js
++++ b/dist/esm/Page/TextLayer.js
+@@ -134,10 +134,7 @@ export default function TextLayer() {
+             end.className = 'endOfContent';
+             layer.append(end);
+             endElement.current = end;
+-            const hasMarkedContent = Boolean(layer.querySelector('.markedContent'));
+-            const layerChildren = hasMarkedContent
+-                ? layer.querySelectorAll('.markedContent > *:not(.markedContent')
+-                : layer.children;
++			const layerChildren = layer.querySelectorAll('[role="presentation"]');
+             if (customTextRenderer) {
+                 let index = 0;
+                 textContent.items.forEach((item, itemIndex) => {

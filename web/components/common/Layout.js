@@ -15,8 +15,6 @@ export default function Layout(props) {
 			minH="100vh"
 			m="0 auto"
 			{...props}
-		>
-			{props.children}
-		</MotionFlex>
+		/>
 	);
 }

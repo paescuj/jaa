@@ -7,11 +7,12 @@ WORKDIR /builder
 RUN corepack enable
 
 COPY package.json pnpm-lock.yaml .
+COPY patches patches
 RUN pnpm fetch --prod
 
 COPY pnpm-workspace.yaml .
 COPY web web
-RUN pnpm install --recursive --offline --prod
+RUN pnpm --filter web install --offline --prod
 
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm --filter web run build
@@ -36,4 +37,4 @@ USER app
 ENV NODE_ENV=production \
   NEXT_TELEMETRY_DISABLED=1
 EXPOSE 3000
-CMD react-env --prefix NEXT_PUBLIC --path web/.env.production --dest web/public && node web/server.js
+CMD ["react-env", "--prefix", "NEXT_PUBLIC", "--path", "web/.env.production", "--dest", "web/public", "--", "node", "web/server.js"]

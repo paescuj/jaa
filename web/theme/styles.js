@@ -1,18 +1,5 @@
 import { mode } from '@chakra-ui/theme-tools';
 
-// Apply tooltip theme to tippy
-const tippy = (props) => ({
-	'.tippy-box[data-theme~="chakra"]': {
-		...props.theme.components.Tooltip.baseStyle,
-		...(props.colorMode === 'dark' &&
-			props.theme.components.Tooltip.baseStyle._dark),
-	},
-	'.tippy-box[data-theme~="chakra"][data-placement^="bottom"] > .tippy-arrow::before':
-		{
-			borderBottomColor: props.theme.components.Tooltip.baseStyle.bg,
-		},
-});
-
 // Fixes and additions for PDFs
 const pdf = (props) => ({
 	'.react-pdf__Page__textContent span': {
@@ -20,10 +7,6 @@ const pdf = (props) => ({
 	},
 	'.react-pdf__Page__textContent span::selection': {
 		backgroundColor: 'blue',
-	},
-	// See https://github.com/wojtekmaj/react-pdf/issues/332#issuecomment-585180825
-	'.react-pdf__Document': {
-		lineHeight: '1',
 	},
 	'.react-pdf__Page': {
 		filter: mode('', 'invert(90%)')(props),
@@ -74,9 +57,8 @@ const calendar = (props) => ({
 const styles = {
 	global: (props) => ({
 		body: {
-			bg: mode('#C8C6D7', 'gray.700')(props),
+			bg: 'bg',
 		},
-		...tippy(props),
 		...pdf(props),
 		...swiper(props),
 		...calendar(props),

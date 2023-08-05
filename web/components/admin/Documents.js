@@ -4,6 +4,7 @@ import {
 	AccordionIcon,
 	AccordionItem,
 	AccordionPanel,
+	Avatar,
 	Button,
 	Flex,
 	Text,
@@ -11,11 +12,11 @@ import {
 import { AddPage, Plus, Trash } from 'iconoir-react';
 import { useIntl } from 'react-intl';
 
+import DirectusImage from '@/components/common/DirectusImage';
 import FormModal, { useFormModal } from '@/components/common/FormModal';
 import { directus } from '@/lib/directus';
 
 import Popover from './Popover';
-import Preview from './Preview';
 
 export default function Documents({ docs, refreshDocs }) {
 	const { formatMessage } = useIntl();
@@ -69,10 +70,11 @@ export default function Documents({ docs, refreshDocs }) {
 									<h2>
 										<AccordionButton>
 											<Flex flex="1">
-												<Preview
+												<DirectusImage
+													as={Avatar}
+													assetId={doc.preview[0]}
+													assetParams={{ width: 100, fit: 'cover' }}
 													name={doc.title}
-													previewUrl={doc.preview[0]}
-													type="avatar"
 												/>
 												<Flex ml="3" align="center">
 													<Text fontSize="lg" fontWeight="bold">
@@ -85,10 +87,13 @@ export default function Documents({ docs, refreshDocs }) {
 									</h2>
 
 									<AccordionPanel pb={4}>
-										<Preview
-											name={doc.title}
-											previewUrl={doc.preview[0]}
-											type="image"
+										<DirectusImage
+											assetId={doc.preview[0]}
+											assetParams={{ width: 250 }}
+											border="1px"
+											borderColor="chakra-border-color"
+											borderRadius="var(--chakra-radii-md)"
+											alt={doc.title}
 											mb={2}
 										/>
 										<Button

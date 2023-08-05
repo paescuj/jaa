@@ -19,6 +19,7 @@ import {
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Download, DragHandGesture, EyeOff, ZoomIn } from 'iconoir-react';
+import dynamic from 'next/dynamic';
 import { createRef, useCallback, useEffect, useState } from 'react';
 import { Flipped, spring } from 'react-flip-toolkit';
 import { useIntl } from 'react-intl';
@@ -26,7 +27,9 @@ import { useIntl } from 'react-intl';
 import { highlight } from '@/lib/search';
 import { DocumentStore } from '@/stores/DocumentStore';
 
-import Pdf from './Pdf';
+const Pdf = dynamic(() => import('./Pdf'), {
+	ssr: false,
+});
 
 const onElementAppear = (el, index) =>
 	spring({

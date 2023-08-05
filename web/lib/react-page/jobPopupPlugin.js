@@ -14,9 +14,9 @@ export default pluginFactories.createComponentPlugin({
 			link,
 		};
 		if (preview?.[0]) {
-			props.previewId = preview[0];
+			props.assetId = preview[0];
 		} else {
-			props.previewUrl = 'https://picsum.photos/300/200';
+			props.imgSrc = 'https://picsum.photos/300/200';
 		}
 		return <JobPopup {...props}>{children}</JobPopup>;
 	},

@@ -5,6 +5,7 @@ import {
 	AccordionIcon,
 	AccordionItem,
 	AccordionPanel,
+	Avatar,
 	Box,
 	Button,
 	Collapse,
@@ -36,6 +37,7 @@ import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import BigCalendar from '@/components/common/Calendar';
+import DirectusImage from '@/components/common/DirectusImage';
 import FormModal, { useFormModal } from '@/components/common/FormModal';
 import JobPopup from '@/components/common/JobPopup';
 import Modal, { useModal } from '@/components/common/Modal';
@@ -44,11 +46,10 @@ import { directus } from '@/lib/directus';
 import locales from '@/locales';
 
 import Popover from './Popover';
-import Preview from './Preview';
 
 function getAccessEmail(company, jobId) {
 	const transformedCompany = company.toLowerCase().replace(/\s/g, '-');
-	const domain = env('DOMAIN') || window.location.host;
+	const domain = env('DOMAIN');
 	return `${transformedCompany}-${jobId}@${domain}`;
 }
 
@@ -301,10 +302,11 @@ export default function Jobs({
 								<h2>
 									<AccordionButton>
 										<Flex flex="1" wrap="wrap">
-											<Preview
+											<DirectusImage
+												as={Avatar}
+												assetId={job.preview[0]}
+												assetParams={{ width: 100, fit: 'cover' }}
 												name={job.company}
-												previewUrl={job.preview[0]}
-												type="avatar"
 											/>
 											<Box
 												ml="3"
@@ -343,7 +345,7 @@ export default function Jobs({
 												<Text fontWeight="bold">
 													{formatMessage({ id: 'job_advertisement' })}
 												</Text>
-												<JobPopup link={job.link} previewId={job.preview[0]}>
+												<JobPopup link={job.link} assetId={job.preview[0]}>
 													<Text color="blue.500">{job.link}</Text>
 												</JobPopup>
 											</Box>
@@ -361,10 +363,12 @@ export default function Jobs({
 																		header={doc.title}
 																		body={
 																			<>
-																				<Preview
-																					name={doc.title}
-																					previewUrl={doc.preview[0]}
-																					type="image"
+																				<DirectusImage
+																					assetId={doc.preview[0]}
+																					border="1px"
+																					borderColor="chakra-border-color"
+																					borderRadius="var(--chakra-radii-md)"
+																					alt={doc.title}
 																				/>
 																				<Button
 																					mt={2}

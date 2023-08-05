@@ -12,6 +12,14 @@ const config = {
 };
 
 const theme = {
+	semanticTokens: {
+		colors: {
+			bg: {
+				_light: '#C8C6D7',
+				_dark: 'gray.700',
+			},
+		},
+	},
 	...typography,
 	components: {
 		Drawer,

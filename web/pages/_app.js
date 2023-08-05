@@ -21,7 +21,7 @@ import { AuthStore } from '@/stores/AuthStore';
 import { LocaleStore } from '@/stores/LocaleStore';
 import theme from '@/theme';
 
-if (typeof window !== 'undefined') {
+if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
 	const styles = [
 		'font-size: 16px',
 		'background: #2F4858',

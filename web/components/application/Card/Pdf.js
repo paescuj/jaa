@@ -23,10 +23,13 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import Loader from '@/components/common/Loader';
 import { highlight } from '@/lib/search';
 import { DocumentStore } from '@/stores/DocumentStore';
-import workerSrc from '@/workers/pdf';
 
-// See https://github.com/wojtekmaj/react-pdf/issues/136
-pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+	process.env.NODE_ENV === 'production'
+		? 'pdfjs-dist/build/pdf.worker.min.js'
+		: 'pdfjs-dist/build/pdf.worker.js',
+	import.meta.url,
+).toString();
 
 const MotionFlex = motion(Flex);
 
@@ -77,8 +80,8 @@ export default function Pdf({
 			document
 				.querySelectorAll(
 					`.chakra-modal__body .swiper-button-next,
-          .chakra-modal__body .swiper-button-prev,
-          .chakra-modal__body .swiper-pagination`,
+	      .chakra-modal__body .swiper-button-prev,
+	      .chakra-modal__body .swiper-pagination`,
 				)
 				.forEach((el) =>
 					el.addEventListener('click', (e) => e.stopPropagation()),
